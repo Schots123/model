@@ -20,7 +20,7 @@ $SETGLOBAL RANDOM 'debug.json'
 $include 'fruchtfolge.gms'
 
 display p_totLand, v_totGM.l;
-
+*reztrt
 
 *v_binCropPlot.lo(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert) =
 *v_binCropPlot.l(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert);
