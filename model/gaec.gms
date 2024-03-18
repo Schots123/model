@@ -1,3 +1,8 @@
+$ontext
+Here, the old greening requirements are still formulated. I have to update the equations to force the farm to 
+comply with new CAP since 2023
+$offtext
+
 Equations
   e_efa
   e_75diversification(cropGroup)

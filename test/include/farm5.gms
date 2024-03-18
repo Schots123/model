@@ -11,13 +11,16 @@ set cropAttr / maxShare /;
 set symbol / lt,gt /;
 set months /jan,feb,mrz,apr,mai,jun,jul,aug,sep,okt,nov,dez/;
 set years / 2001*2050 /;
-set manAmounts /0,10,15,20,25,30,40,50,60/;
-set nReduction /'0','0.1','0.2','0.3','0.4'/;
-set solidAmounts /'0','5','10','12','15','20'/;
-set catchCrop /true, false/;
-set autumnFert /true, false/;
-$onempty
-$offdigit
+set manAmounts amounts of manure applied /0,10,15,20,25,30,40,50,60/;
+set nReduction N fertilization reduction requirements in relative numbers 
+    /'0','0.1','0.2','0.3','0.4'/;
+set solidAmounts amounts of solid manure applied /'0','5','10','12','15','20'/;
+set catchCrop catch crop sown after main crop /true, false/;
+set autumnFert autumn fertilization performed /true, false/;
+$onempty 
+*tells GAMS to allow empty set or parameter statements
+$offdigit 
+*tells GAMS to turn off excessive number precision in internal processing
 set curYear(years) / 2019 /;
 $setglobal duev2020 "true"
 scalar manStorage /1500 /;
@@ -94,12 +97,12 @@ set plots_permPast(curPlots) /
 
 set curCrops /
  ''
- '0082be89-8cfb-4a63-b812-4d42099b1a02'
- '224944c2-7586-47c0-9078-67edc7e5f57d'
- '43adc8bb-b59f-4dee-9a10-71b080eee637'
- 'c331411e-f9ce-4357-9ff9-8ff34a586a9e'
- 'f0c833fd-73da-431d-a0b3-bff21872dfe6'
- 'fd88c109-2c8f-4c50-a151-555237d01fea'
+ '0082be89-8cfb-4a63-b812-4d42099b1a02' Mais
+ '224944c2-7586-47c0-9078-67edc7e5f57d' Winterweizen
+ '43adc8bb-b59f-4dee-9a10-71b080eee637' Rüben
+ 'c331411e-f9ce-4357-9ff9-8ff34a586a9e' Wintergerste
+ 'f0c833fd-73da-431d-a0b3-bff21872dfe6' Winterroggen
+ 'fd88c109-2c8f-4c50-a151-555237d01fea' Kartoffel
 
 /;
 
@@ -134,6 +137,9 @@ parameter p_cropData(curCrops,cropAttr) /
 'fd88c109-2c8f-4c50-a151-555237d01fea'.maxShare 25
 
 /;
+$ontext
+I have to check whether these maximum share restrictions are still upt to date
+$offtext 
 
 set data_attr /
 jan
@@ -153,8 +159,13 @@ efaFactor
 autumnFertm3
 
 /;
+$ontext
+There is a set called month and this set, both include the month of a year 
+Possibly one might be unnecessary?
+$offtext    
 
-parameter p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,*) /
+*nReduction refers to fertilizer in general, not just manure and is part of duev2020!
+parameter p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,*) decision matrix for farm 5 /
 '027a3aaa-a6a4-4cd1-872a-a9efdef39369'.'0082be89-8cfb-4a63-b812-4d42099b1a02'.'0'.'0'.'0'.'false'.'false'.'mrz' 2.67
 '027a3aaa-a6a4-4cd1-872a-a9efdef39369'.'0082be89-8cfb-4a63-b812-4d42099b1a02'.'0'.'0'.'0'.'false'.'false'.'apr' 11.97
 '027a3aaa-a6a4-4cd1-872a-a9efdef39369'.'0082be89-8cfb-4a63-b812-4d42099b1a02'.'0'.'0'.'0'.'false'.'false'.'mai' 4.51
@@ -12674,4 +12685,6 @@ parameter p_manure(man_attr) /
 parameter p_solid(man_attr) /
 
 /;
-
+$ontext
+In this farm no solid manure is produced
+$offtext

@@ -1,7 +1,13 @@
+$ontext
+This file can remain first like it is. Changes would be necessary if I incorporate multiple year
+consideration
+$offtext
+
 Equations
   e_maxShares(curCrops)
   e_oneCropPlot(curPlots)
 $iftheni.constraints defined constraints
+*constraints is not defined for model 5 -> no activation of the following equations
   e_minimumShares(constraints,curCrops,curCrops1)
   e_maximumShares(constraints,curCrops,curCrops1) 
 $endif.constraints
@@ -43,6 +49,7 @@ v_binCropPlot.up(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,
 *  --- Enter user specified constraints into the model, 
 *
 $iftheni.constraints defined constraints
+*constraints is currently not defined for farm5, only for farm1 in farm1_time_crop_constraints
 e_minimumShares(constraints,curCrops,curCrops1) 
        $ (p_constraint(constraints,curCrops,curCrops1) 
        $ (not (constraints_lt(constraints,'lt'))))..
@@ -54,6 +61,7 @@ e_minimumShares(constraints,curCrops,curCrops1)
 ;  
 
 e_maximumShares(constraints,curCrops,curCrops1) 
+*constraints is currently not defined for farm5
        $ (p_constraint(constraints,curCrops,curCrops1) 
        $ (constraints_lt(constraints,'lt')))..
    sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),

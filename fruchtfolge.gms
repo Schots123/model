@@ -9,12 +9,13 @@
 *
 *  --- initiate global parameters for Greening evaluation
 *
-scalar  p_totLand;
-scalar  p_totArabLand;
-scalar  p_totGreenLand;
-scalar  p_restLand;
-scalar  p_shareGreenLand;
-scalar  p_grassLandExempt;
+scalar  p_totLand total land available to farm;
+scalar  p_totArabLand total arable land farm endowment;
+scalar  p_totGreenLand total green land farm endowment;
+scalar  p_restLand seems to be the same like totLand;
+scalar  p_shareGreenLand share of green land relative to total land endowment of farm;
+scalar  p_grassLandExempt defines whether farm has more than seventyfive percent green land and arable land is below thirty hectares or not, value assignment follows subsequently;
+
 p_totLand = sum(curPlots, p_plotData(curPlots,"size"));
 p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size"));
 p_totGreenLand = p_totLand - p_totArabLand;
@@ -25,11 +26,13 @@ p_grassLandExempt $((p_shareGreenLand > 0.75) $(p_restLand < 30)) = 1;
 *  --- initiate a cross set of all allowed combinations, might speed up generation time
 *
 $offOrder
+*$offOrder removes the requirement, that set operations over leads and lags require the subject set to be ordered
+
 set p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert);
 p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
   $ p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'grossMarginHa')
   = YES;
-
+*all possibilities with a gross margin from the decision space enter this set (each valid possibility included once) 
 alias (cropGroup,cropGroup1);
 alias (curCrops,curCrops1);
 
@@ -43,16 +46,20 @@ Variables
 ;
 
 Positive Variables
-  v_devShares(curCrops)
+  v_devShares(curCrops) area in hectare for crop planted above maximum share allowed specified by user in model5
+  v_devOneCrop(curPlots) number of main crops planted on field above one crop requirement as specified in model5
+*I think I have to alter the following 3 variables, because they are part of the old CAP
   v_devEfa5
-  v_devEfa75
+  v_devEfa75 area in hectare of main crop planted above seventyfive diversification rule greening
   v_devEfa95
+ 
 $iftheni.constraints defined constraints
-  v_devUserShares(constraints,curCrops,curCrops)
+  v_devUserShares(constraints,curCrops,curCrops) 
+*constraints is currently not defined for farm5 (only for farm1 for the specific code in folder include)
 $endif.constraints
-  v_devOneCrop(curPlots)
 $iftheni.labour defined p_availLabour
-  v_devLabour(months)
+*p_availLabour is defined in file farm5, hence the following equation is currently activated
+  v_devLabour(months) in hours per month
 $endif.labour
 ;
 
@@ -71,7 +78,7 @@ Equations
 $include '%WORKDIR%model/crop_rotation.gms'
 $include '%WORKDIR%model/fertilizer_ordinance.gms'
 $include '%WORKDIR%model/storage.gms'
-$include '%WORKDIR%model/greening.gms'
+$include '%WORKDIR%model/gaec.gms'
 $include '%WORKDIR%model/labour.gms'
 
 *
@@ -129,6 +136,10 @@ if (card(curPlots)<30,
   else 
     option optCR=0.04;
 );
+*option optCR specifies a relative termination tolerance for use in solving MIP problems 
+*solver stops when proportional difference between solution found and best theoretical objective function
+*is guaranteed to be smaller than optcr 
+
 
 model Fruchtfolge /
   e_obje
@@ -139,19 +150,27 @@ model Fruchtfolge /
   e_170_avg
   $$ifi "%duev2020%"=="true" e_170_plots
   $$ifi "%duev2020%"=="true" e_20_red_plots
+*e_170_plots and e_20_red_plots are activated for farm5 because it is set as true in farm5  
   e_storageBal
   e_manureSpring
   e_manureAutumn
   e_solidAutumn
   e_maxStorageCap
-$iftheni.constraints defined constraints
-  e_minimumShares
-  e_maximumShares
-$endif.constraints
+*I might have to change the following three equations due to outdated greening requirement
   e_efa
   e_75diversification
   e_95diversification
+
+$iftheni.constraints defined constraints
+*constraints is currently not defined - equation specification in file crop_rotation
+  e_minimumShares
+*e_minimumShares does enable the user to specify minimum shares of a crop to grow in a specific year (e.g. because of feed requirements)
+  e_maximumShares
+*e_maximumShares would allow user to define own maximum shares for crops (e.g. because of storage restrictions)
+$endif.constraints
+
 $iftheni.labour defined p_availLabour
+*labour is defined in file farm5 - equation specification in file labour 
   e_maxLabour
 $endif.labour
 /;

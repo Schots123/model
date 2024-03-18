@@ -1,3 +1,8 @@
+$ontext
+This file can remain as it is first. Might become important later when I plan to incorporate field working days and 
+labour costs. 
+$offtext
+
 *
 *  --- Only account for labour constraints when parameter is defined
 *
@@ -8,6 +13,7 @@ Equations
 ;
 
 e_maxLabour(months)..
+*in hours per month
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
   v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
   * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,months)

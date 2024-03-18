@@ -1,3 +1,6 @@
+$ontext
+For the multiple year consideration, I think I would have to adapt the storage capacity equations
+$offtext
 *
 *  --- Storage model
 *
@@ -26,7 +29,11 @@ p_monthlyManure("solid") = p_solid("amount") / 12;
 Parameter p_maxStoreCap(manType);
 p_maxStoreCap("manure") =  manStorage;
 p_maxStoreCap("solid") =  solidStorage;
+*manStorage & solidStorage are defined in farm5
 
+$ontext
+the following parameter is currently not used in any calculation
+$offtext
 Parameter p_springManMonths(manType,months) /
   manure.feb 0.667
   manure.mrz 0.167
@@ -41,6 +48,7 @@ p_priceFertExport("manure",months) $ (ord(months) < 6) = manPriceSpring;
 p_priceFertExport("manure",months) $ (ord(months) > 5) = manPriceAutumn;
 p_priceFertExport("solid",months) $ (ord(months) < 6) = solidPriceSpring;
 p_priceFertExport("solid",months) $ (ord(months) > 5) = solidPriceAutumn;
+*manPrice and solidPrice are defined in Farm5
 
 *
 *  --- We model 3 timepoints:
@@ -48,7 +56,7 @@ p_priceFertExport("solid",months) $ (ord(months) > 5) = solidPriceAutumn;
 *      2. The amount of manure in storage after spring
 *      3. The amount of manure in storage after 01.10
 *     
-e_manureSpring(manType)..
+e_manureSpring(manType) amount of manure liquid + solid applied in spring ..
   sum(months, v_manureSpring(manType,months)) =E=
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
     v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
@@ -58,12 +66,19 @@ e_manureSpring(manType)..
 ;
 
 * Manure spreading can only be done in these months
+$ontext
+My feeling is that the condition in the following equation could be written more easier -> only $ sameas (manMonths,month)
+$offtext
 set manMonths / feb, mrz, apr, mai /;
 v_manureSpring.up(manType,months) = 0;
 v_manureSpring.up(manType,months) 
   $ sum(manMonths $ (sameas(manMonths,months)),1) = +inf;
 
-e_manureAutumn..
+$ontext
+I personally believe that this equation is redundant since the data of duev20 is not put into the model and 
+therefore no data for autumnFertm3 does exist 
+$offtext 
+e_manureAutumn amount of manure only liquid applied in autumn ..
   v_manureAutumn("manure") =E=
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
     $ (ord(manAmounts) > 1),

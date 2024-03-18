@@ -1,3 +1,8 @@
+$ontext 
+duev20 is incorporated into the model via fertilizer_ordinance for farm5 - However, I want that duev is a fixed part of the model
+and the user cant decide whether this is included or not - I think I want to put all fertilizer ordinance requirements into the
+already existing file fertilizer_ordinance and potentially add storage as a case dependent module 
+$offtext
 * -------------------------------
 * Fruchtfolge Model - Include file
 * Institute for Food an Resource Economics

@@ -3,7 +3,8 @@
 *      global variables for debugging in Atom
 *
 *$ontext
-$offlisting
+*$offlisting 
+*turning off the echoprint
 $offsymxref offsymlist
 
 option
@@ -13,14 +14,13 @@ option
 *$offtext
 
 *option limrow = 1000;
-* option limcol = 1000;    
+*option limcol = 1000;    
 $include 'test/include/farm5.gms'
 $SETGLOBAL WORKDIR './'
 $SETGLOBAL RANDOM 'debug.json'
 $include 'fruchtfolge.gms'
 
 display p_totLand, v_totGM.l;
-*reztrt
 
 *v_binCropPlot.lo(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert) =
 *v_binCropPlot.l(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert);
