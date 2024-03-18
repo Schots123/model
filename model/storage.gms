@@ -34,6 +34,7 @@ p_maxStoreCap("solid") =  solidStorage;
 $ontext
 the following parameter is currently not used in any calculation
 $offtext
+
 Parameter p_springManMonths(manType,months) /
   manure.feb 0.667
   manure.mrz 0.167
@@ -56,7 +57,7 @@ p_priceFertExport("solid",months) $ (ord(months) > 5) = solidPriceAutumn;
 *      2. The amount of manure in storage after spring
 *      3. The amount of manure in storage after 01.10
 *     
-e_manureSpring(manType) amount of manure liquid + solid applied in spring ..
+e_manureSpring(manType)..
   sum(months, v_manureSpring(manType,months)) =E=
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
     v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
@@ -78,7 +79,7 @@ $ontext
 I personally believe that this equation is redundant since the data of duev20 is not put into the model and 
 therefore no data for autumnFertm3 does exist 
 $offtext 
-e_manureAutumn amount of manure only liquid applied in autumn ..
+e_manureAutumn..
   v_manureAutumn("manure") =E=
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
     $ (ord(manAmounts) > 1),
