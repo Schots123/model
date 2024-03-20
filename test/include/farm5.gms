@@ -10,7 +10,7 @@ set plotAttr / size /;
 set cropAttr / maxShare /;
 set symbol / lt,gt /;
 set months /jan,feb,mrz,apr,mai,jun,jul,aug,sep,okt,nov,dez/;
-set years / 2001*2050 /;
+set years / 2024*2049 /;
 set manAmounts amounts of manure applied /0,10,15,20,25,30,40,50,60/;
 set nReduction N fertilization reduction requirements in relative numbers 
     /'0','0.1','0.2','0.3','0.4'/;
@@ -21,7 +21,7 @@ $onempty
 *tells GAMS to allow empty set or parameter statements
 $offdigit 
 *tells GAMS to turn off excessive number precision in internal processing
-set curYear(years) / 2019 /;
+set curYear(years) / 2024 /;
 $setglobal duev2020 "true"
 scalar manStorage /1500 /;
 scalar manPriceSpring /12 /;
@@ -102,7 +102,7 @@ set curCrops /
  'fd88c109-2c8f-4c50-a151-555237d01fea' Kartoffel
 /;
 
-set cropGroup /
+set cropGroup for conditional processing of e_gaec7 /
  ''
  'Gattung: Zea (Mais)'
  'Winterweizen'
@@ -112,7 +112,7 @@ set cropGroup /
  'Art: Solanum tuberosum (Kartoffel)'
 /;
 
-set crops_cropGroup(curCrops,cropGroup) /
+set crops_cropGroup(curCrops,cropGroup) for conditional processing of e_gaec7 /
  ''.''
  '0082be89-8cfb-4a63-b812-4d42099b1a02'.'Gattung: Zea (Mais)'
  '224944c2-7586-47c0-9078-67edc7e5f57d'.'Winterweizen'
@@ -147,7 +147,6 @@ parameter p_cropData(curCrops,cropAttr) /
 'f0c833fd-73da-431d-a0b3-bff21872dfe6'.maxShare 33.33
 'fd88c109-2c8f-4c50-a151-555237d01fea'.maxShare 25
 /;
-
 $ontext
 I have to check whether these maximum share restrictions are still upt to date
 $offtext 
