@@ -60,7 +60,7 @@ p_priceFertExport("solid",months) $ (ord(months) > 5) = solidPriceAutumn;
 e_manureSpring(manType)..
   sum(months, v_manureSpring(manType,months)) =E=
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
     * p_manValue(manType,manAmounts,solidAmounts)
   )
@@ -83,7 +83,7 @@ e_manureAutumn..
   v_manureAutumn("manure") =E=
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
     $ (ord(manAmounts) > 1),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
     * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'autumnFertm3')
   )
@@ -93,7 +93,7 @@ e_solidAutumn..
   v_manureAutumn("solid") =E=
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
     $ (ord(manAmounts) eq 1),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
     * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'autumnFertm3')
   )

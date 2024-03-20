@@ -10,7 +10,7 @@ set plotAttr / size /;
 set cropAttr / maxShare /;
 set symbol / lt,gt /;
 set months /jan,feb,mrz,apr,mai,jun,jul,aug,sep,okt,nov,dez/;
-set years / 2024*2049 /;
+set years / 2024*2027 /;
 set manAmounts amounts of manure applied /0,10,15,20,25,30,40,50,60/;
 set nReduction N fertilization reduction requirements in relative numbers 
     /'0','0.1','0.2','0.3','0.4'/;

@@ -46,7 +46,7 @@ Parameter p_manValue(manType,manAmounts,solidAmounts) /
 
 e_man_balance(manType)..
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
     * p_manValue(manType,manAmounts,solidAmounts))
     + sum(months, v_manExports(manType,months))
@@ -62,7 +62,7 @@ $iftheni.duev2020 "%duev2020%"=="true"
   e_170_avg $ p_notEndangeredLand..
     sum((p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),manType)
       $ (not plots_duevEndangered(curPlots)),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
      * p_plotData(curPlots,"size")
      * p_manValue(manType,manAmounts,solidAmounts)
      * p_manure("n")
@@ -73,7 +73,7 @@ $iftheni.duev2020 "%duev2020%"=="true"
 * instead of the average of all fields
   e_170_plots(curPlots) $ (plots_duevEndangered(curPlots) )..
    sum((p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),manType),
-   v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+   v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_manValue(manType,manAmounts,solidAmounts)
     * p_manure("n")
     * 80 / 100
@@ -84,7 +84,7 @@ $iftheni.duev2020 "%duev2020%"=="true"
   e_20_red_plots $ sum(curPlots $ plots_duevEndangered(curPlots), 1)..
     sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
       $ plots_duevEndangered(curPlots),
-     v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+     v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
       * p_plotData(curPlots,"size")
       * (ord(nReduction) - 1) * 10
 *in the case that the model chooses o for a specific field, the calculation of the previous line would be
@@ -96,7 +96,7 @@ $iftheni.duev2020 "%duev2020%"=="true"
 $else.duev2020
   e_170_avg..
     sum((p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),manType), 
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
      * p_plotData(curPlots,"size")
      * p_manValue(manType,manAmounts,solidAmounts)
      * p_manure("n")

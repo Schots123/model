@@ -27,12 +27,12 @@ p_shareGreenLand = p_totGreenLand / p_totLand;
 *
 $offOrder
 *$offOrder removes the requirement, that set operations over leads and lags require the subject set to be ordered
-
 set p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert);
 p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
   $ p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'grossMarginHa')
   = YES;
 *all possibilities with a gross margin from the decision space enter this set (each valid possibility included once) 
+$OnOrder  
 
 alias (cropGroup,cropGroup1);
 alias (curCrops,curCrops1);
@@ -44,18 +44,19 @@ scalar M / 99999 /;
 Variables
   v_obje
   v_totGM
+  v_annGM(years) annual gross margin
 ;
 
 Positive Variables
 *
 * --- crop_rotation.gms
 *
-  v_devShares(curCrops) area in hectare for crop planted above maximum share allowed specified by user in model5
-  v_devOneCrop(curPlots) number of main crops planted on field above one crop requirement as specified in model5
+  v_devShares(curCrops,years) area in hectare planted for each crop and year above maximum share allowed
+  v_devOneCrop(curPlots,years) number of main crops planted on field above one crop restriction each year
 *constraints is currently not defined for farm5 (only for farm1 for the specific code in folder include)  
-*$iftheni.constraints defined constraints 
-*    v_devUserShares(constraints,curCrops,curCrops) 
-*$endif.constraints
+$iftheni.constraints defined constraints 
+    v_devUserShares(constraints,curCrops,curCrops1,years)  
+$endif.constraints
 *
 * --- gaec.gms
 *
@@ -74,12 +75,13 @@ Positive Variables
 ;
 
 Binary Variables
-  v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+  v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
 ;
 
 Equations
   e_obje
   e_totGM
+  e_annGM(years)
 ;
 
 *
@@ -94,24 +96,28 @@ $include '%WORKDIR%model/crop_rotation.gms'
 *
 *  --- calculate overall gross margin for the planning year
 *
-e_totGM..
-  v_totGM =E=
+e_annGM(years)..
+  v_annGM(years) =E=
     sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert), 
-      v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+      v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
       * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'grossMarginHa')
       * p_plotData(curPlots,'size')
     )
 *    - sum((manType,months), v_manExports(manType,months) * p_priceFertExport(manType,months))
 ;
-
+e_totGM..
+  v_totGM =E=
+    sum(years, v_annGM(years)
+    )
+;    
 e_obje..
   v_obje =E=
     v_totGM
-    - sum(curCrops, v_devShares(curCrops) * M)
+    - sum((curCrops,years), v_devShares(curCrops,years) * M)
 *    - (v_devEfa5 * M)
 *    - (v_devEfa75 * M)
 *    - (v_devEfa95 * M)
-    - sum(curPlots, v_devOneCrop(curPlots) * M * 10)
+    - sum((curPlots,years), v_devOneCrop(curPlots,years) * M * 10)
 *    - (sum((manType,months), v_manSlack(manType,months) * M))
 *    - (v_170Slack * M)
 *    - ((sum((manType,curPlots), v_170PlotSlack(curPlots))) * M)
@@ -120,7 +126,7 @@ e_obje..
 *    - (v_devGaec8 * M)
 *$iftheni.constraints defined constraints
 *    - sum((constraints,curCrops,curCrops1),
-*      v_devUserShares(constraints,curCrops,curCrops1) * M)
+*      v_devUserShares(constraints,curCrops,curCrops1,years) * M)
 *$endif.constraints
 *$iftheni.labour defined p_availLabour
 *    - sum(months, v_devLabour(months) * 1000)
@@ -130,14 +136,14 @@ e_obje..
 *
 *  --- define upper bounds for slack variables
 *
-v_devShares.up(curCrops) = p_totArabLand;
+v_devShares.up(curCrops,years) = p_totArabLand;
 *v_devEfa5.up = p_totArabLand * 0.05;
 *v_devEfa75.up = p_totArabLand * 0.25;
 *v_devEfa95.up = p_totArabLand;
-v_devOneCrop.up(curPlots) = 1;
-*$iftheni.constraints defined constraints
-*  v_devUserShares.up(constraints,curCrops,curCrops1) = p_totArabLand;
-*$endif.constraints
+v_devOneCrop.up(curPlots,years) = 1;
+$iftheni.constraints defined constraints
+  v_devUserShares.up(constraints,curCrops,curCrops1,years) = p_totArabLand;
+$endif.constraints
 *$iftheni.labour defined p_availLabour
 *  v_devLabour.up(months) = 15000;
 *$endif.labour
@@ -157,6 +163,7 @@ if (card(curPlots)<30,
 model Fruchtfolge /
   e_obje
   e_totGM
+  e_annGM
   e_maxShares
   e_oneCropPlot
 *  e_man_balance
@@ -175,13 +182,13 @@ model Fruchtfolge /
 *  e_95diversification
 *  e_gaec6
 *  e_gaec8
-*$iftheni.constraints defined constraints
+$iftheni.constraints defined constraints
 *constraints is currently not defined - equation specification in file crop_rotation
-*  e_minimumShares
-*e_minimumShares does enable the user to specify minimum shares of a crop to grow in a specific year (e.g. because of feed requirements)
-*  e_maximumShares
-*e_maximumShares would allow user to define own maximum shares for crops (e.g. because of storage restrictions)
-*$endif.constraints
+  e_minimumShares
+*e_minimumShares(years) does enable the user to specify minimum shares of a crop to grow in a specific year (e.g. because of feed requirements)
+  e_maximumShares
+*e_maximumShares(years) would allow user to define own maximum shares for crops (e.g. because of storage restrictions)
+$endif.constraints
 *$iftheni.labour defined p_availLabour
 *labour is defined in file farm5 - equation specification in file labour 
 *  e_maxLabour
@@ -191,4 +198,5 @@ model Fruchtfolge /
 display p_totArabLand
 solve Fruchtfolge using MIP maximizing v_obje;
 
+$batinclude '%WORKDIR%test/include/report_writing.gms'   
 *$include '%WORKDIR%exploiter/createJson.gms'

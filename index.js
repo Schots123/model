@@ -40,20 +40,20 @@ Variables
   v_totGM
 ;
 Positive Variables
-  v_devShares(curCrops)
+  v_devShares(curCrops,years)
   v_devEfa5
   v_devEfa75
   v_devEfa95
 $iftheni.constraints defined constraints
-  v_devUserShares(constraints,curCrops,curCrops)
+  v_devUserShares(constraints,curCrops,curCrops1,years) 
 $endif.constraints
-  v_devOneCrop(curPlots)
+  v_devOneCrop(curPlots,years)
 $iftheni.labour defined p_availLabour
   v_devLabour(months)
 $endif.labour
 ;
 Binary Variables
-  v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+  v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
 ;
 Equations
   e_obje
@@ -63,11 +63,11 @@ Equations
 *  --- include model
 *
 Equations
-  e_maxShares(curCrops)
-  e_oneCropPlot(curPlots)
+  e_maxShares(curCrops,years)
+  e_oneCropPlot(curPlots,years)
 $iftheni.constraints defined constraints
-  e_minimumShares(constraints,curCrops,curCrops1)
-  e_maximumShares(constraints,curCrops,curCrops1) 
+  e_minimumShares(constraints,curCrops,curCrops1,years)
+  e_maximumShares(constraints,curCrops,curCrops1,years) 
 $endif.constraints
 ;
 
@@ -75,24 +75,24 @@ $endif.constraints
 *  --- each crop cannot exceed the maximum allowed share specified by the users
 *      crop rotational settings
 *
-e_maxShares(curCrops) $ p_cropData(curCrops,"maxShare")..
+e_maxShares(curCrops,years) $ p_cropData(curCrops,"maxShare")..
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
     $ (not plots_permPast(curPlots)),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
   )
   =L= 
     (p_totArabLand * p_cropData(curCrops,"maxShare") / 100)
-    + v_devShares(curCrops)
+    + v_devShares(curCrops,years)
 ;
 
 *
 *  --- ensure that only one crop is grown on a plot
 *
-e_oneCropPlot(curPlots)..
+e_oneCropPlot(curPlots,years)..
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert))
-  + v_devOneCrop(curPlots)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years))
+  + v_devOneCrop(curPlots,years)
   =E= 1
 ;
 
@@ -107,28 +107,28 @@ v_binCropPlot.up(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,
 *  --- Enter user specified constraints into the model, 
 *
 $iftheni.constraints defined constraints
-e_minimumShares(constraints,curCrops,curCrops1) 
+e_minimumShares(constraints,curCrops,curCrops1,years) 
        $ (p_constraint(constraints,curCrops,curCrops1) 
        $ (not (constraints_lt(constraints,'lt'))))..
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert), 
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert) 
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years) 
     * p_plotData(curPlots,'size'))
-    + v_devUserShares(constraints,curCrops,curCrops1)
+    + v_devUserShares(constraints,curCrops,curCrops1,years)
   =G= p_constraint(constraints,curCrops,curCrops1) 
 ;  
 
-e_maximumShares(constraints,curCrops,curCrops1) 
+e_maximumShares(constraints,curCrops,curCrops1,years) 
        $ (p_constraint(constraints,curCrops,curCrops1) 
        $ (constraints_lt(constraints,'lt')))..
    sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
-     v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert) 
+     v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years) 
      * p_plotData(curPlots,'size'))
     + sum(p_c_m_s_n_z_a(curPlots,curCrops1,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
       v_binCropPlot(curPlots,curCrops1,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert) 
       * p_plotData(curPlots,'size'))
     =L= 
     p_constraint(constraints,curCrops,curCrops1)
-    + v_devUserShares(constraints,curCrops,curCrops1)
+    + v_devUserShares(constraints,curCrops,curCrops1,years)
 ;  
 $endif.constraints
 
@@ -172,7 +172,7 @@ Parameter p_manValue(manType,manAmounts,solidAmounts) /
 
 e_man_balance(manType)..
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
     * p_manValue(manType,manAmounts,solidAmounts))
     + sum(months, v_manExports(manType,months))
@@ -187,7 +187,7 @@ $iftheni.duev2020 "%duev2020%"=="true"
   e_170_avg $ p_notEndangeredLand..
     sum((p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),manType)
       $ (not plots_duevEndangered(curPlots)),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
      * p_plotData(curPlots,"size")
      * p_manValue(manType,manAmounts,solidAmounts)
      * p_manure("n")
@@ -198,7 +198,7 @@ $iftheni.duev2020 "%duev2020%"=="true"
 * instead of the average of all fields
   e_170_plots(curPlots) $ (plots_duevEndangered(curPlots) )..
    sum((p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),manType),
-   v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+   v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_manValue(manType,manAmounts,solidAmounts)
     * p_manure("n")
     * 80 / 100
@@ -209,7 +209,7 @@ $iftheni.duev2020 "%duev2020%"=="true"
   e_20_red_plots $ sum(curPlots $ plots_duevEndangered(curPlots), 1)..
     sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
       $ plots_duevEndangered(curPlots),
-     v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+     v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
       * (ord(nReduction) - 1) * 10
       * p_plotData(curPlots,"size")
     ) 
@@ -219,7 +219,7 @@ $iftheni.duev2020 "%duev2020%"=="true"
 $else.duev2020
   e_170_avg..
     sum((p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),manType), 
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
      * p_plotData(curPlots,"size")
      * p_manValue(manType,manAmounts,solidAmounts)
      * p_manure("n")
@@ -279,7 +279,7 @@ p_priceFertExport("solid",months) $ (ord(months) > 5) = solidPriceAutumn;
 e_manureSpring(manType)..
   sum(months, v_manureSpring(manType,months)) =E=
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
     * p_manValue(manType,manAmounts,solidAmounts)
   )
@@ -295,7 +295,7 @@ e_manureAutumn..
   v_manureAutumn("manure") =E=
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
     $ (ord(manAmounts) > 1),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
     * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'autumnFertm3')
   )
@@ -305,7 +305,7 @@ e_solidAutumn..
   v_manureAutumn("solid") =E=
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
     $ (ord(manAmounts) eq 1),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
     * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'autumnFertm3')
   )
@@ -345,7 +345,7 @@ Equations
 * Only activate ecological focus area equation if arable land is greater than 15ha
 e_efa $ ((p_totArabLand >= 15) $(not p_grassLandExempt))..
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
-      v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+      v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
       * p_plotData(curPlots,"size")
       * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'efaFactor')
   )
@@ -360,7 +360,7 @@ e_75diversification(cropGroup) $ ((p_totArabLand >= 10) $(not p_grassLandExempt)
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
     $ ((not plots_permPast(curPlots))
     $ crops_cropGroup(curCrops,cropGroup)),
-      v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+      v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
       * p_plotData(curPlots,"size")
   )
   =L= 
@@ -376,13 +376,13 @@ e_95diversification(cropGroup,cropGroup1)
   $ (not sameas(cropGroup,cropGroup1)))..
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
     $ crops_cropGroup(curCrops,cropGroup),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
   )
   +
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
     $ crops_cropGroup(curCrops,cropGroup1),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
   )
   =L= 
@@ -401,7 +401,7 @@ Equations
 
 e_maxLabour(months)..
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
-  v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+  v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
   * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,months)
   )
   =L= 
@@ -429,7 +429,7 @@ $endif.labour
 e_totGM..
   v_totGM =E=
     sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert), 
-      v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+      v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
       * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'grossMarginHa')
       * p_plotData(curPlots,'size')
     )
@@ -437,18 +437,18 @@ e_totGM..
 e_obje..
   v_obje =E=
     v_totGM
-    - sum(curCrops, v_devShares(curCrops) * M)
+    - sum(curCrops, v_devShares(curCrops,years) * M)
     - (v_devEfa5 * M)
     - (v_devEfa75 * M)
     - (v_devEfa95 * M)
-    - sum(curPlots, v_devOneCrop(curPlots) * M * 10)
+    - sum(curPlots, v_devOneCrop(curPlots,years) * M * 10)
     - (sum((manType,months), v_manSlack(manType,months) * M))
     - (v_170Slack * M)
     - ((sum((manType,curPlots), v_170PlotSlack(curPlots))) * M)
     - (v_20RedSlack * M)
 $iftheni.constraints defined constraints
     - sum((constraints,curCrops,curCrops1),
-      v_devUserShares(constraints,curCrops,curCrops1) * M)
+      v_devUserShares(constraints,curCrops,curCrops1,years) * M)
 $endif.constraints
 $iftheni.labour defined p_availLabour
     - sum(months, v_devLabour(months) * 1000)
@@ -463,7 +463,7 @@ v_devEfa75.up = p_totArabLand * 0.25;
 v_devEfa95.up = p_totArabLand;
 v_devOneCrop.up(curPlots) = 1;
 $iftheni.constraints defined constraints
-  v_devUserShares.up(constraints,curCrops,curCrops1) = p_totArabLand;
+  v_devUserShares.up(constraints,curCrops,curCrops1,years) = p_totArabLand;
 $endif.constraints
 $iftheni.labour defined p_availLabour
   v_devLabour.up(months) = 15000;
@@ -490,8 +490,8 @@ model Fruchtfolge /
   e_solidAutumn
   e_maxStorageCap
 $iftheni.constraints defined constraints
-  e_minimumShares
-  e_maximumShares
+  e_minimumShares(years)
+  e_maximumShares(years)
 $endif.constraints
   e_efa
   e_75diversification

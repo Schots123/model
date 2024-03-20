@@ -15,14 +15,14 @@ Equations
 e_gaec6..
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert), 
 * cover crops to fulfil minimum coverage requirements 
-  v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+  v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
     * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'efaFactor')
 * winter grains as minimum coverage requirement OR stubble fallow as minimum coverage requirement
-  + (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)      
+  + (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)      
     * p_plotData(curPlots,"size")) $ curCrops_cropType(curCrops,'Wintergetreide')
 * maize stubble fallow as minimum coverage requirement 
-  + (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert) 
+  + (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years) 
     * p_plotData(curPlots,"size")) 
     $ (sameas(catchCrop,'false') AND curCrops_cropType(curCrops,'Mais'))   
 * if summer grains should become possible to be grown, it would be necessary to add a conditional based on the next period       
@@ -37,7 +37,7 @@ $offtext
 
 e_gaec8 $ ((p_totArabLand gt 10) $ (p_shareGreenLand le 0.75))..
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
-  (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+  (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")) $ sameas(curCrops,'fallow')
   )   
   =G= 0.04*p_totArabLand - v_devGaec8
@@ -47,7 +47,7 @@ e_gaec8 $ ((p_totArabLand gt 10) $ (p_shareGreenLand le 0.75))..
 * Only activate ecological focus area equation if arable land is greater than 15ha
 e_efa $ ((p_totArabLand >= 15) $(not p_grassLandExempt))..
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
-      v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+      v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
       * p_plotData(curPlots,"size")
       * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'efaFactor')
   )
@@ -62,7 +62,7 @@ e_75diversification(cropGroup) $ ((p_totArabLand >= 10) $(not p_grassLandExempt)
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
     $ ((not plots_permPast(curPlots))
     $ crops_cropGroup(curCrops,cropGroup)),
-      v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+      v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
       * p_plotData(curPlots,"size")
   )
   =L= 
@@ -78,13 +78,13 @@ e_95diversification(cropGroup,cropGroup1)
   $ (not sameas(cropGroup,cropGroup1)))..
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
     $ crops_cropGroup(curCrops,cropGroup),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
   )
   +
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
     $ crops_cropGroup(curCrops,cropGroup1),
-    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
   )
   =L= 
