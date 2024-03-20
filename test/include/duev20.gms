@@ -11,6 +11,7 @@ $offtext
 * -------------------------------
 
 * Static data
+set fo2020 / yes /;
 set plotAttr / size /;
 set cropAttr / maxShare /;
 set symbol / lt,gt /;
@@ -18,7 +19,7 @@ set months /jan,feb,mrz,apr,mai,jun,jul,aug,sep,okt,nov,dez/;
 set years / 2001*2050 /;
 set manAmounts /0,10,15,20,25,30,40,50,60/;
 set nReduction /'0','0.1','0.2','0.3','0.4'/;
-set solidAmounts /'0','10','15','20','25','30'/;
+set solidAmounts amounts of solid manure applied /'0','5','10','12','15','20'/;
 set catchCrop /true, false/;
 set autumnFert /true, false/;
 $onempty
@@ -28,6 +29,9 @@ $setglobal duev2020 "true"
 scalar manStorage /1500 /;
 scalar manPriceSpring /12 /;
 scalar manPriceAutumn /12 /;
+scalar solidStorage /0 /;
+scalar solidPriceSpring /0 /;
+scalar solidPriceAutumn /0 /;
 set curPlots /
  '027a3aaa-a6a4-4cd1-872a-a9efdef39369'
  '119f0d98-ec65-4752-802f-3cb0ca4d205f'
@@ -77,6 +81,16 @@ parameter p_plotData(curPlots,plotAttr) /
 /;
 
 set plots_duevEndangered(curPlots) /
+'2d64e2d8-1909-4abf-9c42-71041141645a' YES
+'2e6ab89a-ddf1-40a6-8c02-14d0bd7e93c8' YES
+'62ffe0b8-d621-436b-a76a-1f44235178e0' YES
+'9ce07e77-2a1c-484d-8e74-678cd1d30f5f' YES
+'9f7e7bdf-919e-450c-ab20-1998696397a3' YES
+'b54a00ad-8fe1-4d1d-8c8c-fbab6a371204' YES
+'c3ab0ff2-328b-4f60-8520-a7d2b3607133' YES
+'cc74cf23-840a-4016-a5b6-144b4d228489' YES
+'ce0201fd-3cd5-4c6f-8755-5a6a0ebd9556' YES
+'dc298ebb-1b27-411a-8024-af0623f621c5' YES
 
 /;
 
@@ -86,6 +100,7 @@ set plots_permPast(curPlots) /
 
 set curCrops /
  ''
+ 'NoCrop'
  'Mais - Silomais'
  'Winterweizen - Brotweizen'
  'Zuckerrüben'
@@ -153,6 +168,28 @@ grossMarginNoCropEff
 /;
 
 parameter p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,*) /
+*$ontext
+'027a3aaa-a6a4-4cd1-872a-a9efdef39369'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'119f0d98-ec65-4752-802f-3cb0ca4d205f'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'2bf8c74f-0fd1-4b51-bb5e-4a8bf6a7eac8'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'2d64e2d8-1909-4abf-9c42-71041141645a'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'2e6ab89a-ddf1-40a6-8c02-14d0bd7e93c8'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'558f9729-9f85-4837-ad21-033762c4ba5d'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'5d9c7dc1-513c-4d3b-bc72-83b9e25ace52'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'62ffe0b8-d621-436b-a76a-1f44235178e0'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'9ce07e77-2a1c-484d-8e74-678cd1d30f5f'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'9dc87df6-5113-40c7-9d16-b27f2485faaa'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'9f7e7bdf-919e-450c-ab20-1998696397a3'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'a9d0ecf3-e61c-486c-90b3-bb1baab35b4d'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'aa5973e8-2392-4ca2-a485-7d8e834ded31'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'af3d2471-1e40-4c82-b332-0147a237b3dd'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'b54a00ad-8fe1-4d1d-8c8c-fbab6a371204'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'bc06dfd4-8f54-4b13-a796-2e634cabdc9d'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'c3ab0ff2-328b-4f60-8520-a7d2b3607133'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'cc74cf23-840a-4016-a5b6-144b4d228489'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'ce0201fd-3cd5-4c6f-8755-5a6a0ebd9556'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'dc298ebb-1b27-411a-8024-af0623f621c5'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+*$offtext
  '027a3aaa-a6a4-4cd1-872a-a9efdef39369'.'Mais - Silomais'.'0'.'0'.'0'.'false'.'false'.'mrz' 2.71
  '027a3aaa-a6a4-4cd1-872a-a9efdef39369'.'Mais - Silomais'.'0'.'0'.'0'.'false'.'false'.'apr' 12.01
  '027a3aaa-a6a4-4cd1-872a-a9efdef39369'.'Mais - Silomais'.'0'.'0'.'0'.'false'.'false'.'mai' 4.54

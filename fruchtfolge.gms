@@ -12,16 +12,16 @@
 scalar  p_totLand total land available to farm;
 scalar  p_totArabLand total arable land farm endowment;
 scalar  p_totGreenLand total green land farm endowment;
-scalar  p_restLand seems to be the same like totLand;
 scalar  p_shareGreenLand share of green land relative to total land endowment of farm;
 scalar  p_grassLandExempt defines whether farm has more than seventyfive percent green land and arable land is below thirty hectares or not, value assignment follows subsequently;
 
 p_totLand = sum(curPlots, p_plotData(curPlots,"size"));
 p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size"));
 p_totGreenLand = p_totLand - p_totArabLand;
-p_restLand = p_totLand - p_totGreenLand;
 p_shareGreenLand = p_totGreenLand / p_totLand;
-p_grassLandExempt $((p_shareGreenLand > 0.75) $(p_restLand < 30)) = 1;
+p_grassLandExempt $((p_shareGreenLand > 0.75) $(p_totArabLand < 30)) = 1;
+*p_gaec7Exempt $ ....xxx.... = 1
+
 * 
 *  --- initiate a cross set of all allowed combinations, might speed up generation time
 *
@@ -52,6 +52,8 @@ Positive Variables
   v_devEfa5
   v_devEfa75 area in hectare of main crop planted above seventyfive diversification rule greening
   v_devEfa95
+  v_devGaec6
+  v_devGaec8
  
 $iftheni.constraints defined constraints
   v_devUserShares(constraints,curCrops,curCrops) 
@@ -105,6 +107,8 @@ e_obje..
     - (v_170Slack * M)
     - ((sum((manType,curPlots), v_170PlotSlack(curPlots))) * M)
     - (v_20RedSlack * M)
+    - (v_devGaec6 * M)
+    - (v_devGaec8 * M)
 $iftheni.constraints defined constraints
     - sum((constraints,curCrops,curCrops1),
       v_devUserShares(constraints,curCrops,curCrops1) * M)
@@ -160,6 +164,8 @@ model Fruchtfolge /
   e_efa
   e_75diversification
   e_95diversification
+  e_gaec6
+  e_gaec8
 
 $iftheni.constraints defined constraints
 *constraints is currently not defined - equation specification in file crop_rotation
@@ -175,6 +181,7 @@ $iftheni.labour defined p_availLabour
 $endif.labour
 /;
 
+display p_totArabLand
 solve Fruchtfolge using MIP maximizing v_obje;
 
 $include '%WORKDIR%exploiter/createJson.gms'

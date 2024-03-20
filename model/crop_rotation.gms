@@ -29,7 +29,7 @@ e_maxShares(curCrops) $ p_cropData(curCrops,"maxShare")..
 ;
 
 *
-*  --- ensure that only one crop is grown on a plot
+*  --- ensure that one element in the set crops (also NoCrop) is chosen for each plot by the model and not more
 *
 e_oneCropPlot(curPlots)..
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),

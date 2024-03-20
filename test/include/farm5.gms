@@ -97,6 +97,7 @@ set plots_permPast(curPlots) /
 
 set curCrops /
  ''
+ 'NoCrop'
  '0082be89-8cfb-4a63-b812-4d42099b1a02' Mais
  '224944c2-7586-47c0-9078-67edc7e5f57d' Winterweizen
  '43adc8bb-b59f-4dee-9a10-71b080eee637' Rüben
@@ -166,6 +167,28 @@ $offtext
 
 *nReduction refers to fertilizer in general, not just manure and is part of duev2020!
 parameter p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,*) decision matrix for farm 5 /
+*$ontext
+'027a3aaa-a6a4-4cd1-872a-a9efdef39369'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'119f0d98-ec65-4752-802f-3cb0ca4d205f'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'2bf8c74f-0fd1-4b51-bb5e-4a8bf6a7eac8'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'2d64e2d8-1909-4abf-9c42-71041141645a'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'2e6ab89a-ddf1-40a6-8c02-14d0bd7e93c8'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'558f9729-9f85-4837-ad21-033762c4ba5d'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'5d9c7dc1-513c-4d3b-bc72-83b9e25ace52'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'62ffe0b8-d621-436b-a76a-1f44235178e0'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'9ce07e77-2a1c-484d-8e74-678cd1d30f5f'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'9dc87df6-5113-40c7-9d16-b27f2485faaa'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'9f7e7bdf-919e-450c-ab20-1998696397a3'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'a9d0ecf3-e61c-486c-90b3-bb1baab35b4d'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'aa5973e8-2392-4ca2-a485-7d8e834ded31'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'af3d2471-1e40-4c82-b332-0147a237b3dd'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'b54a00ad-8fe1-4d1d-8c8c-fbab6a371204'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'bc06dfd4-8f54-4b13-a796-2e634cabdc9d'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'c3ab0ff2-328b-4f60-8520-a7d2b3607133'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'cc74cf23-840a-4016-a5b6-144b4d228489'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'ce0201fd-3cd5-4c6f-8755-5a6a0ebd9556'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+'dc298ebb-1b27-411a-8024-af0623f621c5'.'NoCrop'.'0'.'0'.'0'.'false'.'false'.'grossMarginHa' 1
+*$offtext
 '027a3aaa-a6a4-4cd1-872a-a9efdef39369'.'0082be89-8cfb-4a63-b812-4d42099b1a02'.'0'.'0'.'0'.'false'.'false'.'mrz' 2.67
 '027a3aaa-a6a4-4cd1-872a-a9efdef39369'.'0082be89-8cfb-4a63-b812-4d42099b1a02'.'0'.'0'.'0'.'false'.'false'.'apr' 11.97
 '027a3aaa-a6a4-4cd1-872a-a9efdef39369'.'0082be89-8cfb-4a63-b812-4d42099b1a02'.'0'.'0'.'0'.'false'.'false'.'mai' 4.51

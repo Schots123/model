@@ -91,10 +91,10 @@ $offtext
     sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
       $ plots_duevEndangered(curPlots),
      v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+      * p_plotData(curPlots,"size")
       * (ord(nReduction) - 1) * 10
 *in the case that the model chooses o for a specific field, the calculation of the previous line would be
 *(1-1)*10 = 0 and for 0.3 (4-1)*10 = 30
-      * p_plotData(curPlots,"size")
     ) 
     / sum(curPlots $ plots_duevEndangered(curPlots), p_plotData(curPlots,"size"))     
     =G= 20 - v_20RedSlack
@@ -108,4 +108,7 @@ $else.duev2020
      * p_manure("n")
      * 80 / 100
      )/p_totLand =L= 170 + v_170Slack
+
 $endif.duev2020
+
+

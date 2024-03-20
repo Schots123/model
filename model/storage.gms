@@ -112,6 +112,11 @@ e_storageBal(manType,months)..
 * Exports can be done in April (cheaper) or September
     - v_manExports(manType,months) $ (sameas(months,"apr") or sameas(months,"sep"))
 * Autumn manure spreading is only assumed to be done in September
+*can be done until 1st of october for cover crops, winter rapeseed, fodder (if sowing happened until 15th of september)
+*and for winter barley if previous crop was grain until 1st of october sown until 1st of october if N requirement does exist 
+*(I think just planting a cover crop and cultivating it in spring does not create a N need)
+*not mor than 80 kg N/ha in autumn 
+*manure solid spreading cant be done from 1st of december until 15th of january
     - v_manureAutumn(manType) $ sameas(months,"sep")
 * Manure slack for infes treatment
     + v_manSlack(manType,months) 

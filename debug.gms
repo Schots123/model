@@ -8,8 +8,8 @@
 $offsymxref offsymlist
 
 option
-    limrow = 0,     
-    limcol = 0,     
+    limrow = 3,     
+    limcol = 3,     
     sysout = off; 
 *$offtext
 
