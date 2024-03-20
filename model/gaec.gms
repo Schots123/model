@@ -11,43 +11,23 @@ Equations
   e_75diversification(cropGroup)
   e_95diversification(cropGroup,cropGroup1)
 ;
-
-
-*I want that the following equation work independent of whether duev20 or farm5 is loaded 
-$iftheni.fo2020 defined fo2020
-  e_gaec6..
-    sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert), 
+ 
+e_gaec6..
+  sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert), 
 * cover crops to fulfil minimum coverage requirements 
-   v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
-        * p_plotData(curPlots,"size")
-       * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'efaFactor')
+  v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
+    * p_plotData(curPlots,"size")
+    * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'efaFactor')
 * winter grains as minimum coverage requirement OR stubble fallow as minimum coverage requirement
-   + (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)      
-        * p_plotData(curPlots,"size")) $ (sameas(curCrops,'Winterweizen - Brotweizen') 
-       OR sameas(curCrops,'Wintergerste - Futtergerste') OR sameas(curCrops,'Winterroggen - Mahl- und Brotroggen'))
-        $ sameas(catchCrop,'false')
-* stubble fallow for grains (including mais) as minimum coverage requirement (currently only incorporated for maize)
-   + (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert) * p_plotData(curPlots,"size")) 
-       $ (sameas(catchCrop,'false') AND sameas(curCrops,'Mais - Silomais'))
-* if summer grains should become possible to the farm, it would be necessary to add a conditional based on the next period       
-   ) 
-  =G= 0.8*p_totArabLand - v_devGaec6;
-$else.fo2020
-  e_gaec6..
-    sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert), 
-   v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
-        * p_plotData(curPlots,"size")
-       * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'efaFactor')
-   + (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)      
-        * p_plotData(curPlots,"size")) $ (sameas(curCrops,'224944c2-7586-47c0-9078-67edc7e5f57d') 
-       OR sameas(curCrops,'c331411e-f9ce-4357-9ff9-8ff34a586a9e') OR sameas(curCrops,'f0c833fd-73da-431d-a0b3-bff21872dfe6'))
-        $ sameas(catchCrop,'false')
-   + (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert) * p_plotData(curPlots,"size")) 
-       $ (sameas(catchCrop,'false') AND sameas(curCrops,'0082be89-8cfb-4a63-b812-4d42099b1a02'))      
-    )   
-  =G= 0.8*p_totArabLand - v_devGaec6;
-$endif.fo2020
-
+  + (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)      
+    * p_plotData(curPlots,"size")) $ curCrops_cropType(curCrops,'Wintergetreide')
+* maize stubble fallow as minimum coverage requirement 
+  + (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert) 
+    * p_plotData(curPlots,"size")) 
+    $ (sameas(catchCrop,'false') AND curCrops_cropType(curCrops,'Mais'))   
+* if summer grains should become possible to be grown, it would be necessary to add a conditional based on the next period       
+  )
+  =G= 0.8*p_totArabLand - v_devGaec6; 
 
 $ontext still under construction
 e_gaec7..
@@ -55,14 +35,12 @@ e_gaec7..
 $offtext  
 
 
-e_gaec8
-  $ ((p_totArabLand gt 10) $ (p_shareGreenLand le 0.75))..
+e_gaec8 $ ((p_totArabLand gt 10) $ (p_shareGreenLand le 0.75))..
   sum(p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),
   (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
-      * p_plotData(curPlots,"size")) $ sameas(curCrops,'NoCrop')
-  )
-  + v_devGaec8     
-  =G= 0.04*p_totArabLand
+    * p_plotData(curPlots,"size")) $ sameas(curCrops,'fallow')
+  )   
+  =G= 0.04*p_totArabLand - v_devGaec8
 ;  
 
 

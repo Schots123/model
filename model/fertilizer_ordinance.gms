@@ -55,10 +55,8 @@ e_man_balance(manType)..
 
 $iftheni.duev2020 "%duev2020%"=="true"
   parameter p_notEndangeredLand field area of farm in hectare currently not in red area;
-
   p_notEndangeredLand = sum((curPlots) $ (not plots_duevEndangered(curPlots)), 
-  p_plotData(curPlots,"size"));
-      
+  p_plotData(curPlots,"size"));  
 *according to duev2020, for all fields in the red area the average rule of 170 kg application
 *is still relevant
   e_170_avg $ p_notEndangeredLand..
@@ -70,13 +68,9 @@ $iftheni.duev2020 "%duev2020%"=="true"
      * p_manure("n")
      * 80 / 100
      ) /p_notEndangeredLand =L= 170 + v_170Slack
- ;
+  ;
 * In "red areas", the 170kg N maximum rule is active for every single field,
 * instead of the average of all fields
-$ontext
-Maybe it is unnecessary to make such a complicated conditional formulation - it might have been
-sufficient to write $ plots_duevEnadangered(curPlots)
-$offtext
   e_170_plots(curPlots) $ (plots_duevEndangered(curPlots) )..
    sum((p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),manType),
    v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
@@ -108,7 +102,6 @@ $else.duev2020
      * p_manure("n")
      * 80 / 100
      )/p_totLand =L= 170 + v_170Slack
-
 $endif.duev2020
 
 
