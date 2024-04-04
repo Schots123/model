@@ -1,6 +1,8 @@
 $ontext
 This file can remain first like it is. Changes would be necessary if I incorporate multiple year
 consideration
+What misses:
+- Prohibited Crop rotation sequences 
 $offtext
 
 Equations

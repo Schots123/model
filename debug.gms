@@ -13,8 +13,8 @@ option
     sysout = off; 
 *$offtext
 
-*option limrow = 1000;
-*option limcol = 1000;    
+option limrow = 20;
+option limcol = 20;    
 $include 'test/include/farm5.gms'
 $SETGLOBAL WORKDIR './'
 $SETGLOBAL RANDOM 'debug.json'

@@ -57,7 +57,7 @@ $iftheni.duev2020 "%duev2020%"=="true"
   parameter p_notEndangeredLand field area of farm in hectare currently not in red area;
   p_notEndangeredLand = sum((curPlots) $ (not plots_duevEndangered(curPlots)), 
   p_plotData(curPlots,"size"));  
-*according to duev2020, for all fields in the red area the average rule of 170 kg application
+*according to duev2020, for all fields not in the red area the average rule of 170 kg application
 *is still relevant
   e_170_avg $ p_notEndangeredLand..
     sum((p_c_m_s_n_z_a(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert),manType)

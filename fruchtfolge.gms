@@ -48,6 +48,7 @@ Variables
 ;
 
 Positive Variables
+
 *
 * --- crop_rotation.gms
 *
@@ -57,14 +58,17 @@ Positive Variables
 $iftheni.constraints defined constraints 
     v_devUserShares(constraints,curCrops,curCrops1,years)  
 $endif.constraints
+
 *
 * --- gaec.gms
 *
 *  v_devEfa5
 *  v_devEfa75 area in hectare of main crop planted above seventyfive diversification rule greening
 *  v_devEfa95
-*  v_devGaec6
-*  v_devGaec8
+  v_devGaec6(years)
+  v_devGaec7(years)
+  v_devGaec8(years)
+
 *
 * --- labour.gms
 *
@@ -76,7 +80,9 @@ $endif.constraints
 
 Binary Variables
   v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
-;
+  v_binRepCropPlot(curPlots,curCrops,years)
+*v_binRepCropPlot is for gaec7 constraint and used in gaec.gms
+  ;
 
 Equations
   e_obje
@@ -90,7 +96,7 @@ Equations
 $include '%WORKDIR%model/crop_rotation.gms'
 *$include '%WORKDIR%model/fertilizer_ordinance.gms'
 *$include '%WORKDIR%model/storage.gms'
-*$include '%WORKDIR%model/gaec.gms'
+$include '%WORKDIR%model/gaec.gms'
 *$include '%WORKDIR%model/labour.gms'
 
 *
@@ -122,8 +128,9 @@ e_obje..
 *    - (v_170Slack * M)
 *    - ((sum((manType,curPlots), v_170PlotSlack(curPlots))) * M)
 *    - (v_20RedSlack * M)
-*    - (v_devGaec6 * M)
-*    - (v_devGaec8 * M)
+    - sum(years,(v_devGaec6(years) * M))
+    - sum(years,(v_devGaec7(years) * M))
+    - sum(years,(v_devGaec8(years) * M))
 *$iftheni.constraints defined constraints
 *    - sum((constraints,curCrops,curCrops1),
 *      v_devUserShares(constraints,curCrops,curCrops1,years) * M)
@@ -180,8 +187,10 @@ model Fruchtfolge /
 *  e_efa
 *  e_75diversification
 *  e_95diversification
-*  e_gaec6
-*  e_gaec8
+  e_gaec6
+  e_preCropSeq
+  e_gaec7
+  e_gaec8
 $iftheni.constraints defined constraints
 *constraints is currently not defined - equation specification in file crop_rotation
   e_minimumShares
