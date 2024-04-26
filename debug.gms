@@ -15,12 +15,13 @@ option
 
 option limrow = 20;
 option limcol = 20;    
-$include 'test/include/farm5.gms'
+$include 'test/include/KTBL_data.gms'
+$include 'test/include/typical_farm.gms'
 $SETGLOBAL WORKDIR './'
 $SETGLOBAL RANDOM 'debug.json'
 $include 'fruchtfolge.gms'
 
-display p_totLand, v_totGM.l;
+display p_totLand, v_totProfit.l;
 
 *v_binCropPlot.lo(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert) =
 *v_binCropPlot.l(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert);
