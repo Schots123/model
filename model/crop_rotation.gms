@@ -14,7 +14,7 @@ $endif.constraints
 *
 e_maxShares(curCrops,years) $ p_cropData(curCrops,"maxShare")..
   sum((curPlots,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
-  $ (curPlots_ktblSize(curPlots,KTBL_size) AND curPlots_ktblDistance(curPlots,KTBL_distance) AND curPlots_ktblYield (curPlots,KTBL_yield)
+  $ (curPlots_ktblSize(curPlots,KTBL_size) AND curPlots_ktblDistance(curPlots,KTBL_distance) AND curPlots_ktblYield(curPlots,KTBL_yield)
   AND ktblCrops_ktblSystem(curCrops,KTBL_system) AND (not plots_permPast(curPlots))),
     v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years)
     * p_plotData(curPlots,"size"))
@@ -28,7 +28,7 @@ e_maxShares(curCrops,years) $ p_cropData(curCrops,"maxShare")..
 *
 e_oneCropPlot(curPlots,years)..
   sum((curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
-  $ (curPlots_ktblSize(curPlots,KTBL_size) AND curPlots_ktblDistance(curPlots,KTBL_distance) AND curPlots_ktblYield (curPlots,KTBL_yield)
+  $ (curPlots_ktblSize(curPlots,KTBL_size) AND curPlots_ktblDistance(curPlots,KTBL_distance) AND curPlots_ktblYield(curPlots,KTBL_yield)
   AND ktblCrops_ktblSystem(curCrops,KTBL_system)),
     v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years))
   + v_devOneCrop(curPlots,years)

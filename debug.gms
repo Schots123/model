@@ -18,21 +18,6 @@ option limcol = 20;
 $include 'test/include/KTBL_data.gms'
 $include 'test/include/typical_farm.gms'
 $SETGLOBAL WORKDIR './'
-$SETGLOBAL RANDOM 'debug.json'
-$include 'fruchtfolge.gms'
-
-display p_totLand, v_totProfit.l;
-
-*v_binCropPlot.lo(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert) =
-*v_binCropPlot.l(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert);
-
-*solve Fruchtfolge using MIP maximizing v_obje;
-*option v_binCropPlot:0:0:1;
-*display v_binCropPlot.l;
-* Parameter p_testRed(curPlots,nReduction); 
-* p_testRed(curPlots,nReduction) $ plots_duevEndangered(curPlots) = 
-** $ (v_binCropPlot.l('Winterweizen - Brotweizen',curPlots,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert)
-*p_grossMarginData(curPlots,'Winterweizen - Brotweizen','20','0',nReduction,'false','false',"minNAmount");
-*
-*display p_testRed;
+*$SETGLOBAL RANDOM 'debug.json'
+$include 'technology.gms'
 execute.async 'redLstSize debug.lst l=true';
