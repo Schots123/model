@@ -1,0 +1,8 @@
+par=p_ktbl_timeReq          rng=Time_gams!B2:O72130 rDim=6 cDim=1
+dSet=KTBL_crops             rng=Time_gams!B3:B72130 rDim=1
+dSet=KTBL_system            rng=Time_gams!C3:C72130 rDim=1
+dSet=KTBL_size              rng=Time_gams!D3:D72130 rDim=1
+dSet=KTBL_yield             rng=Time_gams!E3:E72130 rDim=1
+dSet=KTBL_mechanisation     rng=Time_gams!F3:F72130 rDim=1
+dSet=KTBL_distance          rng=Time_gams!G3:G72130 rDim=1
+dSet=CostsEle               rng=Time_gams!H2:O2 cDim=1

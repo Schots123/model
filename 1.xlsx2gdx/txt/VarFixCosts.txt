@@ -1,0 +1,9 @@
+par=p_ktbl_varfixCosts      rng=VarFixCosts_gams!B1:P72130 rDim=6 cDim=2
+dSet=KTBL_crops             rng=VarFixCosts_gams!B3:B72130 rDim=1
+dSet=KTBL_system            rng=VarFixCosts_gams!C3:C72130 rDim=1
+dSet=KTBL_size              rng=VarFixCosts_gams!D3:D72130 rDim=1
+dSet=KTBL_yield             rng=VarFixCosts_gams!E3:E72130 rDim=1
+dSet=KTBL_mechanisation     rng=VarFixCosts_gams!F3:F72130 rDim=1
+dSet=KTBL_distance          rng=VarFixCosts_gams!G3:G72130 rDim=1
+dSet=CostsEle               rng=VarFixCosts_gams!H1:P1 cDim=1
+dSet=CostsType              rng=VarFixCosts_gams!H2:P2 cDim=1

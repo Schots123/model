@@ -1,0 +1,5 @@
+par=p_ktbl_fertAmount  rng=FertAmount_gams!B2:L214 rDim=3 cDim=1
+dSet=KTBL_crops     rng=FertAmount_gams!B3:B214 rDim=1
+dSet=KTBL_system    rng=FertAmount_gams!C3:C214 rDim=1
+dSet=KTBL_yield     rng=FertAmount_gams!D3:D214 rDim=1
+Set=fertType        rng=FertAmount_gams!E2:L2 cDim=1

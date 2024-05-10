@@ -1,0 +1,223 @@
+52
+2 176 0 0 452  4.10000000000000E+0001 5  0.00000000000000E+0000 0 0
+30 0 0 0 24 26 0 4 0 0 0 0
+230 0 0 0 0 0 0 0
+755 0
+30 200 0 0 0 0 0 24 0 6
+0 0 0 0 0 0 0
+1 4 0
+0 0 20
+ 0.00000000000000E+0000  0.00000000000000E+0000 0
+0  0.00000000000000E+0000 0  0.00000000000000E+0000
+ 1.00000000000000E+0010 2147483647 0
+2011 0
+ 0.00000000000000E+0000 0 0 0  1.00000000000000E+0000 0 1 0 0  1.00000000000000E-0005 0
+230 100
+0 0 0 0 0
+ 0.00000000000000E+0000  0.00000000000000E+0000  0.00000000000000E+0000  0.00000000000000E+0000  0.00000000000000E+0000
+E:\Studium\Master of Science Agricultural and Food Economics\04. Master Thesis\8. GitHub\Fruchtfolge Model\model\225a\gamsmatr.dat
+E:\Studium\Master of Science Agricultural and Food Economics\04. Master Thesis\8. GitHub\Fruchtfolge Model\model\225a\gamsinst.dat
+E:\Studium\Master of Science Agricultural and Food Economics\04. Master Thesis\8. GitHub\Fruchtfolge Model\model\cplex.opt
+E:\Studium\Master of Science Agricultural and Food Economics\04. Master Thesis\8. GitHub\Fruchtfolge Model\model\225a\gamsstat.dat
+E:\Studium\Master of Science Agricultural and Food Economics\04. Master Thesis\8. GitHub\Fruchtfolge Model\model\225a\gamssolu.dat
+
+E:\Studium\Master of Science Agricultural and Food Economics\04. Master Thesis\8. GitHub\Fruchtfolge Model\model\225a\gamsdict.dat
+3
+19:33:19
+04/29/24
+E:\Studium\Master of Science Agricultural and Food Economics\04. Master Thesis\8. GitHub\Fruchtfolge Model\model\
+C:\GAMS\45\
+E:\Studium\Master of Science Agricultural and Food Economics\04. Master Thesis\8. GitHub\Fruchtfolge Model\model\225a\
+32767 2147483647
+0 0 188 45410 45252 61533
+Econ. Modelling of Agricultural Systems Group  S231024|0002AN-GEN0
+University of Bonn, Institute for Agricultural Policy            0
+16630453010MCOPTCL                                               0
+0 1 6 0
+225a\gmsprmNT.dat
+15 51 11
+LP          11 0
+MIP         11 0
+RMIP        11 0
+NLP         5 0
+MCP         42 0
+MPEC        35 0
+RMPEC       35 0
+CNS         5 0
+DNLP        5 0
+RMINLP      5 0
+MINLP       16 0
+QCP         5 0
+MIQCP       45 0
+RMIQCP      5 0
+EMP         25 0
+ALPHAECP    11 5 1 0 0 0 0 0 0 0 0 0 0 1 0 1 0 0
+gmsecpnt.cmd
+gmsecpnx.exe
+ANTIGONE    2011 5 1 0 0 0 1 0 0 0 1 1 1 1 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+BARON       1001 5 1 1 1 1 1 0 0 0 1 1 1 1 1 1 1 0
+gmsba_nt.cmd
+gmsba_nx.exe
+CBC         2011 5 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0
+gmsgennt.cmd
+gmsgennx.exe
+CONOPT      1 0 1 1 0 1 1 0 0 0 1 1 1 0 1 0 1 0
+gmsgennt.cmd
+gmsgennx.exe
+CONOPT3     1 0 1 1 0 1 1 0 0 0 1 1 1 0 1 0 1 0
+gmsgennt.cmd optconopt.def
+gmsgennx.exe
+CONOPT4     1 0 1 1 0 1 1 0 0 0 1 1 1 0 1 0 1 0
+gmsgennt.cmd
+gmsgennx.exe
+CONVERT     103011 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+gmsgennt.cmd optconvert.def
+gmsgennx.exe
+CONVERTOLD  103011 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0
+gmscv_nt.cmd
+gmscv_nx.exe
+COPT        1011 5 1 1 1 1 0 0 0 0 0 0 0 0 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+CPLEX       2011 5 1 1 1 1 0 0 0 0 0 0 0 0 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+CPLEXCLASSIC 1011 5 1 1 1 1 0 0 0 0 0 0 0 0 1 1 1 0
+gmsgennt.cmd optcplex.def
+gmsgennx.exe
+DE          102011 5 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+gmsgennt.cmd
+gmsgennx.exe
+DECISC      2011 5 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+gmsdecnt.cmd optdecis.def
+DECISM      2011 5 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+gmsdemnt.cmd optdecis.def
+DICOPT      1 5 1 0 0 0 0 0 0 0 0 0 0 1 0 1 0 0
+gmsdi_nt.cmd
+gmsdi_nx.exe
+EXAMINER    103011 5 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+EXAMINER2   103011 5 1 1 1 1 1 1 0 0 0 1 1 1 1 1 1 0
+gmsgennt.cmd optexaminer.def
+gmsgennx.exe
+GAMSCHK     103011 5 1 1 1 1 1 1 0 0 0 1 1 1 1 1 1 0
+gmsck_nt.cmd
+gmsck_nx.exe
+GLOMIQO     2011 5 1 0 0 0 1 0 0 0 1 1 1 1 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+GUROBI      11 5 1 1 1 1 1 0 0 0 0 1 1 1 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+HIGHS       11 5 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0
+gmsgennt.cmd
+gmsgennx.exe
+IPOPT       11 5 1 1 0 1 1 0 0 0 1 1 1 0 1 0 1 0
+gmsgennt.cmd
+gmsgennx.exe
+IPOPTH      11 5 1 1 0 1 1 0 0 0 1 1 1 0 1 0 1 0
+gmsgennt.cmd optipopt.def
+gmsgennx.exe
+JAMS        101011 5 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+gmsja_nt.cmd
+gmsja_nx.exe
+KESTREL     103010 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+gmske_nt.cmd
+KNITRO      103011 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+LINDO       1 5 1 1 1 1 1 0 0 0 0 1 1 1 1 1 1 1
+gmsgennt.cmd
+gmsgennx.exe
+LINDOGLOBAL 1 5 1 1 1 1 1 0 0 0 0 1 1 1 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+LOGMIP      101011 5 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+gmsja_nt.cmd optjams.def
+gmsja_nx.exe
+MILES       103001 5 1 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0
+gmsmcent.cmd
+gmsmcenx.exe
+MINOS       1 0 1 1 0 1 1 0 0 0 1 1 1 0 1 0 1 0
+gmsgennt.cmd
+gmsgennx.exe
+MOSEK       11 5 1 1 1 1 1 0 0 0 0 1 1 1 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+MPSGE       100001 5 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+gmsgewnt.cmd
+gmsgewnx.exe
+NLPEC       103001 0 1 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0
+gmscvnnt.cmd
+gmscvnnx.exe
+OCTERACT    1001 0 1 0 0 0 1 0 0 0 0 1 1 1 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+ODHCPLEX    2011 5 1 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0
+gmsgennt.cmd
+gmsgennx.exe
+OSICPLEX    2011 5 1 1 1 1 0 0 0 0 0 0 0 0 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+OSIGUROBI   11 5 1 1 1 1 1 0 0 0 0 1 1 1 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+OSIMOSEK    11 5 1 1 1 1 1 0 0 0 0 1 1 1 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+OSIXPRESS   11 5 1 1 1 1 1 0 0 0 1 1 1 1 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+PATH        103001 5 1 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0
+gmsgennt.cmd
+gmsgennx.exe
+PATHNLP     11 5 1 1 0 1 1 0 0 0 0 1 1 0 1 0 1 0
+gmsptnnt.cmd
+gmsptnnx.exe
+QUADMINOS   1 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0
+gmsgennt.cmd optminos.def
+gmsgennx.exe
+SBB         11 5 1 0 0 0 0 0 0 0 0 0 0 1 0 1 0 0
+gmssb_nt.cmd
+gmssb_nx.exe
+SCENSOLVER  1001 5 1 1 1 1 1 1 0 0 1 1 1 1 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+SCIP        2001 5 1 0 1 0 1 0 0 0 1 1 1 1 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+SHOT        1001 5 1 0 0 0 0 0 0 0 0 0 0 1 0 1 0 0
+gmsgennt.cmd
+gmsgennx.exe
+SNOPT       1 0 1 1 0 1 1 0 0 0 1 1 1 0 1 0 1 0
+gmsgennt.cmd
+gmsgennx.exe
+SOPLEX      11 5 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0
+gmsgennt.cmd
+gmsgennx.exe
+XPRESS      11 5 1 1 1 1 1 0 0 0 1 1 1 1 1 1 1 0
+gmsgennt.cmd
+gmsgennx.exe
+220034830808080808                                               0
+DCE1304      g 7                               A Course          0
+License Admin: Wolfgang Britz, britz@agp.uni-bonn.de             0
+1 C:\Users\Jens Schots\Documents\GAMS\gamslice.txt
+1 C:\GAMS\45\gmscmpnt.txt
+E:\Studium\Master of Science Agricultural and Food Economics\04. Master Thesis\8. GitHub\Fruchtfolge Model\model\debug.dat
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0  1.00000000000000E+0000 0 0
+0 0 0
+0 0 0 1 0
+E:\Studium\Master of Science Agricultural and Food Economics\04. Master Thesis\8. GitHub\Fruchtfolge Model\model\Technology.dll
+E:\Studium\Master of Science Agricultural and Food Economics\04. Master Thesis\8. GitHub\Fruchtfolge Model\model\225a\sbbinfo.dat
+E:\Studium\Master of Science Agricultural and Food Economics\04. Master Thesis\8. GitHub\Fruchtfolge Model\model\225a\gamscntr.dat
+E:\Studium\Master of Science Agricultural and Food Economics\04. Master Thesis\8. GitHub\Fruchtfolge Model\model\
+dat
+ 1.00000000000000E+0299
+
+
+E:\Studium\Master of Science Agricultural and Food Economics\04. Master Thesis\8. GitHub\Fruchtfolge Model\model\debug.gms
+ 7.55000000000000E+0002  0.00000000000000E+0000

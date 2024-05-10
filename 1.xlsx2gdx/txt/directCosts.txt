@@ -1,0 +1,5 @@
+par=p_ktbl_directCostsNoFert  rng=DirectCosts_gams!B2:J214 rDim=3 cDim=1
+dSet=KTBL_crops     rng=DirectCosts_gams!B3:B214 rDim=1
+dSet=KTBL_system    rng=DirectCosts_gams!C3:C214 rDim=1
+dSet=KTBL_yield     rng=DirectCosts_gams!D3:D214 rDim=1
+Set=CostsEle        rng=DirectCosts_gams!F2:G2 cDim=1

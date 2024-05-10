@@ -1,0 +1,6 @@
+par=p_ktbl_revenue  rng=revenue_gams!B2:G266 rDim=4 cDim=1
+dSet=KTBL_crops     rng=revenue_gams!B3:B266 rDim=1
+dSet=KTBL_system    rng=revenue_gams!C3:C266 rDim=1
+dSet=KTBL_yield     rng=revenue_gams!D3:D266 rDim=1
+dSet=KTBL_figure    rng=revenue_gams!E3:E266 rDim=1
+Set=reveCat         rng=revenue_gams!F2:G2 cDim=1
