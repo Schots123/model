@@ -7,9 +7,9 @@
 * (c) Christoph Pahmeyer, 2019
 *-------------------------------
 
-set years / 2024 /;
+set years / 2024*2026 /;
 *
-*  --- initiate global parameters for Greening evaluation
+*  --- initiate global parameters for gaec evaluation
 *
 scalar  p_totLand total land available to farm;
 scalar  p_totArabLand total arable land farm endowment;
@@ -24,7 +24,7 @@ p_shareGreenLand = p_totGreenLand / p_totLand;
 *p_grassLandExempt $((p_shareGreenLand > 0.75) $(p_totArabLand < 30)) = 1;
 
 *
-*  --- linking individual plot data with KTBL_data from file KTBL_data.gms
+*  --- linking of individual plot data with KTBL_data from file KTBL_data.gms
 *
 set curPlots_ktblSize(curPlots,KTBL_size);
 curPlots_ktblSize(curPlots,'1') $ (p_plotData(curPlots,'size') lt 1.5) = yes;
@@ -88,7 +88,6 @@ option
     p_profitPerHa:1:6:1
     p_timeReq:1:7:1
 ;
-
 *display p_profitPerHa, p_timeReq;
 
 *
@@ -107,26 +106,14 @@ Binary Variable
 ;
 
 Positive Variables
-*
-*  --- crop_rotation.gms
-*
+* crop_rotation.gms
   v_devShares(curCrops,years) area in hectare planted for each crop and year above maximum share allowed
   v_devOneCrop(curPlots,years) number of main crops planted on field above one crop restriction each year
-*constraints is currently not defined for farm5 (only for farm1 for the specific code in folder include)  
-*$iftheni.constraints defined constraints 
-*    v_devUserShares(constraints,curCrops,curCrops1,years)  
-*$endif.constraints
-
-*
-*  --- gaec.gms (serving as updated greening module file)
-*
-*  v_devEfa5
-*  v_devEfa75 area in hectare of main crop planted above seventyfive diversification rule greening
-*  v_devEfa95
-*  v_devGaec6(years)
-*  v_devGaec7_1(years)
-*  v_devGaec7_2(years)
-*  v_devGaec8(years)
+* gaec.gms
+  v_devGaec7_1(years)
+  v_devGaec7_2(years)
+  v_devGaec8(years)
+;
 
 Equations
   e_profit(years)
@@ -148,7 +135,7 @@ $offtext
 *
 $include '4.model/crop_rotation.gms'
 $include '4.model/fertilizer_ordinance.gms'
-*$include '4.model/gaec.gms'
+$include '4.model/gaec.gms'
 $include '4.model/labour.gms'
 
 *
@@ -161,11 +148,10 @@ e_profit(years)..
       curPlots_ktblSize(curPlots,KTBL_size) AND curPlots_ktblDistance(curPlots,KTBL_distance) 
       AND curPlots_ktblYield(curPlots,KTBL_yield) AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
       AND p_profitPerHa(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
-      ),    
+    ),    
     v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years) * p_plotData(curPlots,'size')
     * p_profitPerHa(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
     )
-*direct costs for fertilization depending on amount of manure applied (file: fertilization.gms)  
 *costs for labor (file: labour.gms)
     - v_labReq(years) * labPrice
 *costs from manure exports (file: fertilizer_ordinance.gms)
@@ -181,39 +167,21 @@ e_obje..
   v_obje =E=
     v_totProfit
     - sum((curCrops,years), v_devShares(curCrops,years) * M)
-*    - (v_devEfa5 * M)
-*    - (v_devEfa75 * M)
-*    - (v_devEfa95 * M)
     - sum((curPlots,years), v_devOneCrop(curPlots,years) * M * 10)
     - sum(years,v_170Slack(years) * M)
-*    - sum(years,v_devGaec6(years) * M)
-*    - sum(years,v_devGaec7(years) * M)
-*    - sum(years,v_devGaec8(years) * M)
-$ontext
-$iftheni.constraints defined constraints
-    - sum((constraints,curCrops,curCrops1),
-      v_devUserShares(constraints,curCrops,curCrops1,years) * M)
-$endif.constraints
-$iftheni.labour defined p_availLabour
-    - sum(months, v_devLabour(months) * 1000)
-$endif.labour
-$offtext
+    - sum(years,v_devGaec7_1(years) * M)
+    - sum(years,v_devGaec7_2(years) * M)
+    - sum(years,v_devGaec8(years) * M)
 ;
 
 *
 *  --- define upper bounds for slack variables
 *
 v_devShares.up(curCrops,years) = p_totArabLand;
-*v_devEfa5.up = p_totArabLand * 0.05;
-*v_devEfa75.up = p_totArabLand * 0.25;
-*v_devEfa95.up = p_totArabLand;
 v_devOneCrop.up(curPlots,years) = 1;
-*$iftheni.constraints defined constraints
-*  v_devUserShares.up(constraints,curCrops,curCrops1,years) = p_totArabLand;
-*$endif.constraints
 
 if (card(curPlots)<30,
-    option optCR=0.0;
+    option optCR=0.005;
   elseif card(curPlots)<50, 
     option optCR=0.02;
   else 
@@ -236,17 +204,14 @@ model Fruchtfolge /
   e_man_balance
   e_170_avg
 *gaec.gms
-*  e_efa
-*  e_75diversification
-*  e_95diversification
-*  e_gaec6
-*  e_preCropSeq
-*  e_gaec7
-*  e_gaec8
+  e_preCropSeq_1
+  e_preCropSeq_2
+  e_gaec7_1
+  e_gaec7_2
+  e_gaec8
 *labour.gms
   e_labReq
 /;
 
 solve Fruchtfolge using MIP maximizing v_obje;
 $batinclude '5.Report_Writing/report_writing.gms' "'base'" "'base'" "'base'"
-*$include '%WORKDIR%exploiter/createJson.gms'

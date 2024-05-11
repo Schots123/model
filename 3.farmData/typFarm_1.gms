@@ -8,6 +8,7 @@ set curCrops(KTBL_crops) /
 'Staerkekartoffeln'
 'Winterweizen - Backweizen'
 'Wintergerste - Futtergerste'
+'Brache'
 /;
 
 parameter p_cropData(curCrops,cropAttr)  /
@@ -138,7 +139,6 @@ $offtext
 set curMechan(KTBL_mechanisation) / '102' /;
 
 *alias (cropGroup,cropGroup1);
-alias (curCrops,curCrops1);
 
 *
 *  --- The following declarations are already important for the farm individual KTBL data calculations stored 

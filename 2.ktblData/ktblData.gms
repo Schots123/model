@@ -1,14 +1,14 @@
-
-
+*
+*  --- Here, the data retrieved from KTBL is manipulated to obtain a farm profit parameter which does depend on the level of manure applied as 
+*        a substitute for mineral fertilizer
 
 $include '2.ktblData/KTBL_inputOptions+Sets.gms'
 $setglobal farmNumber 1
 $include '3.farmData/typFarm_%farmNumber%.gms'
 
 *
-*  --- Reading parameter values from gdx files into model
+*  --- Reading values from gdx files into model
 *
-
 parameters
     p_ktbl_revenue(KTBL_crops,KTBL_system,KTBL_yield,KTBL_figure,reveCat)
     p_ktbl_directCostsNoFert(KTBL_crops,KTBL_system,KTBL_yield,CostsEle)

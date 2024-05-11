@@ -18,6 +18,7 @@ set KTBL_crops /
 'Winterweizen - Backweizen'
 'Winterweizen - Korn und Stroh (thermische Nutzung)'
 'Zuckerrueben'
+'Brache'
 /;
 
 set KTBL_system /
@@ -288,7 +289,7 @@ set KTBL_figure /
 /;
 
 set manAmounts application levels of manure allowed in model /
-'0', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60', '65', '70', '75', '80', '85'
+'0', '10', '15', '20', '25', '30', '35', '40', '50', '60', '70', '80'
 /;
 
 set KTBL_size /
@@ -383,7 +384,7 @@ set manureEle(fertType) /
   'Guelle, Rind'
 /;
 
-parameter p_manValue(manAmounts) /'0' 0, '10' 10, '15' 15, '20' 20, '25' 25, '30' 30, '35' 35, '40' 40, '45' 45, '50' 50, '55' 55, '60' 60, '65' 65, '70' 70, '75' 75, '80' 80, '85' 85/;
+parameter p_manValue(manAmounts) /'0' 0, '10' 10, '15' 15, '20' 20, '25' 25, '30' 30, '35' 35, '40' 40, '50' 50, '60' 60, '70' 70, '80' 80/;
 
 set pkFert(fertType) pk fertilizer applied for crop fertilization in KTBL data /
   'PK-Duenger (12 % P2O5, 24 % K2O), lose', 
@@ -429,3 +430,40 @@ table p_nutrientSupplyFert(fertType,nutrients) Nutrient supply per unit of ferti
 'PK-Duenger (16 % P2O5, 16 % K2O), lose'        0               0.16        0.16
 'PK-Duenger (12 % P2O5, 24 % K2O), lose'        0               0.12        0.24
 'PK-Duenger (18 % P2O5, 10 % K2O), lose'        0               0.18        0.1;
+
+set mainCropGroup /
+  'Gras'
+  'Zea (Mais)'
+  'Solanum tuberosum (Kartoffel)'
+  'Hordeum (Gerste)'
+  'Raps (Brassica napus)'
+  'Secale (Roggen)'
+  'x Triticale'
+  'Triticum (Weizen)'
+  'Beta (Rüben)'
+/;
+
+set mainCropGroupExempt(mainCropGroup) /
+  'Gras'
+  'Secale (Roggen)'
+/;
+
+set cropCropGroup(KTBL_crops,mainCropGroup) /
+'Ackergras - Anwelksilage'.'Gras' YES
+'Ackergras - Bodenheu'.'Gras' YES
+'Mais - Corn-Cob-Mix'.'Zea (Mais)' YES
+'Mais - Koernermais'.'Zea (Mais)' YES
+'Mais - Silomais'.'Zea (Mais)' YES
+'Speisekartoffeln'.'Solanum tuberosum (Kartoffel)' YES
+'Staerkekartoffeln'.'Solanum tuberosum (Kartoffel)' YES
+'Wintergerste - Futtergerste'.'Hordeum (Gerste)' YES
+'Winterraps (Rapsoel)'.'Raps (Brassica napus)' YES
+'Winterraps'.'Raps (Brassica napus)' YES
+'Winterroggen - Korn und Stroh (thermische Nutzung)'.'Secale (Roggen)' YES
+'Winterroggen - Mahl- und Brotroggen'.'Secale (Roggen)' YES
+'Wintertriticale - Futtertriticale'.'x Triticale' YES
+'Wintertriticale - Korn und Stroh (thermische Nutzung)'.'x Triticale' YES
+'Winterweizen - Backweizen'.'Triticum (Weizen)' YES
+'Winterweizen - Korn und Stroh (thermische Nutzung)'.'Triticum (Weizen)' YES
+'Zuckerrueben'.'Beta (Rüben)' YES
+/;
