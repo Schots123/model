@@ -1,0 +1,9 @@
+par=p_ktbl_workingStepsNoPesti  rng=workingStepsNoPesti_gams!B1:AC72130 rDim=6 cDim=2
+dSet=KTBL_crops                 rng=workingStepsNoPesti_gams!B3:B72130 rDim=1
+dSet=KTBL_system                rng=workingStepsNoPesti_gams!C3:C72130 rDim=1
+dSet=KTBL_size                  rng=workingStepsNoPesti_gams!D3:D72130 rDim=1
+dSet=KTBL_yield                 rng=workingStepsNoPesti_gams!E3:E72130 rDim=1
+dSet=KTBL_mechanisation         rng=workingStepsNoPesti_gams!F3:F72130 rDim=1
+dSet=KTBL_distance              rng=workingStepsNoPesti_gams!G3:G72130 rDim=1
+dSet=CostsEle                   rng=workingStepsNoPesti_gams!H1:AC1 cDim=1
+dSet=workingStepsEle            rng=workingStepsNoPesti_gams!H2:AC2 cDim=1

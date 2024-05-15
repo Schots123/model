@@ -156,6 +156,6 @@ p_nutrientSupplyFert('Manure, Farm',"N") = p_manure("N") * (p_manure("minUsagePe
 p_nutrientSupplyFert('Manure, Farm',"P2O5") = p_manure("P2O5") * (p_manure("minUsagePercent")/100);
 p_nutrientSupplyFert('Manure, Farm',"K2O") = p_manure("K2O") * (p_manure("minUsagePercent")/100);
 
-scalar p_newFuelPrice price for fuel in euro per liter /1/;
+scalar newFuelPrice price for fuel in euro per liter /1/;
 
 scalar labPrice price for labour in euro per hour /21/;

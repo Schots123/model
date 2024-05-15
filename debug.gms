@@ -3,7 +3,7 @@
 *      global variables for debugging in Atom
 *
 
-$offlisting 
+*$offlisting 
 *turning off the echoprint
 $offsymxref offsymlist
 
@@ -19,4 +19,4 @@ option limcol = 20;
 $include '2.ktblData/KTBL_inputOptions+Sets.gms'
 $setglobal farmNumber 1
 $include '3.farmData/typFarm_%farmNumber%.gms'
-$include '4.model/fruchtfolge.gms'
+$include '5.model/fruchtfolge.gms'

@@ -3,21 +3,21 @@ set KTBL_crops /
 'Ackergras - Bodenheu'
 'Dauergruenland, grasbetont - Anwelksilage'
 'Dauergruenland, grasbetont - Bodenheu'
-'Mais - Corn-Cob-Mix'
-'Mais - Koernermais'
-'Mais - Silomais'
-'Speisekartoffeln'
-'Staerkekartoffeln'
-'Wintergerste - Futtergerste'
+'Mais - Corn-Cob-Mix' 
+'Mais - Koernermais' 
+'Mais - Silomais' 
+'Speisekartoffeln' 
+'Staerkekartoffeln' 
+'Wintergerste - Futtergerste' 
 'Winterraps (Rapsoel)'
-'Winterraps'
-'Winterroggen - Korn und Stroh (thermische Nutzung)'
-'Winterroggen - Mahl- und Brotroggen'
-'Wintertriticale - Futtertriticale'
-'Wintertriticale - Korn und Stroh (thermische Nutzung)'
-'Winterweizen - Backweizen'
-'Winterweizen - Korn und Stroh (thermische Nutzung)'
-'Zuckerrueben'
+'Winterraps' 
+'Winterroggen - Korn und Stroh (thermische Nutzung)' 
+'Winterroggen - Mahl- und Brotroggen' 
+'Wintertriticale - Futtertriticale' 
+'Wintertriticale - Korn und Stroh (thermische Nutzung)' 
+'Winterweizen - Backweizen' 
+'Winterweizen - Korn und Stroh (thermische Nutzung)' 
+'Zuckerrueben' 
 'Brache'
 /;
 
@@ -46,6 +46,7 @@ set KTBL_yield /
 'niedrig, leichter Boden'
 'sehr niedrig, leichter Boden'
 /;
+
 
 set ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield) /
 'Ackergras - Anwelksilage'.'Ballen'.'hoch, mittlerer Boden' YES 
@@ -354,9 +355,7 @@ set months_halfMonths(months,halfMonths) /
 /;
 $offtext
 
-set reveCat /amount, price/;
-
-set pestType /herb,fung,insect,growthReg,haulmDest/;
+scalar ktblFuelPrice /0.8/;
 
 set fertType fertilizer applied for crop fertilization in KTBL data /
   'Guelle, Rind', 
@@ -403,10 +402,6 @@ set fertCategory type of fertilizer used either mineral fertilizer or manure
 
 set nutrients /N,P2O5,K2O/;
 
-set CostsEle /set.fertCategory,set.pestType,rest/;
-
-set CostsType /fuelCons,varCostsNoFuel,fixCosts/;
-
 set man_attr /Amount, N, P2O5, K2O, minUsagePercent/;
 
 parameter p_ktbl_fertPrice(fertType) /
@@ -430,6 +425,16 @@ table p_nutrientSupplyFert(fertType,nutrients) Nutrient supply per unit of ferti
 'PK-Duenger (16 % P2O5, 16 % K2O), lose'        0               0.16        0.16
 'PK-Duenger (12 % P2O5, 24 % K2O), lose'        0               0.12        0.24
 'PK-Duenger (18 % P2O5, 10 % K2O), lose'        0               0.18        0.1;
+
+set reveCat /amount, price/;
+
+set CostsEle /set.fertCategory,rest/;
+
+set workingStepsEle /time, fuelCons, deprec, interest, others, maintenance, lubricants, services/;
+set varCostsEle(workingStepsEle) /maintenance, lubricants, services/;
+set fixCostsEle(workingStepsEle) /deprec, interest, others/;
+
+set CostsType /varCosts,fixCosts/;
 
 set mainCropGroup /
   'Gras'

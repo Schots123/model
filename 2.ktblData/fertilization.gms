@@ -441,17 +441,17 @@ option p_dcMinFert:1:3:1 display p_dcMinFert;
 
 
 *
-*  --- variable and fix costs for mineral fertilizer and manure for each possible manure application level
-*       the approach is to divide the initial costs from KTBL with the amount of fertilizer applied and multiply it with the amount applied for each manure application level
+*  --- variable and fix costs and time requirements for mineral fertilizer and manure for each possible manure application level
+*       the approach is to divide the initial value from KTBL with the amount of fertilizer applied and multiply it with the amount applied for each manure application level
 
-parameter p_varFixCostsFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,CostsType,manAmounts);
+parameter p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,workingStepsEle,manAmounts);
 
 *
 *--- mineral fertilizer
 *   
-p_varFixCostsFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"minFert",CostsType,manAmounts)
+p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"minFert",workingStepsEle,manAmounts)
     $ (ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield)) =
-    p_ktbl_varFixCostsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"minFert",CostsType)
+    p_ktbl_workingStepsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"minFert",workingStepsEle)
     / sum(minFertEle,p_ktbl_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,minFertEle))
     * sum(minFertEle,p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,minFertEle))
 ;
@@ -459,7 +459,7 @@ p_varFixCostsFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation
 *
 *---manure
 *
-p_varFixCostsFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"manure",CostsType,manAmounts)
+p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"manure",workingStepsEle,manAmounts)
 *in the initial situation, manure was used only for the following crops (grassland and corn)
     $ ((ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield))
     AND ((sameas(KTBL_crops,'Ackergras - Anwelksilage'))
@@ -470,12 +470,12 @@ p_varFixCostsFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation
     OR (sameas(KTBL_crops,'Mais - Koernermais'))
     OR (sameas(KTBL_crops,'Mais - Silomais')))
     ) = 
-    p_ktbl_varFixCostsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"manure",CostsType)
+    p_ktbl_workingStepsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"manure",workingStepsEle)
     / p_ktbl_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,'Guelle, Rind')
     * p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Manure, Farm')
 ;
 
-p_varFixCostsFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"manure",CostsType,manAmounts)
+p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"manure",workingStepsEle,manAmounts)
 *if no manure was used in the initial situation, the data for maize is used 
     $ ((ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield))
     AND (not(sameas(KTBL_crops,'Ackergras - Anwelksilage')))
@@ -486,74 +486,9 @@ p_varFixCostsFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation
     AND (not(sameas(KTBL_crops,'Mais - Koernermais')))
     AND (not(sameas(KTBL_crops,'Mais - Silomais')))
     ) =
-    p_ktbl_varFixCostsNoPesti('Mais - Silomais','wendend, gezogene Saatbettbereitung, Saat',KTBL_size,'mittel, mittlerer Boden',KTBL_mechanisation,KTBL_distance,"manure",CostsType)
+    p_ktbl_workingStepsNoPesti('Mais - Silomais','wendend, gezogene Saatbettbereitung, Saat',KTBL_size,'mittel, mittlerer Boden',KTBL_mechanisation,KTBL_distance,"manure",workingStepsEle)
     / p_ktbl_fertAmount('Mais - Silomais','wendend, gezogene Saatbettbereitung, Saat','mittel, mittlerer Boden','Guelle, Rind')
     * p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Manure, Farm')
 ;
 
-option p_varFixCostsFert:1:8:1 display p_varFixCostsFert;
-
-*
-*  --- Calculation of time requirement for manure application levels 
-*
-
-*
-*--- Mineral Fertilizer
-*
-parameter p_timeReq(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,CostsEle,manAmounts);
-
-p_timeReq(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"minFert",manAmounts)
-    $ (ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield)) =
-    round(
-        (p_ktbl_timeReq(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"minFert")
-        / sum(minFertEle,p_ktbl_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,minFertEle))
-        * sum(minFertEle,p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,minFertEle)))
-    ,2)
-;
-
-*
-*--- Manure
-*
-p_timeReq(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"manure",manAmounts)
-    $ ((ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield))
-    AND ((sameas(KTBL_crops,'Ackergras - Anwelksilage'))
-    OR (sameas(KTBL_crops,'Ackergras - Bodenheu'))
-    OR (sameas(KTBL_crops,'Dauergruenland, grasbetont - Anwelksilage'))
-    OR (sameas(KTBL_crops,'Dauergruenland, grasbetont - Bodenheu'))
-    OR (sameas(KTBL_crops,'Mais - Corn-Cob-Mix'))
-    OR (sameas(KTBL_crops,'Mais - Koernermais'))
-    OR (sameas(KTBL_crops,'Mais - Silomais')))
-    ) = 
-    round(
-        (p_ktbl_timeReq(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"manure")
-        / p_ktbl_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,'Guelle, Rind')
-        * p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Manure, Farm'))
-    ,2)
-;
-
-p_timeReq(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"manure",manAmounts)
-    $ ((ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield))
-    AND (not(sameas(KTBL_crops,'Ackergras - Anwelksilage')))
-    AND (not(sameas(KTBL_crops,'Ackergras - Bodenheu')))
-    AND (not(sameas(KTBL_crops,'Dauergruenland, grasbetont - Anwelksilage')))
-    AND (not(sameas(KTBL_crops,'Dauergruenland, grasbetont - Bodenheu')))
-    AND (not(sameas(KTBL_crops,'Mais - Corn-Cob-Mix')))
-    AND (not(sameas(KTBL_crops,'Mais - Koernermais')))
-    AND (not(sameas(KTBL_crops,'Mais - Silomais')))
-    ) =
-    round(
-        (p_ktbl_timeReq('Mais - Silomais','wendend, gezogene Saatbettbereitung, Saat',KTBL_size,'mittel, mittlerer Boden',KTBL_mechanisation,KTBL_distance,"manure")
-        / p_ktbl_fertAmount('Mais - Silomais','wendend, gezogene Saatbettbereitung, Saat','mittel, mittlerer Boden','Guelle, Rind')
-        * p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Manure, Farm'))
-    ,2)
-;
-
-p_timeReq(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"rest",manAmounts)
-    $ ((ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield))
-    AND(sum(fertType,p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,fertType)))
-    ) = 
-    round(p_ktbl_timeReq(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"rest"),2)
-;
-
-option p_timeReq:1:7:1 display p_timeReq;
-
+option p_workingStepsEleFert:1:8:1 display p_workingStepsEleFert;

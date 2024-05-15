@@ -13,8 +13,8 @@ parameters
     p_ktbl_revenue(KTBL_crops,KTBL_system,KTBL_yield,KTBL_figure,reveCat)
     p_ktbl_directCostsNoFert(KTBL_crops,KTBL_system,KTBL_yield,CostsEle)
     p_ktbl_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,fertType)
-    p_ktbl_varFixCostsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,CostsEle,CostsType) KTBL data for fuel consumption & variable machine costs without fuel consumption & fix machine costs
-    p_ktbl_timeReq(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,CostsEle)
+    p_ktbl_workingStepsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,CostsEle,workingStepsEle) KTBL data for fuel consumption & variable machine costs without fuel consumption & fix machine costs
+    p_ktbl_workingStepsPesti(KTBL_size,KTBL_mechanisation,KTBL_distance,workingStepsEle)
 ;
 
 *load in revenue data 
@@ -35,23 +35,16 @@ $load p_ktbl_fertAmount=p_ktbl_fertAmount
 $gdxin
 option p_ktbl_fertAmount:1:3:1 display p_ktbl_fertAmount;
 
-*load in data for variable and fix costs for each crop
-$Gdxin 2.ktblData/gdxFiles/KTBL_VarFixCosts.gdx
-$load p_ktbl_varFixCostsNoPesti=p_ktbl_varfixCosts
+*load in costs data and time requirement for all but pesticide application operations
+$Gdxin 2.ktblData/gdxFiles/KTBL_WorkingStepsNoPesti.gdx
+$load p_ktbl_workingStepsNoPesti=p_ktbl_workingStepsNoPesti
 $gdxin
-option p_ktbl_varFixCostsNoPesti:1:6:2 display p_ktbl_varFixCostsNoPesti;
-
-*load in time requirement data for module labour.gms
-$Gdxin 2.ktblData/gdxFiles/KTBL_time.gdx
-$load p_ktbl_timeReq=p_ktbl_timeReq 
-$gdxin
-option p_ktbl_timeReq:1:6:1 display p_ktbl_timeReq;
-
+option p_ktbl_workingStepsNoPesti:1:6:2 display p_ktbl_workingStepsNoPesti;
 
 $include '2.ktblData/fertilization.gms'
 
 *
-*  --- Calculation of Profit parameter for each potential crop management option 
+*  --- Calculation of Profit parameter for each potential crop management option without pesticide application operations 
 *
 parameters
     p_revenue(KTBL_crops,KTBL_system,KTBL_yield) revenues per ha for selling harvested crops 
@@ -60,7 +53,7 @@ parameters
     p_varCostsNewFuel(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
     p_varCostsNewFuelInt(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
     p_fixCosts(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
-    p_profitPerHa(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
+    p_profitPerHaNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
 ;
 
 *
@@ -92,13 +85,17 @@ p_directCostsInt(KTBL_crops,KTBL_system,KTBL_yield,manAmounts)
 *Variable Machine Costs
 *
 p_varCostsNewFuel(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
-    $ (sum(fertCategory,p_varFixCostsFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"varCostsNoFuel",manAmounts)))
-    = p_ktbl_varFixCostsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"rest","FuelCons") * p_newFuelPrice
-    + p_ktbl_varFixCostsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"rest","varCostsNoFuel")
+    $ (sum(fertCategory,p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"maintenance",manAmounts)))
+    = sum (varCostsEle,
+        p_ktbl_workingStepsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"rest",varCostsEle))
+*calculating out costs for fuel at old price level 
+    + p_ktbl_workingStepsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"rest","fuelCons") * newFuelPrice
+    - p_ktbl_workingStepsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"rest","fuelCons") * ktblFuelPrice
 *Costs for each manure application level (file:fertilization.gms)
-    + sum(fertCategory,
-        p_varFixCostsFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"FuelCons",manAmounts) * p_newFuelPrice
-        + p_varFixCostsFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"varCostsNoFuel",manAmounts))
+    + sum((fertCategory,varCostsEle),
+        p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,varCostsEle,manAmounts)
+        + p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"FuelCons",manAmounts) * newFuelPrice
+        - p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"FuelCons",manAmounts) * ktblFuelPrice)
 ;
 
 option p_varCostsNewFuel:1:6:1 display p_varCostsNewFuel;
@@ -112,18 +109,20 @@ p_varCostsNewFuelInt(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisat
 *---Fix machine costs
 *
 p_fixCosts(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
-    $ (sum(fertCategory,p_varFixCostsFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"fixCosts",manAmounts)))
-    = p_ktbl_varFixCostsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"rest","fixCosts")
-    + sum(fertCategory,p_varFixCostsFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"fixCosts",manAmounts))
+    $ (sum(fertCategory,p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"deprec",manAmounts)))
+    = sum(fixCostsEle,
+        p_ktbl_workingStepsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"rest",fixCostsEle))
+    + sum((fertCategory,fixCostsEle),
+        p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,fixCostsEle,manAmounts))
 ;
 
 option p_fixCosts:1:6:1 display p_fixCosts;
 
 *
-*---Profit per ha without labor costs
+*---Profit per ha without labor costs and pesticide application operations 
 *
-p_profitPerHa(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
-    $ (sum(fertCategory,p_varFixCostsFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"fixCosts",manAmounts)))
+p_profitPerHaNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
+    $ (sum(fertType,p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,fertType)))
     = round(
     (p_revenue(KTBL_crops,KTBL_system,KTBL_yield)
     - p_directCosts(KTBL_crops,KTBL_system,KTBL_yield,manAmounts)
@@ -134,10 +133,24 @@ p_profitPerHa(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTB
     ,2)
 ;
 
-option p_profitPerHa:1:6:1 display p_profitPerHa;
+option p_profitPerHaNoPesti:1:6:1 display p_profitPerHaNoPesti;
 
+*
+*  --- Calculation of time requirements without crop protection operations 
+*
+
+parameter p_timeReq(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts);
+
+p_timeReq(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
+    $ (sum(fertType,p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,fertType)))
+    = p_ktbl_workingStepsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"rest","time")
+    + sum(fertCategory,
+        p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"time",manAmounts))
+;
+
+option p_timeReq:1:6:1 display p_timeReq;
 
 *
 *  --- load profit and time parameter calculations into gdx file
 *
-Execute_Unload '3.farmData/gdxFiles/ktblResults_%farmNumber%.gdx',  p_profitPerHa, p_timeReq;
+Execute_Unload '3.farmData/gdxFiles/ktblResults_%farmNumber%.gdx',  p_profitPerHaNoPesti, p_timeReq;

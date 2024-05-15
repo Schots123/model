@@ -1,0 +1,5 @@
+par=p_ktbl_workingStepsBroadcast  rng=workingStepsPesti_gams!B1:K344 rDim=3 cDim=1
+dSet=KTBL_size                    rng=workingStepsPesti_gams!B2:B344 rDim=1
+dSet=KTBL_mechanisation           rng=workingStepsPesti_gams!C2:C344 rDim=1
+dSet=KTBL_distance                rng=workingStepsPesti_gams!D2:D344 rDim=1
+dSet=workingStepsEle              rng=workingStepsPesti_gams!E1:K1   cDim=1
