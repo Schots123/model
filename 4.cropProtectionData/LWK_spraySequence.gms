@@ -365,4 +365,4 @@ p_numberSprayPasses(KTBL_crops,KTBL_yield) =
     * p_ktblCrops_lwkCrops(KTBL_crops,LWK_crops))
 ;
 
-display p_sprayAmountHerb, p_sprayInputCostsNotHerb, p_numberSprayPasses;
+*display p_sprayAmountHerb, p_sprayInputCostsNotHerb, p_numberSprayPasses;

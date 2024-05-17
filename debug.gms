@@ -3,9 +3,9 @@
 *      global variables for debugging in Atom
 *
 
-*$offlisting 
+$offlisting 
 *turning off the echoprint
-$offsymxref offsymlist
+*$offsymxref offsymlist
 
 option
     limrow = 3,     
@@ -13,8 +13,9 @@ option
     sysout = off; 
 
 
-option limrow = 20;
-option limcol = 20;
+option limrow = 1;
+option limcol = 1;
+option Solprint = off;
 
 $include '2.ktblData/KTBL_inputOptions+Sets.gms'
 $setglobal farmNumber 1

@@ -1,3 +1,4 @@
+
 $include '%WORKDIR%fruchtfolge.gms'
 
 *supervision intensity for robots as fraction of field time 
