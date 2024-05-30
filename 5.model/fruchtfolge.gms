@@ -290,7 +290,7 @@ loop((technology),
   p_pestEff("postHerb") = p_technoPestEff(technology,"postHerb");
   p_pestEff("fung") = p_technoPestEff(technology,"fung");
   p_pestEff("growthReg") = p_technoPestEff(technology,"growthReg");
-  p_pestEff("haulmDest") = p_technoPestEff(technology,"haulmDest");
+  p_pestEff("dessic") = p_technoPestEff(technology,"dessic");
   p_lifetime = p_technoLifetime(technology) + ((3/10) * p_technoLifetime(technology));
   p_areaCapac = p_technoAreaCapac(technology) + ((3/10) * p_technoAreaCapac(technology));
 *  pestCostFactor = pesticideTax.pos;

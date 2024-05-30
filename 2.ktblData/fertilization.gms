@@ -7,6 +7,49 @@ parameters
 
 p_nutDevAllow("K2O") = 130;
 
+parameter p_manureAnimalPlace(animalBranch,man_attr);
+
+*assumptions from KTBL Wirtschaftsdüngerrechner (24.05.2024)
+p_manureAnimalPlace("milkCows","Amount") = 18.4;
+p_manureAnimalPlace("milkCows","N") = 5.2;
+p_manureAnimalPlace("milkCows","P2O5") = 2.4;
+p_manureAnimalPlace("milkCows","K2O") = 6.8;
+
+p_manureAnimalPlace("fattPigs","Amount") = 1;
+p_manureAnimalPlace("fattPigs","N") = 8.4;
+p_manureAnimalPlace("fattPigs","P2O5") = 4.3;
+p_manureAnimalPlace("fattPigs","K2O") = 5.7;
+
+
+*Calculation of average nutrient content of manure accumulated on farm per m3
+p_nutrientSupplyFert('Manure, Farm',"N") = 
+    sum(animalBranch, 
+    p_animalPlaces(animalBranch) 
+    * p_manureAnimalPlace(animalBranch,"Amount")
+    * p_manureAnimalPlace(animalBranch,"N")
+    ) 
+    / sum(animalBranch, p_animalPlaces(animalBranch) * p_manureAnimalPlace(animalBranch,"Amount"))
+;
+
+p_nutrientSupplyFert('Manure, Farm',"P2O5") = 
+    sum(animalBranch, 
+    p_animalPlaces(animalBranch) 
+    * p_manureAnimalPlace(animalBranch,"Amount")
+    * p_manureAnimalPlace(animalBranch,"P2O5")
+    ) 
+    / sum(animalBranch, p_animalPlaces(animalBranch) * p_manureAnimalPlace(animalBranch,"Amount"))
+;
+
+p_nutrientSupplyFert('Manure, Farm',"K2O") = 
+    sum(animalBranch, 
+    p_animalPlaces(animalBranch) 
+    * p_manureAnimalPlace(animalBranch,"Amount")
+    * p_manureAnimalPlace(animalBranch,"K2O")
+    ) 
+    / sum(animalBranch, p_animalPlaces(animalBranch) * p_manureAnimalPlace(animalBranch,"Amount"))
+;
+
+* Calculation of nutrient supply on fields for each manure application level 
 p_manureSupply(manAmounts,nutrients)
     = p_manValue(manAmounts) * p_nutrientSupplyFert('Manure, Farm',nutrients)
 ;

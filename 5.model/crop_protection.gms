@@ -190,7 +190,7 @@ e_dcPestiTechno(years)..
         p_sprayInputCostsNotHerb(curCrops,KTBL_yield,"fung") * pestCostFactor * (1-p_pestEff("fung"))
         + p_sprayInputCostsNotHerb(curCrops,KTBL_yield,"insect") * pestCostFactor * (1-p_pestEff("insect"))
         + p_sprayInputCostsNotHerb(curCrops,KTBL_yield,"growthReg") * pestCostFactor * (1-p_pestEff("growthReg"))
-        + p_sprayInputCostsNotHerb(curCrops,KTBL_yield,"haulmDest") * pestCostFactor * (1-p_pestEff("haulmDest"))
+        + p_sprayInputCostsNotHerb(curCrops,KTBL_yield,"dessic") * pestCostFactor * (1-p_pestEff("dessic"))
         + sum(preHerb,p_sprayAmountHerb(curCrops,KTBL_yield,preHerb) * p_herbCosts(preHerb) * pestCostFactor) * (1-p_pestEff("preHerb"))
         + sum(postHerb,p_sprayAmountHerb(curCrops,KTBL_yield,postHerb) * p_herbCosts(postHerb)* pestCostFactor) * (1-p_pestEff("postHerb"))
     ))

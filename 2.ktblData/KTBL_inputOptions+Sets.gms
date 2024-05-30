@@ -379,10 +379,6 @@ set minFertEle(fertType) mineral fertilizer applied for crop fertilization in KT
   'Kali-Magnesia (30 % K2O, 10 % MgO), lose'
 /;
 
-set manureEle(fertType) /
-  'Guelle, Rind'
-/;
-
 parameter p_manValue(manAmounts) /'0' 0, '10' 10, '15' 15, '20' 20, '25' 25, '30' 30, '35' 35, '40' 40, '50' 50, '60' 60, '70' 70, '80' 80/;
 
 set pkFert(fertType) pk fertilizer applied for crop fertilization in KTBL data /
@@ -402,7 +398,9 @@ set fertCategory type of fertilizer used either mineral fertilizer or manure
 
 set nutrients /N,P2O5,K2O/;
 
-set man_attr /Amount, N, P2O5, K2O, minUsagePercent/;
+set man_attr /Amount, N, P2O5, K2O, minNUsagePercent/;
+
+
 
 parameter p_ktbl_fertPrice(fertType) /
 'Kalkammonsalpeter (27 % N), lose' 0.23

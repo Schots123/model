@@ -95,7 +95,7 @@ parameter p_lwkCrops_lwkYield_ktblYield(LWK_crops,LWK_yield,KTBL_yield) /
 'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen'.'niedrig, leichter Boden' 1
 /;
 
-set pestType /preHerb,postHerb,fung,insect,growthReg,haulmDest/;
+set pestType /soilHerb,foliarHerb,fung,insect,growthReg,dessic/;
 
 set herbProduct /
 'Herold SC'
@@ -146,13 +146,13 @@ set herbProduct /
 'U 46 M'
 /;
 
-set preHerb(herbProduct) /
+set soilHerb(herbProduct) /
 'Herold SC'
 'Gamit 36 AMT'
 'Bandur'
 /;
 
-set postHerb(herbProduct) /
+set foliarHerb(herbProduct) /
 'Sumimax'
 'Omnera LQM'
 'Lentipur'
@@ -317,25 +317,53 @@ parameter p_sprayInputCostsNotHerbLWK(LWK_crops,LWK_yield,pestType) /
 'Raps'.'alle Ertragsklassen'.growthReg 36.82
 'Speise & Industriekartoffeln'.'alle Ertragsklassen'.fung 213.68
 'Speise & Industriekartoffeln'.'alle Ertragsklassen'.insect 19
-'Speise & Industriekartoffeln'.'alle Ertragsklassen'.haulmDest 113.77
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'.dessic 113.77
 'Zuckerrüben'.'alle Ertragsklassen'.fung 147.55
 'Zuckerrüben'.'alle Ertragsklassen'.insect 25
 /;
 
-parameter p_numberSprayPassesLWK(LWK_crops,LWK_yield) /
-'Winterweizen'.'< 70 dt/ha' 4
-'Winterweizen'.'> 70 dt/ha Windhalmstandort' 6
+pestType /preHerb,postHerb,fung,insect,growthReg,dessic/
+set preHerb(herbProduct) /
+'Herold SC'
+'Gamit 36 AMT'
+'Bandur'
+/;
+
+$ontext
+This part is still under consideration 
+$offtext
+set scenario / all, soilHerb, soilHerbFungInsect /;
+
+parameter p_numberSprayPassesLWK(LWK_crops,LWK_yield,scenario) /
+'Winterweizen'.'< 70 dt/ha'.'all' 4
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'.'all' 6
 *'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.' 7
-'Wintergerste'.'< 70 dt/ha' 4
-'Wintergerste'.'> 70 dt/ha Windhalmstandort' 5
+'Wintergerste'.'< 70 dt/ha'.'all' 4
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'.'all' 5
 *'Wintergerste'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.' 5
-'Winterroggen & Triticale'.'> 60 dt/ha' 5
-'Winterroggen & Triticale'.'< 60 dt/ha' 5
-'Raps'.'alle Ertragsklassen' 5
-'Speise & Industriekartoffeln'.'alle Ertragsklassen' 12
-'Zuckerrüben'.'alle Ertragsklassen' 6
-'Mais'.'alle Ertragsklassen' 2
-'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen' 0.5
+'Winterroggen & Triticale'.'> 60 dt/ha'.'all' 5
+'Winterroggen & Triticale'.'< 60 dt/ha'.'all' 5
+'Raps'.'alle Ertragsklassen'.'all' 5
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'.'all' 12
+'Zuckerrüben'.'alle Ertragsklassen'.'all' 6
+'Mais'.'alle Ertragsklassen'.'all' 2
+'Grünlandnutzung (Mähweide)'.'all' 0.5
+
+
+'Winterweizen'.'< 70 dt/ha'.'soilHerb' 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'.'soilHerb' 6
+*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.' 7
+'Wintergerste'.'< 70 dt/ha'.'soilHerb' 4
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'.'soilHerb' 5
+*'Wintergerste'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.' 5
+'Winterroggen & Triticale'.'> 60 dt/ha'.'soilHerb' 5
+'Winterroggen & Triticale'.'< 60 dt/ha'.'soilHerb' 5
+'Raps'.'alle Ertragsklassen'.'soilHerb' 5
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'.'soilHerb' 12
+'Zuckerrüben'.'alle Ertragsklassen'.'soilHerb' 6
+'Mais'.'alle Ertragsklassen'.'soilHerb' 2
+'Grünlandnutzung (Mähweide)'.'soilHerb' 0.5
+
 /;
 
 parameters

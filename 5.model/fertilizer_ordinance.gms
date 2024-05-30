@@ -1,6 +1,21 @@
 
+
+parameter p_manureAnimalPlace(animalBranch,man_attr);
+
+*assumptions from KTBL Wirtschaftsdüngerrechner (24.05.2024)
+p_manureAnimalPlace("milkCows","Amount") = 18.4;
+p_manureAnimalPlace("milkCows","N") = 5.2;
+p_manureAnimalPlace("milkCows","P2O5") = 2.4;
+p_manureAnimalPlace("milkCows","K2O") = 6.8;
+
+p_manureAnimalPlace("fattPigs","Amount") = 1;
+p_manureAnimalPlace("fattPigs","N") = 8.4;
+p_manureAnimalPlace("fattPigs","P2O5") = 4.3;
+p_manureAnimalPlace("fattPigs","K2O") = 5.7;
+
+
 scalar farmManureAmount Amount of manure accrued on farm annually;
-farmManureAmount = p_manure("Amount");
+farmManureAmount = sum(animalBranch, p_animalPlaces(animalBranch) * p_manureAnimalPlace(animalBranch,"Amount"));
 
 scalar manPrice price to export manure;
 manPrice = 15;

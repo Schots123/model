@@ -140,21 +140,13 @@ set curMechan(KTBL_mechanisation) / '102' /;
 
 *alias (cropGroup,cropGroup1);
 
+
 *
 *  --- The following declarations are already important for the farm individual KTBL data calculations stored 
 *       in ktblResults_%farmNumber%.gdx
+set animalBranch / milkCows, fattPigs /;
 
-parameter p_manure(man_attr) /
-"Amount" 3000
-"N" 7.3
-"P2O5" 2.7
-"K2O" 3.7
-"minUsagePercent" 60
-/;
-
-p_nutrientSupplyFert('Manure, Farm',"N") = p_manure("N") * (p_manure("minUsagePercent")/100);
-p_nutrientSupplyFert('Manure, Farm',"P2O5") = p_manure("P2O5") * (p_manure("minUsagePercent")/100);
-p_nutrientSupplyFert('Manure, Farm',"K2O") = p_manure("K2O") * (p_manure("minUsagePercent")/100);
+parameter p_animalPlaces(animalBranch) stable places on farm / milkCows 150 /;
 
 scalar newFuelPrice price for fuel in euro per liter /1/;
 
