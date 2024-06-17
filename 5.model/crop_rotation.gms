@@ -27,7 +27,7 @@ e_maxShares(curCrops,years) $ p_cropData(curCrops,"maxShare")..
 ;
 
 *
-*  --- ensure that one element in the set crops is chosen for each plot by the model and not more
+*  --- ensure that one element in each set of v_binCropPlot is chosen for each plot by the model and not more
 *
 e_oneCropPlot(curPlots,years)..
   sum((curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)

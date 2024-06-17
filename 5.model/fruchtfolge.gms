@@ -7,7 +7,6 @@
 * (c) Christoph Pahmeyer, 2019
 *-------------------------------
 
-set years / 2024*2026 /;
 *
 *  --- initiate global parameters for gaec evaluation
 *
@@ -71,6 +70,16 @@ curPlots_ktblYield(curPlots,'sehr niedrig, leichter Boden') $ (p_plotData(curPlo
   AND (p_plotData(curPlots,"soilType") eq sandigerSchluff OR p_plotData(curPlots,"soilType") eq Sand OR p_plotData(curPlots,"soilType") eq starkSandigerLehm))= yes;
 
 
+set curMechan(KTBL_mechanisation);
+curMechan("45") $ (p_totLand lt 30) = yes;
+curMechan("67") $ (p_totLand ge 30 AND p_totLand lt 45) = yes;
+curMechan("83") $ (p_totLand ge 45 AND p_totLand lt 65) = yes;
+curMechan("102") $ (p_totLand ge 65 AND p_totLand lt 85) = yes;
+curMechan("120") $ (p_totLand ge 85 AND p_totLand lt 105) = yes;
+curMechan("120") $ (p_totLand ge 105 AND p_totLand lt 135) = yes;
+curMechan("200") $ (p_totLand ge 135 AND p_totLand lt 250) = yes;
+curMechan("230") $ (p_totLand ge 250) = yes;
+
 *
 *  --- load farm individual ktbl data (processed) into model
 *
@@ -102,7 +111,7 @@ Variables
 scalar M / 99999 /;
 
 Binary Variable 
-  v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
+  v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts,years)
 ;
 
 Positive Variables
@@ -137,18 +146,21 @@ e_profit(years)..
   v_profit(years) =E=
     sum((curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
     $ (
-      curPlots_ktblSize(curPlots,KTBL_size) AND curPlots_ktblDistance(curPlots,KTBL_distance) 
-      AND curPlots_ktblYield(curPlots,KTBL_yield) AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
+      curPlots_ktblSize(curPlots,KTBL_size) 
+      AND curPlots_ktblDistance(curPlots,KTBL_distance) 
+      AND curPlots_ktblYield(curPlots,KTBL_yield) 
+      AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
       AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
     ),    
-    v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years) * p_plotData(curPlots,'size')
-    * p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
+    v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
+      * p_plotData(curPlots,'size')
+      * p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
     )
 *direct costs for plant protection products
     - v_dcPesti(years)
 *variable and fix costs for pesticide application operations 
-    - v_varCostsPesti(years)
-    - v_fixCostsPesti(years)
+    - sum(scenSprayer, v_varCostsSprayer(scenSprayer,years))
+    - v_fixCostsSprayer(years)
 *costs for labor (file: labour.gms)
     - v_labReq(years) * labPrice
 *costs from manure exports (file: fertilizer_ordinance.gms)
@@ -188,46 +200,6 @@ if (card(curPlots)<30,
 *solver stops when proportional difference between solution found and best theoretical objective function
 *is guaranteed to be smaller than optcr 
 
-
-model Fruchtfolge /
-  e_profit
-  e_totProfit
-  e_obje
-*crop_protection.gms
-  e_dcPesti
-  e_varCostsPesti
-  e_SprayerBroadcast
-  e_deprecBroadcastTime
-  e_deprecBroadcastHa
-  e_interestBroadcast
-  e_fixCostsPesti
-*crop_rotation.gms
-  e_maxShares
-  e_oneCropPlot
-*fertilizer_ordinance.gms
-  e_manureUse
-  e_man_balance
-  e_170_avg
-*gaec.gms
-  e_preCropSeq_1
-  e_preCropSeq_2
-  e_gaec7_1
-  e_gaec7_2
-  e_gaec8
-*labour.gms
-  e_labReq
-/;
-
-parameters 
-  crops_year_report(*,*,*,curCrops,years) model decision for crops grown as sum of hectares 
-  cropOnPlot(curPlots,curCrops,years) shows which crop was grown on which plot in which year
-  annProfitAvg(*,*,*) avergae annual profit farm
-  totProfitDiff(*,*,*) profit difference between scenario and baseline
-  dcPestiAvg(*,*,*) average direct costs for pesticides 
-  deprecAvg(*,*,*) average depreciation of novel technology
-  numberSprayer(*,*,*) number of spot sprayers required 
-;
-
 *
 *  --- introducing sets for sensitivity analysis for technology parameters 
 *
@@ -241,18 +213,99 @@ parameter p_totProfitLevelBase Profit in baseline to compare with results with n
 
 p_totProfitLevelBase = 0;
 
-solve Fruchtfolge using MIP maximizing v_obje;
-$batinclude '6.Report_Writing/report_writing.gms' "'broadcast'" "'base'" "'base'"
-
-
 *
-*  --- initiating model run for novel technologies
+* --- Restrictions to allow defined scenarios for each model separately 
 * 
-model Techno /
+equations 
+  e_scenBase
+  e_scenSST_FH
+  e_scenSST_FH_BA
+  e_scenSST_FH_Bonus
+;
+
+e_scenBase..
+    sum((curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
+    $ (
+        curPlots_ktblSize(curPlots,KTBL_size)
+        AND curPlots_ktblDistance(curPlots,KTBL_distance)
+        AND curPlots_ktblYield(curPlots,KTBL_yield)
+        AND p_technology_scenario_scenSprayer(technology,scenario,scenSprayer)
+        AND (not(sameas(scenario,"Base")))
+    ),
+    v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
+    )
+    =E=
+    0
+;
+
+e_scenSST_FH..
+    sum((curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
+    $ (
+        curPlots_ktblSize(curPlots,KTBL_size)
+        AND curPlots_ktblDistance(curPlots,KTBL_distance)
+        AND curPlots_ktblYield(curPlots,KTBL_yield)
+        AND p_technology_scenario_scenSprayer(technology,scenario,scenSprayer)
+        AND ((sameas(scenario,"Base"))
+        OR (sameas(scenario,"FH+BA")))
+    ),
+    v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
+    )
+    =E=
+    0
+;
+
+e_scenSST_FH_BA..
+    sum((curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
+    $ (
+        curPlots_ktblSize(curPlots,KTBL_size)
+        AND curPlots_ktblDistance(curPlots,KTBL_distance)
+        AND curPlots_ktblYield(curPlots,KTBL_yield)
+        AND p_technology_scenario_scenSprayer(technology,scenario,scenSprayer)
+        AND (not(sameas(scenario,"FH+BA")))
+    ),
+    v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
+    )
+    =E=
+    0
+;
+
+e_scenSST_FH_Bonus..
+    sum((curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
+    $ (
+        curPlots_ktblSize(curPlots,KTBL_size)
+        AND curPlots_ktblDistance(curPlots,KTBL_distance)
+        AND curPlots_ktblYield(curPlots,KTBL_yield)
+        AND p_technology_scenario_scenSprayer(technology,scenario,scenSprayer)
+        AND ((sameas(scenario,"Base"))
+          OR (sameas(scenario,"FH"))
+          OR (sameas(scenario,"FH+BA")))
+    ),
+    v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
+    )
+    =E=
+    0
+;
+
+parameters 
+  arabLandUsed(*,years) cultivated arable land to grow crops 
+  crops_year_report(*,curCrops,years) model decision for crops grown as sum of hectares 
+  annProfitAvg(*) average annual profit farm
+*  totProfitDiff(*) profit difference between scenario and baseline
+  dcPestiAvg(*) average direct costs for pesticides 
+  deprecAvg(*,scenSprayer) average depreciation of novel technology
+  numberSprayer(*,scenSprayer) number of spot sprayers required 
+  numberPassages(curCrops,*,scenSprayer,years)
+;
+
+model TechnoBase /
   e_profit
   e_totProfit
   e_obje
 *crop_protection.gms
+  e_cropTechnoPlot1
+  e_cropTechnoPlot2
+  e_cropTechnoPlot3
+  e_scenBase
   e_dcPestiTechno
   e_SprayerTechno
   e_deprecTechnoTime
@@ -274,26 +327,119 @@ model Techno /
   e_gaec7_2
   e_gaec8
 *labour.gms
-  e_labReqTechno
+  e_labReq
 /;
 
-loop((technology),
-  p_value = p_technoValue(technology);
-  p_remValue = p_technoRemValue(technology);
-  p_annualCapac = p_technoAnnualCapac(technology);
-  p_OtherCosts(KTBL_size,curMechan,KTBL_distance) = p_technoOtherCosts(technology,KTBL_size,curMechan,KTBL_distance);
-  p_fuelConsPesti(KTBL_size,curMechan,KTBL_distance) = p_technoFuelCons(technology,KTBL_size,curMechan,KTBL_distance);
-  p_maintenance(KTBL_size,curMechan,KTBL_distance) = p_technoMaintenance(technology,KTBL_size,curMechan,KTBL_distance);
-  p_technologyTimeReq(KTBL_size,curMechan,KTBL_distance) = p_technoTimeReq(technology,KTBL_size,curMechan,KTBL_distance);
-  p_pestEff("insect") = p_technoPestEff(technology,"insect");
-  p_pestEff("preHerb") = p_technoPestEff(technology,"preHerb");
-  p_pestEff("postHerb") = p_technoPestEff(technology,"postHerb");
-  p_pestEff("fung") = p_technoPestEff(technology,"fung");
-  p_pestEff("growthReg") = p_technoPestEff(technology,"growthReg");
-  p_pestEff("dessic") = p_technoPestEff(technology,"dessic");
-  p_lifetime = p_technoLifetime(technology) + ((3/10) * p_technoLifetime(technology));
-  p_areaCapac = p_technoAreaCapac(technology) + ((3/10) * p_technoAreaCapac(technology));
-*  pestCostFactor = pesticideTax.pos;
-  solve Techno using MIP maximizing v_obje;
-  $$batinclude '6.Report_Writing/report_writing.gms' technology CapacStep efficiencyStep 
-);
+solve TechnoBase using MIP maximizing v_obje;
+  $$batinclude '6.Report_Writing/report_writing.gms' "'Base'"
+
+
+model TechnoSST_FH /
+  e_profit
+  e_totProfit
+  e_obje
+*crop_protection.gms
+  e_cropTechnoPlot1
+  e_cropTechnoPlot2
+  e_cropTechnoPlot3
+  e_scenSST_FH
+  e_dcPestiTechno
+  e_SprayerTechno
+  e_deprecTechnoTime
+  e_deprecTechnoHa
+  e_interestTechno
+  e_fixCostsPestiTechno
+  e_varCostsPestiTechno
+*crop_rotation.gms
+  e_maxShares
+  e_oneCropPlot
+*fertilizer_ordinance.gms
+  e_manureUse
+  e_man_balance
+  e_170_avg
+*gaec.gms
+  e_preCropSeq_1
+  e_preCropSeq_2
+  e_gaec7_1
+  e_gaec7_2
+  e_gaec8
+*labour.gms
+  e_labReq
+/;
+
+solve TechnoSST_FH using MIP maximizing v_obje;
+  $$batinclude '6.Report_Writing/report_writing.gms' "'SST_FH'"
+
+model TechnoSST_FH_BA /
+  e_profit
+  e_totProfit
+  e_obje
+*crop_protection.gms
+  e_cropTechnoPlot1
+  e_cropTechnoPlot2
+*  e_cropTechnoPlot3
+  e_scenSST_FH_BA
+  e_dcPestiTechno
+  e_SprayerTechno
+  e_deprecTechnoTime
+  e_deprecTechnoHa
+  e_interestTechno
+  e_fixCostsPestiTechno
+  e_varCostsPestiTechno
+*crop_rotation.gms
+  e_maxShares
+  e_oneCropPlot
+*fertilizer_ordinance.gms
+  e_manureUse
+  e_man_balance
+  e_170_avg
+*gaec.gms
+  e_preCropSeq_1
+  e_preCropSeq_2
+  e_gaec7_1
+  e_gaec7_2
+  e_gaec8
+*labour.gms
+  e_labReq
+/;
+
+solve TechnoSST_FH_BA using MIP maximizing v_obje;
+  $$batinclude '6.Report_Writing/report_writing.gms' "'SST_FH+BA'"
+
+$ontext
+model TechnoSST_FH+Bonus /
+  e_profit
+  e_totProfit
+  e_obje
+*crop_protection.gms
+  e_cropTechnoPlot1
+  e_cropTechnoPlot2
+  e_scenSST_FH_Bonus
+  e_dcPestiTechno
+  e_SprayerTechno
+  e_deprecTechnoTime
+  e_deprecTechnoHa
+  e_interestTechno
+  e_fixCostsPestiTechno
+  e_varCostsPestiTechno
+*crop_rotation.gms
+  e_maxShares
+  e_oneCropPlot
+*fertilizer_ordinance.gms
+  e_manureUse
+  e_man_balance
+  e_170_avg
+*gaec.gms
+  e_preCropSeq_1
+  e_preCropSeq_2
+  e_gaec7_1
+  e_gaec7_2
+  e_gaec8
+*labour.gms
+  e_labReq
+/;
+
+solve TechnoSST_FH+Bonus using MIP maximizing v_obje;
+  $$batinclude '6.Report_Writing/report_writing.gms' "'SST_FH+Bonus'"
+
+$offtext

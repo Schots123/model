@@ -113,7 +113,7 @@ e_preCropSeq_2(curPlots,mainCropGroup,years)
     AND cropCropGroup(curCrops,mainCropGroup) AND (not(mainCropGroupExempt(mainCropGroup)))
     ),
   v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years-2) 
-  + v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years-1) 
+  + v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years-1)
   + v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years))
   =L=
   2 + v_binRepCropPlot_2(curPlots,mainCropGroup,years)

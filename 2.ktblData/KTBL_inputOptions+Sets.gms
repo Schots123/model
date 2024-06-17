@@ -18,7 +18,6 @@ set KTBL_crops /
 'Winterweizen - Backweizen' 
 'Winterweizen - Korn und Stroh (thermische Nutzung)' 
 'Zuckerrueben' 
-'Brache'
 /;
 
 set KTBL_system /

@@ -150,20 +150,24 @@ set soilHerb(herbProduct) /
 'Herold SC'
 'Gamit 36 AMT'
 'Bandur'
+'Carmina 640'
 /;
 
 set foliarHerb(herbProduct) /
+*Goltix Titan und Butisan Gold wurden in Dücker et al 2022 gespottet 
+*Butisan Gold könnte auch noch als Kontaktherbizid durchgehen 
+'Butisan Gold'
+*Goltix Titan ist auch Mischherbizid mit Boden und Kontaktwirkung, ein Wirkstoff hat aber nur Bodenwirkung
+'Goltix Titan'
 'Sumimax'
 'Omnera LQM'
 'Lentipur'
-'Carmina 640'
 'Dirigent SX'
 'Axial 50'
 'Ariane C'
 'Starane XL'
 'Boxer'
 'Traxos'
-'Butisan Gold'
 'Niantic'
 'Atlantis Flex'
 'Pointer Plus'
@@ -172,12 +176,14 @@ set foliarHerb(herbProduct) /
 'Synero 30 SL'
 'Select 240 EC'
 'Agil S'
+*wirkt über Boden und Blatt aber besonders gute Unkrauterfassung im Keimblatt- bzw. erstem Laubblattstadium der Unkräuter
 'Fuego'
 'Targa Super'
+*Sencor ist auch Bodenherbizid, ich lasse es aber mal als Kontaktherbizid durchgehen
 'Sencor'
+*Cato wird auch über Boden aufgenommen
 'Cato'
 'Belvedere Duo'
-'Goltix Titan'
 'Metafol'
 'Tanaris'
 'Vivendi'
@@ -186,10 +192,12 @@ set foliarHerb(herbProduct) /
 'Hasten'
 'Lontrel 600'
 'Betasana SC'
+*Laudis hat Blattwirkung, Aspect hat Bodenwirkung
 'Laudis Aspect Pack'
 'MaisTer Power'
 'Zintan Saphir Pack'
 'Motivell forte'
+*Boden und Blattwirkung
 'Elumis'
 'Peak'
 'Harmony SX'
@@ -322,75 +330,28 @@ parameter p_sprayInputCostsNotHerbLWK(LWK_crops,LWK_yield,pestType) /
 'Zuckerrüben'.'alle Ertragsklassen'.insect 25
 /;
 
-pestType /preHerb,postHerb,fung,insect,growthReg,dessic/
-set preHerb(herbProduct) /
-'Herold SC'
-'Gamit 36 AMT'
-'Bandur'
-/;
-
-$ontext
-This part is still under consideration 
-$offtext
-set scenario / all, soilHerb, soilHerbFungInsect /;
-
-parameter p_numberSprayPassesLWK(LWK_crops,LWK_yield,scenario) /
-'Winterweizen'.'< 70 dt/ha'.'all' 4
-'Winterweizen'.'> 70 dt/ha Windhalmstandort'.'all' 6
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.' 7
-'Wintergerste'.'< 70 dt/ha'.'all' 4
-'Wintergerste'.'> 70 dt/ha Windhalmstandort'.'all' 5
-*'Wintergerste'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.' 5
-'Winterroggen & Triticale'.'> 60 dt/ha'.'all' 5
-'Winterroggen & Triticale'.'< 60 dt/ha'.'all' 5
-'Raps'.'alle Ertragsklassen'.'all' 5
-'Speise & Industriekartoffeln'.'alle Ertragsklassen'.'all' 12
-'Zuckerrüben'.'alle Ertragsklassen'.'all' 6
-'Mais'.'alle Ertragsklassen'.'all' 2
-'Grünlandnutzung (Mähweide)'.'all' 0.5
-
-
-'Winterweizen'.'< 70 dt/ha'.'soilHerb' 2
-'Winterweizen'.'> 70 dt/ha Windhalmstandort'.'soilHerb' 6
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.' 7
-'Wintergerste'.'< 70 dt/ha'.'soilHerb' 4
-'Wintergerste'.'> 70 dt/ha Windhalmstandort'.'soilHerb' 5
-*'Wintergerste'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.' 5
-'Winterroggen & Triticale'.'> 60 dt/ha'.'soilHerb' 5
-'Winterroggen & Triticale'.'< 60 dt/ha'.'soilHerb' 5
-'Raps'.'alle Ertragsklassen'.'soilHerb' 5
-'Speise & Industriekartoffeln'.'alle Ertragsklassen'.'soilHerb' 12
-'Zuckerrüben'.'alle Ertragsklassen'.'soilHerb' 6
-'Mais'.'alle Ertragsklassen'.'soilHerb' 2
-'Grünlandnutzung (Mähweide)'.'soilHerb' 0.5
-
-/;
-
 parameters
-    p_sprayAmountHerb(KTBL_crops,KTBL_yield,herbProduct)
-    p_sprayInputCostsNotHerb(KTBL_crops,KTBL_yield,pestType)
+    p_sprayInputCosts(KTBL_crops,KTBL_yield,pestType)
     p_numberSprayPasses(KTBL_crops,KTBL_yield)
 ;
 
-p_sprayAmountHerb(KTBL_crops,KTBL_yield,herbProduct) = 
-    sum((LWK_crops,LWK_yield),
-    p_sprayAmountHerbLWK(LWK_crops,LWK_yield,herbProduct)
-    * p_lwkCrops_lwkYield_ktblYield(LWK_crops,LWK_yield,KTBL_yield)
-    * p_ktblCrops_lwkCrops(KTBL_crops,LWK_crops))
-;
-
-p_sprayInputCostsNotHerb(KTBL_crops,KTBL_yield,pestType) = 
+p_sprayInputCosts(KTBL_crops,KTBL_yield,pestType) = 
     sum((LWK_crops,LWK_yield),
     p_sprayInputCostsNotHerbLWK(LWK_crops,LWK_yield,pestType)
     * p_lwkCrops_lwkYield_ktblYield(LWK_crops,LWK_yield,KTBL_yield)
     * p_ktblCrops_lwkCrops(KTBL_crops,LWK_crops))
 ;
 
-p_numberSprayPasses(KTBL_crops,KTBL_yield) = 
-    sum((LWK_crops,LWK_yield),
-    p_numberSprayPassesLWK(LWK_crops,LWK_yield)
+p_sprayInputCosts(KTBL_crops,KTBL_yield,"soilHerb") =
+    sum((LWK_crops,LWK_yield,soilHerb),
+    p_sprayAmountHerbLWK(LWK_crops,LWK_yield,soilHerb) * p_herbCosts(soilHerb)
     * p_lwkCrops_lwkYield_ktblYield(LWK_crops,LWK_yield,KTBL_yield)
     * p_ktblCrops_lwkCrops(KTBL_crops,LWK_crops))
 ;
 
-*display p_sprayAmountHerb, p_sprayInputCostsNotHerb, p_numberSprayPasses;
+p_sprayInputCosts(KTBL_crops,KTBL_yield,"foliarHerb") =
+    sum((LWK_crops,LWK_yield,foliarHerb),
+    p_sprayAmountHerbLWK(LWK_crops,LWK_yield,foliarHerb) * p_herbCosts(foliarHerb)
+    * p_lwkCrops_lwkYield_ktblYield(LWK_crops,LWK_yield,KTBL_yield)
+    * p_ktblCrops_lwkCrops(KTBL_crops,LWK_crops))
+;

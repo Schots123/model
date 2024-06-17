@@ -17,9 +17,6 @@ p_manureAnimalPlace("fattPigs","K2O") = 5.7;
 scalar farmManureAmount Amount of manure accrued on farm annually;
 farmManureAmount = sum(animalBranch, p_animalPlaces(animalBranch) * p_manureAnimalPlace(animalBranch,"Amount"));
 
-scalar manPrice price to export manure;
-manPrice = 15;
-
 parameter p_manureSupply(manAmounts,nutrients) Nutrient supply from manure;
 p_manureSupply(manAmounts,nutrients) = p_manValue(manAmounts) * p_nutrientSupplyFert('Manure, Farm',nutrients);
 
@@ -68,5 +65,3 @@ e_man_balance(years)..
     /p_totLand 
     =L= 170 + v_170Slack(years)
 ;
-
-

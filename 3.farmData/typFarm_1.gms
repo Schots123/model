@@ -8,7 +8,11 @@ set curCrops(KTBL_crops) /
 'Staerkekartoffeln'
 'Winterweizen - Backweizen'
 'Wintergerste - Futtergerste'
-'Brache'
+/;
+
+set curRowCrops(curCrops) /
+'Mais - Silomais'
+'Staerkekartoffeln'
 /;
 
 parameter p_cropData(curCrops,cropAttr)  /
@@ -136,8 +140,6 @@ $ontext
 $offtext
 /;
 
-set curMechan(KTBL_mechanisation) / '102' /;
-
 *alias (cropGroup,cropGroup1);
 
 
@@ -147,7 +149,3 @@ set curMechan(KTBL_mechanisation) / '102' /;
 set animalBranch / milkCows, fattPigs /;
 
 parameter p_animalPlaces(animalBranch) stable places on farm / milkCows 150 /;
-
-scalar newFuelPrice price for fuel in euro per liter /1/;
-
-scalar labPrice price for labour in euro per hour /21/;

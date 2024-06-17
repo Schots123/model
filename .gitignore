@@ -1,2 +1,4 @@
 *.lst
 debug.json
+*.xlsx
+*.gsp
