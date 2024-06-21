@@ -2,6 +2,9 @@
 *  --- Here, the data retrieved from KTBL is manipulated to obtain a farm profit parameter which does depend on the level of manure applied as 
 *        a substitute for mineral fertilizer
 
+scalar newFuelPrice price for fuel in euro per liter /1/;
+scalar labPrice price for labour in euro per hour /21/
+
 $include '2.ktblData/KTBL_inputOptions+Sets.gms'
 $setglobal farmNumber 1
 $include '3.farmData/typFarm_%farmNumber%.gms'
@@ -86,7 +89,7 @@ p_directCostsInt(KTBL_crops,KTBL_system,KTBL_yield,manAmounts)
 *
 p_varCostsNewFuel(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
     $ (sum(fertCategory,p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"maintenance",manAmounts)))
-    = sum (varCostsEle,
+    = sum(varCostsEle,
         p_ktbl_workingStepsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"rest",varCostsEle))
 *calculating out costs for fuel at old price level 
     + p_ktbl_workingStepsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"rest","fuelCons") * newFuelPrice
@@ -94,8 +97,9 @@ p_varCostsNewFuel(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation
 *Costs for each manure application level (file:fertilization.gms)
     + sum((fertCategory,varCostsEle),
         p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,varCostsEle,manAmounts)
-        + p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"FuelCons",manAmounts) * newFuelPrice
-        - p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"FuelCons",manAmounts) * ktblFuelPrice)
+    )
+    + sum(fertCategory,p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"FuelCons",manAmounts) * newFuelPrice)
+    - sum(fertCategory,p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"FuelCons",manAmounts) * ktblFuelPrice)
 ;
 
 option p_varCostsNewFuel:1:6:1 display p_varCostsNewFuel;
@@ -105,6 +109,7 @@ p_varCostsNewFuelInt(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisat
     = p_varCostsNewFuel(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts) * (3/12) * 0.03
 ;
 
+option p_varCostsNewFuelInt:1:6:1 display p_varCostsNewFuelInt;
 *
 *---Fix machine costs
 *
@@ -130,27 +135,15 @@ p_profitPerHaNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisat
     - p_varCostsNewFuel(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
     - p_varCostsNewFuelInt(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
     - p_fixCosts(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts))
-    ,2)
+    - p_ktbl_workingStepsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"rest","time") * labPrice
+    - sum(fertCategory,
+        p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"time",manAmounts)) * labPrice
+    ,3)
 ;
 
 option p_profitPerHaNoPesti:1:6:1 display p_profitPerHaNoPesti;
 
 *
-*  --- Calculation of time requirements without crop protection operations 
-*
-
-parameter p_timeReq(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts);
-
-p_timeReq(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
-    $ (sum(fertType,p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,fertType)))
-    = p_ktbl_workingStepsNoPesti(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,"rest","time")
-    + sum(fertCategory,
-        p_workingStepsEleFert(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,fertCategory,"time",manAmounts))
-;
-
-option p_timeReq:1:6:1 display p_timeReq;
-
-*
 *  --- load profit and time parameter calculations into gdx file
 *
-Execute_Unload '3.farmData/gdxFiles/ktblResults_%farmNumber%.gdx',  p_profitPerHaNoPesti, p_timeReq;
+Execute_Unload '3.farmData/gdxFiles/ktblResults_%farmNumber%.gdx',  p_profitPerHaNoPesti;

@@ -211,7 +211,6 @@ e_dcPestiTechno(years)..
 *
 *  --- Depreciation calculations of technologies 
 *
-scalar AnnualFieldDays / 52 /;
 
 positive variables
     v_deprecSprayer(scenSprayer,years)
@@ -223,16 +222,15 @@ integer variables
 ;
 
 equations 
-    e_SprayerTechno(scenSprayer)
+    e_SprayerTechno(scenSprayer,halfMonth)
     e_deprecTechnoTime(scenSprayer,years)
     e_deprecTechnoHa(scenSprayer,years)
     e_interestTechno(scenSprayer,years)
 *    e_otherCostsTechno(scenSprayer,years)
 ;
 
-e_sprayerTechno(scenSprayer)..
-    sum(curMechan,
-    v_numberSprayer(scenSprayer) * AnnualFieldDays * p_technoFieldDayHours(scenSprayer)) 
+e_sprayerTechno(scenSprayer,halfMonth)..
+    v_numberSprayer(scenSprayer) * fieldDays(halfMonth) * p_technoFieldDayHours(scenSprayer)
     =G=
     sum((curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,years)
     $ (
@@ -243,7 +241,7 @@ e_sprayerTechno(scenSprayer)..
     ),      
     v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
         * p_plotData(curPlots,'size')
-        * p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer)
+        * p_datePestOpTechno(curCrops,KTBL_yield,technology,scenario,scenSprayer,halfMonth)
         * p_technoTimeReq(scenSprayer,KTBL_size,curMechan,KTBL_distance)
     ) 
     / card(years)

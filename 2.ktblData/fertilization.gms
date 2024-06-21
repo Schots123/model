@@ -54,6 +54,7 @@ p_manureSupply(manAmounts,nutrients)
     = p_manValue(manAmounts) * p_nutrientSupplyFert('Manure, Farm',nutrients)
 ;
 
+display p_nutrientSupplyFert;
 display p_manureSupply;
 *
 *  --- Calculation of additional amounts of mineral fertilizer necessary at manure application level 0 m3 due to existence of manure application in KTBL data
@@ -461,8 +462,7 @@ p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,fertType)
 *shall not be calculated    
     $ (p_fertDiff(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,"N") 
     OR p_fertDiff(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,"P2O5")
-    OR (p_fertDiff(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,"K2O")
-    gt p_nutDevAllow("K2O"))
+    OR (p_fertDiff(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,"K2O") gt p_nutDevAllow("K2O"))
     )
     = 0
 ;

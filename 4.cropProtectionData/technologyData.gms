@@ -488,7 +488,7 @@ parameter p_numberSprayPassesLWKScenarios(LWK_crops,LWK_yield,technology,scenari
 'Winterweizen'.'< 70 dt/ha'."spot27m"."FH"."spot27m" 2
 'Winterweizen'.'< 70 dt/ha'."spot27m"."FH"."BA" 2
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."spot6m" 3
-'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."BA" 4
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."BA" 5
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m" 3
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."BA" 3
 'Wintergerste'.'< 70 dt/ha'."spot6m"."FH"."spot6m" 1
@@ -507,12 +507,12 @@ parameter p_numberSprayPassesLWKScenarios(LWK_crops,LWK_yield,technology,scenari
 'Winterroggen & Triticale'.'< 60 dt/ha'."spot6m"."FH"."BA" 3
 'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH"."spot27m" 1
 'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH"."BA" 3
-'Raps'.'alle Ertragsklassen'."spot6m"."FH"."spot6m" 2
+'Raps'.'alle Ertragsklassen'."spot6m"."FH"."spot6m" 1
 'Raps'.'alle Ertragsklassen'."spot6m"."FH"."BA" 4
-'Raps'.'alle Ertragsklassen'."spot27m"."FH"."spot27m" 2
-'Raps'.'alle Ertragsklassen'."spot27m"."FH"."BA" 3
+'Raps'.'alle Ertragsklassen'."spot27m"."FH"."spot27m" 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH"."BA" 4
 'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH"."spot6m" 1
-'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH"."BA" 11
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH"."BA" 12
 'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH"."spot27m" 1
 'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH"."BA" 11
 'Zuckerrüben'.'alle Ertragsklassen'."spot6m"."FH"."spot6m" 3
@@ -530,7 +530,7 @@ parameter p_numberSprayPassesLWKScenarios(LWK_crops,LWK_yield,technology,scenari
 *
 'Winterweizen'.'< 70 dt/ha'."spot6m"."FH+BA"."spot6m" 5
 'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m" 4
-'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH+BA"."spot6m" 9
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH+BA"."spot6m" 8
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m" 6
 'Wintergerste'.'< 70 dt/ha'."spot6m"."FH+BA"."spot6m" 4
 'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m" 4
@@ -542,7 +542,7 @@ parameter p_numberSprayPassesLWKScenarios(LWK_crops,LWK_yield,technology,scenari
 'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+BA"."spot27m" 4
 'Raps'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m" 6
 'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m" 5
-'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m" 12
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m" 13
 'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m" 12
 'Zuckerrüben'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m" 6
 'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m" 6
@@ -596,3 +596,610 @@ parameter p_technology_scenario_scenSprayer(technology,scenario,scenSprayer) /
 "spot6m"."FH+BA"."spot6m" 1
 "spot27m"."FH+BA"."spot27m" 1
 /;
+
+
+
+parameter p_datePestOpTechnoLWK_(LWK_crops,LWK_yield,technology,scenario,scenSprayer,halfMonth) /
+
+$ontext 
+zusätzliche genutzte Quellen: 
+- Getreide Zeitpunkte Anwendungen:
+    1. https://www.yara.de/pflanzenernaehrung/weizen/agronomische-grundsaetze/#:~:text=Wichtigstes%20Ziel%20beim%20Getreideanbau%20ist,gesunden%20gr%C3%BCnen%20Blattmasse%20angestrebt%20werden.
+    2. https://www.isip.de/isip/servlet/resource/blob/158864/b2eab6854d120472a63ebddcf021f565/18-02-getreide-data.pdf
+- Winterraps Zeitpunkte Anwendungen:
+    1. https://www.yara.de/pflanzenernaehrung/raps/agronomische-grundsaetze/
+    2. https://www.nap-pflanzenschutz.de/fileadmin/SITE_MASTER/content/IPS/Integrierter_Pflanzenschutz/Leitlinien_IPS/201111_RL_UFOP_1738_Leitlinie_Raps_final.pdf
+- Kartoffel Zeitpunkt Anwendungen: https://www.isip.de/isip/servlet/resource/blob/307402/a7029ab2b89401c4ff3744310e3a8df5/19-06-kartoffeln-data.pdf
+- Zuckerrübe Zeitpunkt Anwendungen: https://www.isip.de/isip/servlet/resource/blob/158866/c50b95b756770dd93fe1b60570d6e57a/18-05-zuckerrueben-data.pdf
+$offtext
+
+*
+* -------------------- BA
+*
+*KTBL BP 18/19
+'Winterweizen'.'< 70 dt/ha'."BA"."Base"."BA"."OKT2" 1
+'Winterweizen'.'< 70 dt/ha'."BA"."Base"."BA"."APR1" 1
+'Winterweizen'.'< 70 dt/ha'."BA"."Base"."BA"."APR2" 1
+'Winterweizen'.'< 70 dt/ha'."BA"."Base"."BA"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."BA"."Base"."BA"."OKT2" 1
+*Blattherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."BA"."Base"."BA"."MRZ2" 1
+*Blattherbizid 2 & Wachstumsregler 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."BA"."Base"."BA"."APR1" 1
+*Insektizid 1 & Fungizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."BA"."Base"."BA"."APR2" 1
+*Blattherbizid 3 & Wachstumsregler 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."BA"."Base"."BA"."MAI1" 1
+*Fungizid 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."BA"."Base"."BA"."JUN1" 1
+
+*gleich wie Winterweizen
+'Wintergerste'.'< 70 dt/ha'."BA"."Base"."BA"."OKT2" 1
+'Wintergerste'.'< 70 dt/ha'."BA"."Base"."BA"."APR1" 1
+'Wintergerste'.'< 70 dt/ha'."BA"."Base"."BA"."APR2" 1
+'Wintergerste'.'< 70 dt/ha'."BA"."Base"."BA"."JUN1" 1
+
+*zusätzliche Anwendung im Mai1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."BA"."Base"."BA"."OKT2" 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."BA"."Base"."BA"."APR1" 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."BA"."Base"."BA"."APR2" 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."BA"."Base"."BA"."JUN1" 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."BA"."Base"."BA"."MAI1" 1
+
+'Winterroggen & Triticale'.'< 60 dt/ha'."BA"."Base"."BA"."OKT2" 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."BA"."Base"."BA"."APR1" 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."BA"."Base"."BA"."APR2" 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."BA"."Base"."BA"."JUN1" 1
+
+'Winterroggen & Triticale'.'> 60 dt/ha'."BA"."Base"."BA"."OKT2" 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."BA"."Base"."BA"."APR1" 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."BA"."Base"."BA"."APR2" 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."BA"."Base"."BA"."JUN1" 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."BA"."Base"."BA"."MAI1" 1
+
+*1 zusätzliche Anwendung in MAI1
+'Raps'.'alle Ertragsklassen'."BA"."Base"."BA"."AUG2" 1
+'Raps'.'alle Ertragsklassen'."BA"."Base"."BA"."OKT2" 1
+'Raps'.'alle Ertragsklassen'."BA"."Base"."BA"."APR1" 1
+'Raps'.'alle Ertragsklassen'."BA"."Base"."BA"."APR2" 1
+'Raps'.'alle Ertragsklassen'."BA"."Base"."BA"."MAI1" 1
+
+*Blatt- und Bodenherbizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."BA"."Base"."BA"."MAI1" 1
+*Fungizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."BA"."Base"."BA"."MAI2" 1
+*Fungizid 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."BA"."Base"."BA"."JUN1" 1
+*Fungizid 3 & Insektizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."BA"."Base"."BA"."JUN2" 2
+*Fungizid 4
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."BA"."Base"."BA"."JUL1" 1
+*Fungizid 5 & 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."BA"."Base"."BA"."JUL2" 2
+*Fungizid 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."BA"."Base"."BA"."AUG1" 1
+*Fungizid 7
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."BA"."Base"."BA"."AUG2" 1
+*Krautabtötung 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."BA"."Base"."BA"."SEP1" 1
+*Krautabtötung 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."BA"."Base"."BA"."SEP2" 1
+
+*Blattherbizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."BA"."Base"."BA"."MRZ2" 1
+*Blattherbizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."BA"."Base"."BA"."APR2" 1
+*Insektizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."BA"."Base"."BA"."MAI1" 1
+*Blattherbizid 3
+'Zuckerrüben'.'alle Ertragsklassen'."BA"."Base"."BA"."MAI2" 1
+*Fungizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."BA"."Base"."BA"."JUL2" 1
+*Fungizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."BA"."Base"."BA"."AUG1" 1
+
+*Blattherbizid 1
+'Mais'.'alle Ertragsklassen'."BA"."Base"."BA"."APR2" 1
+*Blattherbizid 2
+'Mais'.'alle Ertragsklassen'."BA"."Base"."BA"."MAI1" 1
+
+'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen'."BA"."Base"."BA"."AUG1" 0.5
+
+*
+* -------------------- Scenario FH for SPOT 6m
+*
+*Bodenherbizid 1
+'Winterweizen'.'< 70 dt/ha'."spot6m"."FH"."BA"."OKT2" 1
+*Blattherbizid 1
+'Winterweizen'.'< 70 dt/ha'."spot6m"."FH"."spot6m"."OKT2" 1
+*Blattherbizid 2
+'Winterweizen'.'< 70 dt/ha'."spot6m"."FH"."spot6m"."APR1" 1
+*Wachstumsregler 1 & Insektizid 1
+'Winterweizen'.'< 70 dt/ha'."spot6m"."FH"."BA"."APR2" 1
+*Fungizid 1
+'Winterweizen'.'< 70 dt/ha'."spot6m"."FH"."BA"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."BA"."OKT2" 1
+*Blattherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."spot6m"."MRZ2" 1
+*Blattherbizid 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."spot6m"."APR1" 1
+*Wachstumsregler 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."BA"."APR1" 1
+*Insektizid 1 & Fungizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."BA"."APR2" 1
+*Blattherbizid 3
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."spot6m"."MAI1" 1
+*Wachstumsregler 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."BA"."MAI1" 1
+*Fungizid 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."BA"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot6m"."FH"."BA"."OKT2" 1
+*Blattherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot6m"."FH"."spot6m"."APR1" 1
+*Wachstumsregler 1
+'Wintergerste'.'< 70 dt/ha'."spot6m"."FH"."BA"."APR2" 1
+*Fungizid 1
+'Wintergerste'.'< 70 dt/ha'."spot6m"."FH"."BA"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."BA"."OKT2" 1
+*Blattherbizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."spot6m"."APR1" 1
+*Wachstumsregler 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."BA"."APR1" 1
+*Wachstumsregler 2 & Fungizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."BA"."APR2" 1
+*Blattherbizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."spot6m"."MAI1" 1
+*Fungizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH"."BA"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot6m"."FH"."BA"."OKT2" 1
+*Blattherbizd 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot6m"."FH"."spot6m"."APR1" 1
+*Wachstumsregler 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot6m"."FH"."BA"."APR2" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot6m"."FH"."BA"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot6m"."FH"."BA"."OKT2" 1
+*Blattherbizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot6m"."FH"."spot6m"."APR1" 1
+*Wachstumsregler 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot6m"."FH"."BA"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot6m"."FH"."BA"."APR2" 1
+*Blattherbizid 2
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot6m"."FH"."spot6m"."MAI1" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot6m"."FH"."BA"."JUN1" 1
+
+*Bodenherbizid 1
+'Raps'.'alle Ertragsklassen'."spot6m"."FH"."BA"."AUG2" 1
+*Wachstumsregler 1
+'Raps'.'alle Ertragsklassen'."spot6m"."FH"."BA"."OKT2" 1
+*Blattherbizid 1
+'Raps'.'alle Ertragsklassen'."spot6m"."FH"."spot6m"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Raps'.'alle Ertragsklassen'."spot6m"."FH"."BA"."APR2" 1
+*Insektizid 2
+'Raps'.'alle Ertragsklassen'."spot6m"."FH"."BA"."MAI1" 1
+
+*Blattherbizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH"."spot6m"."MAI1" 1
+*Bodenherbizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH"."BA"."MAI1" 1
+*Fungizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH"."BA"."MAI2" 1
+*Fungizid 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH"."BA"."JUN1" 1
+*Fungizid 3 & Insektizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH"."BA"."JUN2" 2
+*Fungizid 4
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH"."BA"."JUL1" 1
+*Fungizid 5 & 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH"."BA"."JUL2" 2
+*Fungizid 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH"."BA"."AUG1" 1
+*Fungizid 7
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH"."BA"."AUG2" 1
+*Krautabtötung 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH"."BA"."SEP1" 1
+*Krautabtötung 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH"."BA"."SEP2" 1
+
+*Blattherbizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot6m"."FH"."spot6m"."MRZ2" 1
+*Blattherbizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot6m"."FH"."spot6m"."APR2" 1
+*Insektizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot6m"."FH"."BA"."MAI1" 1
+*Blattherbizid 3
+'Zuckerrüben'.'alle Ertragsklassen'."spot6m"."FH"."spot6m"."MAI2" 1
+*Fungizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot6m"."FH"."BA"."JUL2" 1
+*Fungizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot6m"."FH"."BA"."AUG1" 1
+
+*Blattherbizid 1
+'Mais'.'alle Ertragsklassen'."spot6m"."FH"."spot6m"."APR2" 1
+*Blattherbizid 2
+'Mais'.'alle Ertragsklassen'."spot6m"."FH"."spot6m"."MAI1" 1
+
+'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen'."spot6m"."FH"."spot6m"."AUG1" 0.5
+
+
+
+*
+* -------------------- Scenario FH+BA for SPOT 6m
+*
+*Boden- & Blattherbizid 1
+'Winterweizen'.'< 70 dt/ha'."spot6m"."FH+BA"."spot6m"."OKT2" 2
+*Blattherbizid 2
+'Winterweizen'.'< 70 dt/ha'."spot6m"."FH+BA"."spot6m"."APR1" 1
+*Wachstumsregler & Insektizid 1
+'Winterweizen'.'< 70 dt/ha'."spot6m"."FH+BA"."spot6m"."APR2" 1
+*Fungizid 1
+'Winterweizen'.'< 70 dt/ha'."spot6m"."FH+BA"."spot6m"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH+BA"."spot6m"."OKT2" 1
+*Blattherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH+BA"."spot6m"."MRZ2" 1
+*Blattherbizid 2 & Wachstumsregler 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH+BA"."spot6m"."APR1" 2
+*Insektizid 1 & Fungizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH+BA"."spot6m"."APR2" 1
+*Blattherbizid 3 & Wachstumsregler 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH+BA"."spot6m"."MAI1" 2
+*Fungizid 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH+BA"."spot6m"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot6m"."FH+BA"."spot6m"."OKT2" 1
+*Blattherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot6m"."FH+BA"."spot6m"."APR1" 1
+*Wachstumsregler 1
+'Wintergerste'.'< 70 dt/ha'."spot6m"."FH+BA"."spot6m"."APR2" 1
+*Fungizid 1
+'Wintergerste'.'< 70 dt/ha'."spot6m"."FH+BA"."spot6m"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH+BA"."spot6m"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH+BA"."spot6m"."APR1" 2
+*Wachstumsregler 2 & Fungizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH+BA"."spot6m"."APR2" 2
+*Blattherbizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH+BA"."spot6m"."MAI1" 1
+*Fungizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot6m"."FH+BA"."spot6m"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot6m"."FH+BA"."spot6m"."OKT2" 1
+*Blattherbizd 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot6m"."FH+BA"."spot6m"."APR1" 1
+*Wachstumsregler 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot6m"."FH+BA"."spot6m"."APR2" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot6m"."FH+BA"."spot6m"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot6m"."FH+BA"."spot6m"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot6m"."FH+BA"."spot6m"."APR1" 2
+*Wachstumsregler 2 & Insektizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot6m"."FH+BA"."spot6m"."APR2" 1
+*Blattherbizid 2
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot6m"."FH+BA"."spot6m"."MAI1" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot6m"."FH+BA"."spot6m"."JUN1" 1
+
+*Bodenherbizid 1
+'Raps'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."AUG2" 1
+*Wachstumsregler 1
+'Raps'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."OKT2" 1
+*Blattherbizid 1
+'Raps'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Raps'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."APR2" 2
+*Insektizid 2
+'Raps'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."MAI1" 1
+
+*Blattherbizid 1 und Bodenherbizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."MAI1" 2
+*Fungizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."MAI2" 1
+*Fungizid 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."JUN1" 1
+*Fungizid 3 & Insektizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."JUN2" 2
+*Fungizid 4
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."JUL1" 1
+*Fungizid 5 & 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."JUL2" 2
+*Fungizid 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."AUG1" 1
+*Fungizid 7
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."AUG2" 1
+*Krautabtötung 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."SEP1" 1
+*Krautabtötung 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."SEP2" 1
+
+*Blattherbizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."MRZ2" 1
+*Blattherbizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."APR2" 1
+*Insektizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."MAI1" 1
+*Blattherbizid 3
+'Zuckerrüben'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."MAI2" 1
+*Fungizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."JUL2" 1
+*Fungizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."AUG1" 1
+
+*Blattherbizid 1
+'Mais'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."APR2" 1
+*Blattherbizid 2
+'Mais'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."MAI1" 1
+
+'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen'."spot6m"."FH+BA"."spot6m"."AUG1" 0.5
+
+
+
+*
+* -------------------- Scenario FH for SPOT 27m
+*
+*Blattherbizid 1 & Bodenherbizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH"."spot27m"."OKT2" 1
+*Blattherbizid 2
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH"."spot27m"."APR1" 1
+*Wachstumsregler 1 & Insektizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH"."BA"."APR2" 1
+*Fungizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH"."BA"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."BA"."OKT2" 1
+*Blattherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."MRZ2" 1
+*Blattherbizid 2 & Wachstumsregler 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."APR1" 1
+*Insektizid 1 & Fungizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."BA"."APR2" 1
+*Blattherbizid 3 & Wachstumsregler 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."MAI1" 1
+*Fungizid 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."BA"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH"."BA"."OKT2" 1
+*Blattherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH"."spot27m"."APR1" 1
+*Wachstumsregler 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH"."BA"."APR2" 1
+*Fungizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH"."BA"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."BA"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."APR1" 1
+*Wachstumsregler 2 & Fungizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."BA"."APR2" 1
+*Blattherbizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."MAI1" 1
+*Fungizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."BA"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH"."BA"."OKT2" 1
+*Blattherbizd 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH"."spot27m"."APR1" 1
+*Wachstumsregler 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH"."BA"."APR2" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH"."BA"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH"."BA"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH"."spot27m"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH"."BA"."APR2" 1
+*Blattherbizid 2
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH"."spot27m"."MAI1" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH"."BA"."JUN1" 1
+
+*Bodenherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH"."BA"."AUG2" 1
+*Wachstumsregler 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH"."BA"."OKT2" 1
+*Blattherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH"."BA"."APR2" 1
+*Insektizid 2
+'Raps'.'alle Ertragsklassen'."spot27m"."FH"."BA"."MAI1" 1
+
+*Blattherbizid 1 und Bodenherbizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."MAI1" 1
+*Fungizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH"."BA"."MAI2" 1
+*Fungizid 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH"."BA"."JUN1" 1
+*Fungizid 3 & Insektizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH"."BA"."JUN2" 2
+*Fungizid 4
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH"."BA"."JUL1" 1
+*Fungizid 5 & 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH"."BA"."JUL2" 2
+*Fungizid 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH"."BA"."AUG1" 1
+*Fungizid 7
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH"."BA"."AUG2" 1
+*Krautabtötung 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH"."BA"."SEP1" 1
+*Krautabtötung 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH"."BA"."SEP2" 1
+
+*Blattherbizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."MRZ2" 1
+*Blattherbizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."APR2" 1
+*Insektizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH"."BA"."MAI1" 1
+*Blattherbizid 3
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."MAI2" 1
+*Fungizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH"."BA"."JUL2" 1
+*Fungizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH"."BA"."AUG1" 1
+
+*Blattherbizid 1
+'Mais'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."APR2" 1
+*Blattherbizid 2
+'Mais'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."MAI1" 1
+
+'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."AUG1" 0.5
+
+
+
+*
+* -------------------- Scenario FH+BA for SPOT 27m
+*
+*Blattherbizid 1 & Bodenherbizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."OKT2" 1
+*Blattherbizid 2
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."APR1" 1
+*Wachstumsregler 1 & Insektizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."APR2" 1
+*Fungizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."OKT2" 1
+*Blattherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."MRZ2" 1
+*Blattherbizid 2 & Wachstumsregler 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."APR1" 1
+*Insektizid 1 & Fungizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."APR2" 1
+*Blattherbizid 3 & Wachstumsregler 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."MAI1" 1
+*Fungizid 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."OKT2" 1
+*Blattherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."APR1" 1
+*Wachstumsregler 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."APR2" 1
+*Fungizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."APR1" 1
+*Wachstumsregler 2 & Fungizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."APR2" 1
+*Blattherbizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."MAI1" 1
+*Fungizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+BA"."spot27m"."OKT2" 1
+*Blattherbizd 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+BA"."spot27m"."APR1" 1
+*Wachstumsregler 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+BA"."spot27m"."APR2" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+BA"."spot27m"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."APR2" 1
+*Blattherbizid 2
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."MAI1" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."JUN1" 1
+
+*Bodenherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."AUG2" 1
+*Wachstumsregler 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."OKT2" 1
+*Blattherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."APR2" 1
+*Insektizid 2
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."MAI1" 1
+
+*Blattherbizid 1 und Bodenherbizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."MAI1" 1
+*Fungizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."MAI2" 1
+*Fungizid 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."JUN1" 1
+*Fungizid 3 & Insektizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."JUN2" 2
+*Fungizid 4
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."JUL1" 1
+*Fungizid 5 & 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."JUL2" 2
+*Fungizid 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."AUG1" 1
+*Fungizid 7
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."AUG2" 1
+*Krautabtötung 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."SEP1" 1
+*Krautabtötung 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."SEP2" 1
+
+*Blattherbizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."MRZ2" 1
+*Blattherbizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."APR2" 1
+*Insektizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."BA"."MAI1" 1
+*Blattherbizid 3
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."MAI2" 1
+*Fungizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."BA"."JUL2" 1
+*Fungizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."BA"."AUG1" 1
+
+*Blattherbizid 1
+'Mais'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."APR2" 1
+*Blattherbizid 2
+'Mais'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."MAI1" 1
+
+'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."AUG1" 0.5
+/;
+
+parameter p_datePestOpTechno(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,halfMonth);
+
+p_datePestOpTechno(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,halfMonth) =
+    sum((LWK_crops,LWK_yield),
+    p_datePestOpTechnoLWK_(LWK_crops,LWK_yield,technology,scenario,scenSprayer,halfMonth)
+    * p_lwkCrops_lwkYield_ktblYield(LWK_crops,LWK_yield,KTBL_yield)
+    * p_ktblCrops_lwkCrops(KTBL_crops,LWK_crops)
+    )
+;

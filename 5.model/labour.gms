@@ -10,20 +10,7 @@ equations
 
 e_labReq(years)..
   v_labReq(years) =E=
-  sum((curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
-    $ (
-      curPlots_ktblSize(curPlots,KTBL_size) 
-      AND curPlots_ktblDistance(curPlots,KTBL_distance) 
-      AND curPlots_ktblYield(curPlots,KTBL_yield) 
-      AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
-      AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
-    ),
-    v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
-      * p_plotData(curPlots,'size')
-      * p_timeReq(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
-  )
-*time for spraying operation  
-  + sum((curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer)
+  sum((curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer)
     $ (
       curPlots_ktblSize(curPlots,KTBL_size) 
       AND curPlots_ktblDistance(curPlots,KTBL_distance)

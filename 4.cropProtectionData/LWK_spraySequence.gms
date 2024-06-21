@@ -151,12 +151,12 @@ set soilHerb(herbProduct) /
 'Gamit 36 AMT'
 'Bandur'
 'Carmina 640'
+'Butisan Gold'
+'Boxer'
 /;
 
 set foliarHerb(herbProduct) /
 *Goltix Titan und Butisan Gold wurden in Dücker et al 2022 gespottet 
-*Butisan Gold könnte auch noch als Kontaktherbizid durchgehen 
-'Butisan Gold'
 *Goltix Titan ist auch Mischherbizid mit Boden und Kontaktwirkung, ein Wirkstoff hat aber nur Bodenwirkung
 'Goltix Titan'
 'Sumimax'
@@ -166,7 +166,6 @@ set foliarHerb(herbProduct) /
 'Axial 50'
 'Ariane C'
 'Starane XL'
-'Boxer'
 'Traxos'
 'Niantic'
 'Atlantis Flex'
@@ -355,3 +354,50 @@ p_sprayInputCosts(KTBL_crops,KTBL_yield,"foliarHerb") =
     * p_lwkCrops_lwkYield_ktblYield(LWK_crops,LWK_yield,KTBL_yield)
     * p_ktblCrops_lwkCrops(KTBL_crops,LWK_crops))
 ;
+
+
+scalar AnnualFieldDays / 52 /;
+
+set halfMonth /
+    MRZ1
+    MRZ2
+    APR1
+    APR2
+    MAI1
+    MAI2
+    JUN1
+    JUN2
+    JUL1
+    JUL2
+    AUG1
+    AUG2
+    SEP1
+    SEP2
+    OKT1
+    OKT2
+    NOV1
+    NOV2
+/;
+
+*available field days for field operations including crop protection, mechanical weed control, mineral fertilizer application, seedbed preperation...
+*according to Betriebsplanung Landwirtschaft 2018/2019 for climate region 6 including regions of NRW such as Kleve, Borken and Coesfeld for low soil resistance
+parameter fieldDays(halfMonth) /
+    MRZ1 1
+    MRZ2 4
+    APR1 8
+    APR2 11
+    MAI1 11
+    MAI2 12
+    JUN1 11
+    JUN2 11
+    JUL1 12
+    JUL2 12
+    AUG1 12
+    AUG2 12
+    SEP1 12
+    SEP2 12
+    OKT1 11
+    OKT2 10
+    NOV1 8
+    NOV2 4
+/;

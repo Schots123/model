@@ -85,19 +85,16 @@ curMechan("230") $ (p_totLand ge 250) = yes;
 *
 parameters 
   p_profitPerHaNoPesti(KTBL_Crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
-  p_timeReq(KTBL_crops,KTBL_system,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance,manAmounts)
 ;
 
 $Gdxin '3.farmData/gdxFiles/ktblResults_%farmNumber%.gdx'
 $load p_profitPerHaNoPesti=p_profitPerHaNoPesti
-$load p_timeReq=p_timeReq
 $gdxin
 
 option 
     p_profitPerHaNoPesti:1:6:1
-    p_timeReq:1:6:1
 ;
-*display p_profitPerHaNoPesti, p_timeReq;
+*display p_profitPerHaNoPesti;
 
 *
 *  --- declare objective variable and equation
@@ -291,10 +288,13 @@ parameters
   crops_year_report(*,curCrops,years) model decision for crops grown as sum of hectares 
   annProfitAvg(*) average annual profit farm
 *  totProfitDiff(*) profit difference between scenario and baseline
-  dcPestiAvg(*) average direct costs for pesticides 
-  deprecAvg(*,scenSprayer) average depreciation of novel technology
-  numberSprayer(*,scenSprayer) number of spot sprayers required 
-  numberPassages(curCrops,*,scenSprayer,years)
+  numberSprayer(*,scenSprayer) number of sprayers required for the respective scenario
+  numberPassages(curCrops,*,scenSprayer,years) 
+  labCostsSprayerAvg(*) average annual labor costs for pesticide applications 
+  deprecSprayerAvg(*,scenSprayer) average annual depreciation of sprayer
+  dcPestiAvg(*) average annual direct costs for pesticides 
+  varCostsSprayerAvg(*) average annual variable machine costs for sprayer utilizations
+  fixCostsSprayerAvg(*) average annual fixed costs for the sprayer technology
 ;
 
 model TechnoBase /
@@ -441,5 +441,4 @@ model TechnoSST_FH+Bonus /
 
 solve TechnoSST_FH+Bonus using MIP maximizing v_obje;
   $$batinclude '6.Report_Writing/report_writing.gms' "'SST_FH+Bonus'"
-
 $offtext
