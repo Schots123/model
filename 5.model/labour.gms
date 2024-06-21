@@ -18,7 +18,7 @@ e_labReq(years)..
       AND p_technology_scenario(technology,scenario)
     ), 
     v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
-      * p_plotData(curPlots,'size')
+      * p_plotData(curPlots,'size') * sizeFactor
       * p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer)
       * p_technoTimeReq(scenSprayer,KTBL_size,curMechan,KTBL_distance)
   )

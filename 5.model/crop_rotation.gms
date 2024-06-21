@@ -20,7 +20,7 @@ e_maxShares(curCrops,years) $ p_cropData(curCrops,"maxShare")..
     AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
   ),
   v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
-  * p_plotData(curPlots,"size"))
+  * p_plotData(curPlots,"size") * sizeFactor)
 =L= 
   (p_totArabLand * p_cropData(curCrops,"maxShare") / 100)
   + v_devShares(curCrops,years)

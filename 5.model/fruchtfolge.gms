@@ -16,8 +16,8 @@ scalar  p_totGreenLand total green land farm endowment;
 scalar  p_shareGreenLand share of green land relative to total land endowment of farm;
 *scalar  p_grassLandExempt defines whether farm has more than seventyfive percent green land and arable land is below thirty hectares or not, value assignment follows subsequently;
 
-p_totLand = sum(curPlots, p_plotData(curPlots,"size"));
-p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size"));
+p_totLand = sum(curPlots, p_plotData(curPlots,"size") * sizeFactor);
+p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * sizeFactor);
 p_totGreenLand = p_totLand - p_totArabLand;
 p_shareGreenLand = p_totGreenLand / p_totLand;
 *p_grassLandExempt $((p_shareGreenLand > 0.75) $(p_totArabLand < 30)) = 1;
@@ -150,7 +150,7 @@ e_profit(years)..
       AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
     ),    
     v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
-      * p_plotData(curPlots,'size')
+      * p_plotData(curPlots,'size') * sizeFactor
       * p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
     )
 *direct costs for plant protection products
@@ -218,6 +218,7 @@ equations
   e_scenSST_FH
   e_scenSST_FH_BA
   e_scenSST_FH_Bonus
+  e_scenSST_FH_Bonus_BA
 ;
 
 e_scenBase..
@@ -242,8 +243,7 @@ e_scenSST_FH..
         AND curPlots_ktblDistance(curPlots,KTBL_distance)
         AND curPlots_ktblYield(curPlots,KTBL_yield)
         AND p_technology_scenario_scenSprayer(technology,scenario,scenSprayer)
-        AND ((sameas(scenario,"Base"))
-        OR (sameas(scenario,"FH+BA")))
+        AND (not(sameas(scenario,"FH")))
     ),
     v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
     )
@@ -276,6 +276,25 @@ e_scenSST_FH_Bonus..
         AND ((sameas(scenario,"Base"))
           OR (sameas(scenario,"FH"))
           OR (sameas(scenario,"FH+BA")))
+          OR (sameas(scenario,"FH+Bonus+BA"))
+    ),
+    v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
+    )
+    =E=
+    0
+;
+
+e_scenSST_FH_Bonus_BA..
+    sum((curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
+    $ (
+        curPlots_ktblSize(curPlots,KTBL_size)
+        AND curPlots_ktblDistance(curPlots,KTBL_distance)
+        AND curPlots_ktblYield(curPlots,KTBL_yield)
+        AND p_technology_scenario_scenSprayer(technology,scenario,scenSprayer)
+        AND ((sameas(scenario,"Base"))
+          OR (sameas(scenario,"FH"))
+          OR (sameas(scenario,"FH+BA")))
+          OR (sameas(scenario,"FH+Bonus"))
     ),
     v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
     )
@@ -292,9 +311,12 @@ parameters
   numberPassages(curCrops,*,scenSprayer,years) 
   labCostsSprayerAvg(*) average annual labor costs for pesticide applications 
   deprecSprayerAvg(*,scenSprayer) average annual depreciation of sprayer
+  yearsSprayerUsedAvg(*,scenSprayer) average amount of years until sprayer repurchase
   dcPestiAvg(*) average annual direct costs for pesticides 
   varCostsSprayerAvg(*) average annual variable machine costs for sprayer utilizations
   fixCostsSprayerAvg(*) average annual fixed costs for the sprayer technology
+
+  dcPestiCrops(*,curCrops,KTBL_yield,pestType,years)
 ;
 
 model TechnoBase /
@@ -334,6 +356,7 @@ solve TechnoBase using MIP maximizing v_obje;
   $$batinclude '6.Report_Writing/report_writing.gms' "'Base'"
 
 
+
 model TechnoSST_FH /
   e_profit
   e_totProfit
@@ -341,7 +364,6 @@ model TechnoSST_FH /
 *crop_protection.gms
   e_cropTechnoPlot1
   e_cropTechnoPlot2
-  e_cropTechnoPlot3
   e_scenSST_FH
   e_dcPestiTechno
   e_SprayerTechno
@@ -370,6 +392,8 @@ model TechnoSST_FH /
 solve TechnoSST_FH using MIP maximizing v_obje;
   $$batinclude '6.Report_Writing/report_writing.gms' "'SST_FH'"
 
+
+
 model TechnoSST_FH_BA /
   e_profit
   e_totProfit
@@ -377,7 +401,7 @@ model TechnoSST_FH_BA /
 *crop_protection.gms
   e_cropTechnoPlot1
   e_cropTechnoPlot2
-*  e_cropTechnoPlot3
+  e_cropTechnoPlot3
   e_scenSST_FH_BA
   e_dcPestiTechno
   e_SprayerTechno
@@ -406,8 +430,9 @@ model TechnoSST_FH_BA /
 solve TechnoSST_FH_BA using MIP maximizing v_obje;
   $$batinclude '6.Report_Writing/report_writing.gms' "'SST_FH+BA'"
 
-$ontext
-model TechnoSST_FH+Bonus /
+
+
+model TechnoSST_FH_Bonus /
   e_profit
   e_totProfit
   e_obje
@@ -439,6 +464,43 @@ model TechnoSST_FH+Bonus /
   e_labReq
 /;
 
-solve TechnoSST_FH+Bonus using MIP maximizing v_obje;
+solve TechnoSST_FH_Bonus using MIP maximizing v_obje;
   $$batinclude '6.Report_Writing/report_writing.gms' "'SST_FH+Bonus'"
-$offtext
+
+
+
+model TechnoSST_FH_Bonus_BA /
+  e_profit
+  e_totProfit
+  e_obje
+*crop_protection.gms
+  e_cropTechnoPlot1
+  e_cropTechnoPlot2
+  e_cropTechnoPlot3
+  e_scenSST_FH_Bonus_BA
+  e_dcPestiTechno
+  e_SprayerTechno
+  e_deprecTechnoTime
+  e_deprecTechnoHa
+  e_interestTechno
+  e_fixCostsPestiTechno
+  e_varCostsPestiTechno
+*crop_rotation.gms
+  e_maxShares
+  e_oneCropPlot
+*fertilizer_ordinance.gms
+  e_manureUse
+  e_man_balance
+  e_170_avg
+*gaec.gms
+  e_preCropSeq_1
+  e_preCropSeq_2
+  e_gaec7_1
+  e_gaec7_2
+  e_gaec8
+*labour.gms
+  e_labReq
+/;
+
+solve TechnoSST_FH_Bonus_BA using MIP maximizing v_obje;
+  $$batinclude '6.Report_Writing/report_writing.gms' "'SST_FH+Bonus+BA'"

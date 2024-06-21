@@ -74,7 +74,7 @@ e_gaec7_1(mainCropGroup,years)
   )..
   sum(curPlots,
     v_binRepcropPlot_1(curPlots,mainCropGroup,years) 
-    * p_plotData(curPlots,"size"))
+    * p_plotData(curPlots,"size") * sizeFactor)
   + v_devGaec7_1(years)
   =L=
   sum((curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
@@ -85,7 +85,7 @@ e_gaec7_1(mainCropGroup,years)
     AND cropCropGroup(curCrops,mainCropGroup) AND (not(mainCropGroupExempt(mainCropGroup)))
   ),
   v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
-  * p_plotData(curPlots,"size")) * 0.66
+  * p_plotData(curPlots,"size") * sizeFactor) * 0.66
 ;
 $ontext
   the left hand side can't take lower values than the actual amount of hectare on which one crop was grown in 2 consective years 
@@ -127,7 +127,7 @@ e_gaec7_2(mainCropGroup,years)
   )..
   sum(curPlots,
     v_binRepCropPlot_2(curPlots,mainCropGroup,years) 
-    * p_plotData(curPlots,"size")) 
+    * p_plotData(curPlots,"size") * sizeFactor) 
   + v_devGaec7_2(years) 
   =L=
   0
@@ -159,6 +159,6 @@ e_gaec8(years)
       AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
   ),
   v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
-    * p_plotData(curPlots,"size"))
+    * p_plotData(curPlots,"size") * sizeFactor)
   =L= p_totArabLand - (0.04 * p_totArabLand) + v_devGaec8(years)
 ;  

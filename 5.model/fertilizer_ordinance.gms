@@ -42,7 +42,7 @@ e_manureUse(years)..
       AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
       ),
     v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
-    * p_plotData(curPlots,"size")
+    * p_plotData(curPlots,"size") * sizeFactor
     * p_manValue(manAmounts))
 ;
 
@@ -60,7 +60,7 @@ e_man_balance(years)..
       AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
       ),
     v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
-    * p_plotData(curPlots,"size")
+    * p_plotData(curPlots,"size") * sizeFactor
     * p_manureSupply(manAmounts,"N"))
     /p_totLand 
     =L= 170 + v_170Slack(years)

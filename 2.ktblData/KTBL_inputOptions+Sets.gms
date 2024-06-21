@@ -20,6 +20,31 @@ set KTBL_crops /
 'Zuckerrueben' 
 /;
 
+set KTBL_rowCrops(KTBL_crops) /
+'Mais - Corn-Cob-Mix' 
+'Mais - Koernermais' 
+'Mais - Silomais' 
+'Speisekartoffeln' 
+'Staerkekartoffeln' 
+'Zuckerrueben'
+/;
+
+set KTBL_nonRowCrops(KTBL_crops) /
+'Ackergras - Anwelksilage'
+'Ackergras - Bodenheu'
+'Dauergruenland, grasbetont - Anwelksilage'
+'Dauergruenland, grasbetont - Bodenheu'
+'Wintergerste - Futtergerste' 
+'Winterraps (Rapsoel)'
+'Winterraps' 
+'Winterroggen - Korn und Stroh (thermische Nutzung)' 
+'Winterroggen - Mahl- und Brotroggen' 
+'Wintertriticale - Futtertriticale' 
+'Wintertriticale - Korn und Stroh (thermische Nutzung)' 
+'Winterweizen - Backweizen' 
+'Winterweizen - Korn und Stroh (thermische Nutzung)'
+/;
+
 set KTBL_system /
 'Ballen'
 'Haecksler'

@@ -354,9 +354,7 @@ p_sprayInputCosts(KTBL_crops,KTBL_yield,"foliarHerb") =
     * p_lwkCrops_lwkYield_ktblYield(LWK_crops,LWK_yield,KTBL_yield)
     * p_ktblCrops_lwkCrops(KTBL_crops,LWK_crops))
 ;
-
-
-scalar AnnualFieldDays / 52 /;
+option p_sprayInputCosts:1:2:1 display p_sprayInputCosts;
 
 set halfMonth /
     MRZ1
