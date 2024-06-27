@@ -16,8 +16,8 @@ scalar  p_totGreenLand total green land farm endowment;
 scalar  p_shareGreenLand share of green land relative to total land endowment of farm;
 *scalar  p_grassLandExempt defines whether farm has more than seventyfive percent green land and arable land is below thirty hectares or not, value assignment follows subsequently;
 
-p_totLand = sum(curPlots, p_plotData(curPlots,"size") * sizeFactor);
-p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * sizeFactor);
+p_totLand = sum(curPlots, p_plotData(curPlots,"size"));
+p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size"));
 p_totGreenLand = p_totLand - p_totArabLand;
 p_shareGreenLand = p_totGreenLand / p_totLand;
 *p_grassLandExempt $((p_shareGreenLand > 0.75) $(p_totArabLand < 30)) = 1;
@@ -79,7 +79,6 @@ curMechan("120") $ (p_totLand ge 85 AND p_totLand lt 105) = yes;
 curMechan("120") $ (p_totLand ge 105 AND p_totLand lt 135) = yes;
 curMechan("200") $ (p_totLand ge 135 AND p_totLand lt 250) = yes;
 curMechan("230") $ (p_totLand ge 250) = yes;
-
 *
 *  --- load farm individual ktbl data (processed) into model
 *
@@ -128,6 +127,11 @@ Equations
 ;
 
 *
+*  --- include data for the sensitivity analysis
+*
+$include '4.cropProtectionData/senAnalysisData.gms'
+
+*
 *  --- include model files restricting on-farm decisions
 *
 $include '5.model/crop_protection.gms'
@@ -150,7 +154,7 @@ e_profit(years)..
       AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
     ),    
     v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
-      * p_plotData(curPlots,'size') * sizeFactor
+      * p_plotData(curPlots,"size") * farmSizeVar
       * p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
     )
 *direct costs for plant protection products
@@ -180,35 +184,6 @@ e_obje..
     - sum(years,v_devGaec8(years) * M)
 ;
 
-*
-*  --- define upper bounds for slack variables
-*
-v_devShares.up(curCrops,years) = p_totArabLand;
-v_devOneCrop.up(curPlots,years) = 1;
-
-if (card(curPlots)<30,
-    option optCR=0.03;
-  elseif card(curPlots)<50, 
-    option optCR=0.02;
-  else 
-    option optCR=0.04;
-);
-*option optCR specifies a relative termination tolerance for use in solving MIP problems 
-*solver stops when proportional difference between solution found and best theoretical objective function
-*is guaranteed to be smaller than optcr 
-
-*
-*  --- introducing sets for sensitivity analysis for technology parameters 
-*
-sets 
-    efficiencyStep /effStep0*effStep1/
-    capacStep /capacStep0*capacStep0/
-    pesticideTax /tax0*tax0/
-;
-
-parameter p_totProfitLevelBase Profit in baseline to compare with results with new technology;
-
-p_totProfitLevelBase = 0;
 
 *
 * --- Restrictions to allow defined scenarios for each model separately 
@@ -303,22 +278,41 @@ e_scenSST_FH_Bonus_BA..
 ;
 
 parameters 
-  arabLandUsed(*,years) cultivated arable land to grow crops 
-  crops_year_report(*,curCrops,years) model decision for crops grown as sum of hectares 
-  annProfitAvg(*) average annual profit farm
+  arabLandUsed(*,*,*,*) cultivated arable land to grow crops 
+  crops_year_report(*,*,*,*,curCrops) model decision for crops grown as sum of hectares 
+  annProfitAvg(*,*,*,*) average annual profit farm
 *  totProfitDiff(*) profit difference between scenario and baseline
-  numberSprayer(*,scenSprayer) number of sprayers required for the respective scenario
-  numberPassages(curCrops,*,scenSprayer,years) 
-  labCostsSprayerAvg(*) average annual labor costs for pesticide applications 
-  deprecSprayerAvg(*,scenSprayer) average annual depreciation of sprayer
-  yearsSprayerUsedAvg(*,scenSprayer) average amount of years until sprayer repurchase
-  dcPestiAvg(*) average annual direct costs for pesticides 
-  varCostsSprayerAvg(*) average annual variable machine costs for sprayer utilizations
-  fixCostsSprayerAvg(*) average annual fixed costs for the sprayer technology
+  numberSprayer(*,*,*,*,scenSprayer) number of sprayers required for the respective scenario
+*  numberPassages(curCrops,*,scenSprayer,years) 
+  labCostsSprayerAvg(*,*,*,*) average annual labor costs for pesticide applications 
+  deprecSprayerAvg(*,*,*,*,scenSprayer) average annual depreciation of sprayer
+  yearsSprayerUsedAvg(*,*,*,*,scenSprayer) average amount of years until sprayer repurchase
+  dcPestiAvg(*,*,*,*) average annual direct costs for pesticides 
+  varCostsSprayerAvg(*,*,*,*) average annual variable machine costs for sprayer utilizations
+  fixCostsSprayerAvg(*,*,*,*) average annual fixed costs for the sprayer technology
 
-  dcPestiCrops(*,curCrops,KTBL_yield,pestType,years)
+*  dcPestiCrops(*,*,*,*,curCrops,KTBL_yield,pestType,years)
 ;
 
+
+*
+*  --- define upper bounds for slack variables
+*
+v_devShares.up(curCrops,years) = p_totArabLand;
+v_devOneCrop.up(curPlots,years) = 1;
+
+if (card(curPlots)<30,
+    option optCR=0.05;
+  elseif card(curPlots)<50, 
+    option optCR=0.052;
+  else 
+    option optCR=0.04;
+);
+*option optCR specifies a relative termination tolerance for use in solving MIP problems 
+*solver stops when proportional difference between solution found and best theoretical objective function
+*is guaranteed to be smaller than optcr 
+
+$ontext
 model TechnoBase /
   e_profit
   e_totProfit
@@ -352,10 +346,32 @@ model TechnoBase /
   e_labReq
 /;
 
-solve TechnoBase using MIP maximizing v_obje;
-  $$batinclude '6.Report_Writing/report_writing.gms' "'Base'"
 
+loop(farmSizeStep,
+  farmSizeVar = 1;
+  farmSizeVar = p_farmSizeFactor(farmSizeStep);
 
+*parameter reformulations required because of parameter variations
+  p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
+  p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
+  p_totGreenLand = p_totLand - p_totArabLand;
+  p_shareGreenLand = p_totGreenLand / p_totLand;
+  curMechan("45") $ (p_totLand lt 30) = yes;
+  curMechan("67") $ (p_totLand ge 30 AND p_totLand lt 45) = yes;
+  curMechan("83") $ (p_totLand ge 45 AND p_totLand lt 65) = yes;
+  curMechan("102") $ (p_totLand ge 65 AND p_totLand lt 85) = yes;
+  curMechan("120") $ (p_totLand ge 85 AND p_totLand lt 105) = yes;
+  curMechan("120") $ (p_totLand ge 105 AND p_totLand lt 135) = yes;
+  curMechan("200") $ (p_totLand ge 135 AND p_totLand lt 250) = yes;
+  curMechan("230") $ (p_totLand ge 250) = yes;
+
+  solve TechnoBase using MIP maximizing v_obje;
+  display farmSizeVar;
+  display p_totArabLand;
+  display p_totLand;
+  $$batinclude '6.Report_Writing/report_writing.gms' "'Base'" farmSizeStep "'Base'" "'Base'"
+);
+$offtext
 
 model TechnoSST_FH /
   e_profit
@@ -389,11 +405,50 @@ model TechnoSST_FH /
   e_labReq
 /;
 
-solve TechnoSST_FH using MIP maximizing v_obje;
-  $$batinclude '6.Report_Writing/report_writing.gms' "'SST_FH'"
+
+loop((SSTvalueStep,SSTeffStep,farmSizeStep),
+* --- step 1 reestablish data to base level  
+*1. reestablishing investment costs for SST
+  p_technoValue(scenSprayerSST,KTBL_mechanisation) = p_saveTechnoValue(scenSprayerSST,KTBL_mechanisation);
+  p_technoRemValue(scenSprayer,KTBL_mechanisation) 
+    = p_technoValue(scenSprayer,KTBL_mechanisation) * 0.2;
+*2. reestablishing pesticide savings with SST
+  p_effStepVar = 0;
+*3. reestablishing farm size
+  farmSizeVar = 1;
+
+* --- step 2 change data to new level  
+*1. assigning new investment costs to SST and correcting remaining value 
+  p_technoValue(scenSprayerSST,KTBL_mechanisation) = 
+    p_technoValue(scenSprayerSST,KTBL_mechanisation) * p_SSTvalueStep(SSTvalueStep);
+  p_technoRemValue(scenSprayerSST,KTBL_mechanisation) 
+    = p_technoValue(scenSprayerSST,KTBL_mechanisation) * 0.2;
+*2. assigning new pesticide saving value for SST
+  p_effStepVar = p_SSTeffStep(SSTeffStep);
+*3. assigning new farm size to individual farm
+  farmSizeVar = p_farmSizeFactor(farmSizeStep);
+
+* --- step 3 parameter reformulations required for parameter variations
+  p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
+  p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
+  p_totGreenLand = p_totLand - p_totArabLand;
+  p_shareGreenLand = p_totGreenLand / p_totLand;
+
+  curMechan("45") $ (p_totLand lt 30) = yes;
+  curMechan("67") $ (p_totLand ge 30 AND p_totLand lt 45) = yes;
+  curMechan("83") $ (p_totLand ge 45 AND p_totLand lt 65) = yes;
+  curMechan("102") $ (p_totLand ge 65 AND p_totLand lt 85) = yes;
+  curMechan("120") $ (p_totLand ge 85 AND p_totLand lt 105) = yes;
+  curMechan("120") $ (p_totLand ge 105 AND p_totLand lt 135) = yes;
+  curMechan("200") $ (p_totLand ge 135 AND p_totLand lt 250) = yes;
+  curMechan("230") $ (p_totLand ge 250) = yes;
+*step 4 solve model
+  solve TechnoSST_FH using MIP maximizing v_obje;
+  $$batinclude '6.Report_Writing/report_writing.gms' "'SST_FH'" farmSizeStep SSTvalueStep SSTeffStep
+);
 
 
-
+$ontext
 model TechnoSST_FH_BA /
   e_profit
   e_totProfit
@@ -504,3 +559,26 @@ model TechnoSST_FH_Bonus_BA /
 
 solve TechnoSST_FH_Bonus_BA using MIP maximizing v_obje;
   $$batinclude '6.Report_Writing/report_writing.gms' "'SST_FH+Bonus+BA'"
+
+$offtext
+
+option
+  arabLandUsed:1:3:1
+  crops_year_report:1:4:1
+  annProfitAvg:1:3:1
+;
+
+display p_totArabLand, arabLandUsed, crops_year_report, annProfitAvg;
+
+option
+ numberSprayer:1:4:1
+ labCostsSprayerAvg:1:3:1
+ deprecSprayerAvg:1:4:1
+ yearsSprayerUsedAvg:1:4:1
+ dcPestiAvg:1:3:1
+ varCostsSprayerAvg:1:3:1
+ fixCostsSprayerAvg:1:3:1
+;
+
+display numberSprayer, labCostsSprayerAvg, deprecSprayerAvg, yearsSprayerUsedAvg,
+  dcPestiAvg, varCostsSprayerAvg, fixCostsSprayerAvg;

@@ -140,10 +140,10 @@ e_dcPestiTechno(years)..
         AND sameas(technology,scenSprayer)
     ),    
         v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
-            * p_plotData(curPlots,'size') * sizeFactor
+            * p_plotData(curPlots,"size") * farmSizeVar
             * sum(pestType, 
                 p_sprayInputCosts(curCrops,KTBL_yield,pestType) 
-                * (1 - p_technoPestEff(curCrops,technology,scenario,pestType))
+                * (1 - (p_technoPestEff(curCrops,technology,scenario,pestType) + p_effStepVar))
             )
     )
 ;
@@ -181,7 +181,7 @@ e_sprayerTechno(scenSprayer,halfMonth)..
         AND p_technology_scenario(technology,scenario)
     ),      
         v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
-            * p_plotData(curPlots,'size') * sizeFactor
+            * p_plotData(curPlots,"size") * farmSizeVar
             * p_datePestOpTechno(curCrops,KTBL_yield,technology,scenario,scenSprayer,halfMonth)
             * p_technoTimeReq(scenSprayer,KTBL_size,curMechan,KTBL_distance)
     ) 
@@ -197,7 +197,7 @@ e_deprecTechnoTime(scenSprayer,years)..
     =G=
     sum(curMechan,
         v_numberSprayer(scenSprayer) 
-            * (p_technoValue(scenSprayer,curMechan) - p_technoRemValue(scenSprayer,curMechan)) 
+        * (p_technoValue(scenSprayer,curMechan) - p_technoRemValue(scenSprayer,curMechan)) 
         / p_technoLifetime(scenSprayer)
     )
 ;
@@ -217,7 +217,7 @@ e_deprecTechnoHa(scenSprayer,years)..
         AND p_technology_scenario(technology,scenario)
     ),       
         v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
-            * p_plotData(curPlots,'size') * sizeFactor
+            * p_plotData(curPlots,"size") * farmSizeVar
 *            * p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer)
     )
 ;
@@ -254,6 +254,18 @@ e_fixCostsPestiTechno(years)..
         v_deprecSprayer(scenSprayer,years) 
         + v_interestSprayer(scenSprayer,years)
     )
+    + sum((curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer)
+    $ (
+        curPlots_ktblSize(curPlots,KTBL_size) 
+        AND curPlots_ktblDistance(curPlots,KTBL_distance)
+        AND curPlots_ktblYield(curPlots,KTBL_yield) 
+        AND p_technology_scenario_scenSprayer(technology,scenario,scenSprayer)
+    ), 
+    v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
+        * p_plotData(curPlots,"size") * farmSizeVar
+        * p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer)
+        * p_technoOtherCosts(scenSprayer,KTBL_size,curMechan,KTBL_distance)
+    )
 ;
 
 e_varCostsPestiTechno(scenSprayer,years)..
@@ -266,12 +278,12 @@ e_varCostsPestiTechno(scenSprayer,years)..
         AND p_technology_scenario(technology,scenario)
     ), 
         v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
-            * p_plotData(curPlots,'size') * sizeFactor
+            * p_plotData(curPlots,"size") * farmSizeVar
             * p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer)
             * p_technoFuelCons(scenSprayer,KTBL_size,curMechan,KTBL_distance) 
             * newFuelPrice
         + v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,curMechan,KTBL_distance,technology,scenario,scenSprayer,years)
-            * p_plotData(curPlots,'size') * sizeFactor
+            * p_plotData(curPlots,"size") * farmSizeVar
             * p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer)
             * p_technoMaintenance(scenSprayer,KTBL_size,curMechan,KTBL_distance)
     )

@@ -6,24 +6,26 @@
 *turning off the echoprint
 $offlisting 
 
-*$offsymxref offsymlist
+$offsymxref offsymlist
 
 option
-    limrow = 3,     
-    limcol = 3,     
+    limrow = 0,     
+    limcol = 0,     
     sysout = off; 
 
 
-option limrow = 0;
-option limcol = 0;
-
 option Solprint = off;
 
+*option profile = 3;
+
 set years / 2024*2026 /;
+
+
 scalar newFuelPrice price for fuel in euro per liter /1/;
 scalar labPrice price for labour in euro per hour /21/;
 scalar manPrice price to export manure /15/;
-scalar sizeFactor /3/;
+
+
 
 $include '2.ktblData/KTBL_inputOptions+Sets.gms'
 $include '4.cropProtectionData/LWK_spraySequence.gms'
