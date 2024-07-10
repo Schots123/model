@@ -43,14 +43,9 @@ parameter p_lwkCrops_lwkYield_ktblYield(LWK_crops,LWK_yield,KTBL_yield) /
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'.'mittel, schwerer Boden' 1
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'.'mittel, mittlerer Boden' 1
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'.'mittel, leichter Boden' 1
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'hoch, mittlerer Boden' 1
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'mittel, schwerer Boden' 1
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'mittel, mittlerer Boden' 1
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'mittel, leichter Boden' 1
 'Winterweizen'.'< 70 dt/ha'.'niedrig, mittlerer Boden' 1
 'Winterweizen'.'< 70 dt/ha'.'niedrig, leichter Boden' 1
 'Wintergerste'.'> 70 dt/ha Windhalmstandort'.'hoch, mittlerer Boden' 1
-*'Wintergerste'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'hoch, mittlerer Boden' 1
 'Wintergerste'.'< 70 dt/ha'.'mittel, schwerer Boden' 1
 'Wintergerste'.'< 70 dt/ha'.'mittel, mittlerer Boden' 1
 'Wintergerste'.'< 70 dt/ha'.'mittel, leichter Boden' 1
@@ -96,6 +91,12 @@ parameter p_lwkCrops_lwkYield_ktblYield(LWK_crops,LWK_yield,KTBL_yield) /
 /;
 
 set pestType /soilHerb,foliarHerb,fung,insect,growthReg,dessic/;
+
+set FH(pestType) /foliarHerb/;
+set notFH(pestType) /soilHerb, fung, insect, growthReg, dessic/;
+
+set FHBonus(pestType) /foliarHerb, fung, insect, growthReg/;
+set notFHBonus(pestType) /soilHerb, dessic/;
 
 set herbProduct /
 'Herold SC'
@@ -220,7 +221,7 @@ parameter p_herbCosts(herbProduct) in € per l or kg without value added tax /
 'Starane XL' 17.46
 'Boxer' 7.86
 'Traxos' 39.41
-'Butisan Gold' 34.79
+'Butisan Gold' 35.67
 'Niantic' 39.8
 'Atlantis Flex' 44.11
 'Pointer Plus' 498.03
@@ -263,21 +264,11 @@ parameter p_sprayAmountHerbLWK(LWK_crops,LWK_yield,herbProduct) in l or kg per h
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'.'Axial 50' 0.9 
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'.'Omnera LQM' 1
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'.'Ariane C' 1
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'Herold SC' 0.6
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'Boxer' 3
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'Traxos' 1.2
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'Lentipur' 2
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'Atlantis Flex' 0.33
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'Omnera LQM' 1
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'Ariane C' 1
 'Wintergerste'.'< 70 dt/ha'.'Herold SC' 0.3
 'Wintergerste'.'< 70 dt/ha'.'Ariane C' 0.75
 'Wintergerste'.'> 70 dt/ha Windhalmstandort'.'Herold SC' 0.3
 'Wintergerste'.'> 70 dt/ha Windhalmstandort'.'Axial 50' 0.9
 'Wintergerste'.'> 70 dt/ha Windhalmstandort'.'Dirigent SX' 0.035
-*'Wintergerste'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'Herold SC' 0.6
-*'Wintergerste'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'Axial 50' 1.2
-*'Wintergerste'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.'Dirigent SX' 0.035
 'Winterroggen & Triticale'.'< 60 dt/ha'.'Herold SC' 0.3
 'Winterroggen & Triticale'.'< 60 dt/ha'.'Broadway' 0.13
 'Winterroggen & Triticale'.'> 60 dt/ha'.'Herold SC' 0.3
@@ -306,15 +297,10 @@ parameter p_sprayInputCostsNotHerbLWK(LWK_crops,LWK_yield,pestType) /
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'.fung 91.18
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'.insect 7.71
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'.growthReg 18.42
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.fung 91.18
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.insect 7.71
-*'Winterweizen'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.growthReg 18.42
 'Wintergerste'.'< 70 dt/ha'.fung 43.52
 'Wintergerste'.'< 70 dt/ha'.growthReg 11.29
 'Wintergerste'.'> 70 dt/ha Windhalmstandort'.fung 80.02
 'Wintergerste'.'> 70 dt/ha Windhalmstandort'.growthReg 22.75
-*'Wintergerste'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.fung 80.02
-*'Wintergerste'.'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'.growthReg 22.75
 'Winterroggen & Triticale'.'> 60 dt/ha'.fung 23.3
 'Winterroggen & Triticale'.'> 60 dt/ha'.insect 7.71
 'Winterroggen & Triticale'.'> 60 dt/ha'.growthReg 20.11
@@ -356,7 +342,7 @@ p_sprayInputCosts(KTBL_crops,KTBL_yield,"foliarHerb") =
 ;
 *option p_sprayInputCosts:1:2:1 display p_sprayInputCosts;
 
-set halfMonth /
+set halfMonth(measures) /
     MRZ1
     MRZ2
     APR1

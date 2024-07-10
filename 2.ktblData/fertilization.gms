@@ -22,7 +22,7 @@ p_manureAnimalPlace("fattPigs","K2O") = 5.7;
 
 
 *Calculation of average nutrient content of manure accumulated on farm per m3
-p_nutrientSupplyFert('Manure, Farm',"N") = 
+p_nutrientSupplyFert('Manure, Farm',"N") $ (sum(animalBranch, p_animalPlaces(animalBranch)) gt 0) = 
     sum(animalBranch, 
     p_animalPlaces(animalBranch) 
     * p_manureAnimalPlace(animalBranch,"Amount")
@@ -31,7 +31,7 @@ p_nutrientSupplyFert('Manure, Farm',"N") =
     / sum(animalBranch, p_animalPlaces(animalBranch) * p_manureAnimalPlace(animalBranch,"Amount"))
 ;
 
-p_nutrientSupplyFert('Manure, Farm',"P2O5") = 
+p_nutrientSupplyFert('Manure, Farm',"P2O5") $ (sum(animalBranch, p_animalPlaces(animalBranch)) gt 0) = 
     sum(animalBranch, 
     p_animalPlaces(animalBranch) 
     * p_manureAnimalPlace(animalBranch,"Amount")
@@ -40,7 +40,7 @@ p_nutrientSupplyFert('Manure, Farm',"P2O5") =
     / sum(animalBranch, p_animalPlaces(animalBranch) * p_manureAnimalPlace(animalBranch,"Amount"))
 ;
 
-p_nutrientSupplyFert('Manure, Farm',"K2O") = 
+p_nutrientSupplyFert('Manure, Farm',"K2O") $ (sum(animalBranch, p_animalPlaces(animalBranch)) gt 0) = 
     sum(animalBranch, 
     p_animalPlaces(animalBranch) 
     * p_manureAnimalPlace(animalBranch,"Amount")
@@ -156,7 +156,10 @@ parameter p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,fertType) am
 *
 
 p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Manure, Farm') 
-    $ (ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield))
+    $ (
+        ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield)
+        AND (sum(animalBranch, p_animalPlaces(animalBranch)) gt 0)
+    )
     = p_manValue(manAmounts)
 ;
 
@@ -164,32 +167,35 @@ p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Manure, Farm')
 *--- PK Fertilizer
 *
 p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,pkFert)
-    $ ((ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield)) 
+    $ (
+        (ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield)) 
 *parameter shall only be calculated if pk Fertilizer is used in initial situation
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert))
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert))
 *parameter shall only be calculated if the P2O5 supply can be sufficiently reduced to allow the increase in manure 
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
-        - p_manureSupply(manAmounts,"P2O5")
-            / p_nutrientSupplyFert(pkFert,"P2O5")
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
+            - p_manureSupply(manAmounts,"P2O5")
+                / p_nutrientSupplyFert(pkFert,"P2O5")
 *as long as P2O5 supply from DAP fertilizer can account for P2O5 reduction requirement due to higher manure application, this parameter shall be calculated
-        + (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
-            * p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"P2O5")
-            / p_nutrientSupplyFert(pkFert,"P2O5"))
-        $ (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose'))
-    gt 0)
+            + (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
+                * p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"P2O5")
+                / p_nutrientSupplyFert(pkFert,"P2O5"))
+            $ (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose'))
+        gt 0)
 * parameter shall only be calculated if the K2O supply can be sufficiently reduced to allow the increase in manure 
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
-        - p_manureSupply(manAmounts,"K2O")
-        / p_nutrientSupplyFert(pkFert,"K2O")
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
+            - p_manureSupply(manAmounts,"K2O")
+            	/ p_nutrientSupplyFert(pkFert,"K2O")
 *as long as K2O supply from potassium fertilizer can account for K2O reduction requirement due to higher manure application, this parameter shall be calculated
-        + (sum(kaliFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert)
-            * p_nutrientSupplyFert(kaliFert,"K2O"))
-            / p_nutrientSupplyFert(pkFert,"K2O"))
-        $ (sum(kaliFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert)))
-    gt 0 
+            + (sum(kaliFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert)
+                * p_nutrientSupplyFert(kaliFert,"K2O"))
+                / p_nutrientSupplyFert(pkFert,"K2O"))
+            $ (sum(kaliFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert)))
+        gt 0 
 *pk fertilizer still shall be used if more K2O is supplied as long as the allowed deviation from the KTBL data is not exceeded 
-    - p_nutDevAllow("K2O") / p_nutrientSupplyFert(pkFert,"K2O"))
-*if a potassium fertilizer is used in the initial situation, the value 
+        - p_nutDevAllow("K2O") / p_nutrientSupplyFert(pkFert,"K2O"))
+*parameter shall only be calculated for higher manure levels if animals are presented on farm         
+        AND (p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Manure, Farm')
+            ge p_manValue(manAmounts))
     )
 *amount of pk fertilizer when no manure is spread     
     = p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
@@ -232,79 +238,92 @@ p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,pkFert)
 *--- DAP fertilizer
 *
 p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Diammonphosphat (18 % N, 46 % P2O5), lose')
-    $ ((ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield))
+    $ (
+        ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield)
 *parameter shall only be calculated if DAP fertilizer is used in initial situation 
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose'))
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose'))
 *parameter shall only be calculated if amount of DAP and KAS in initial situation is still enough to be replaced by manure for N supply 
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
-        - p_manureSupply(manAmounts,"N")
-            / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"N")
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
+            - p_manureSupply(manAmounts,"N")
+                / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"N")
 *KAS fert might only be replaced by manure for N supply if it is used in initial situation
-        + (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose')
-            * p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N")
-            / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"N"))
-        $ (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose'))
-    gt 0)
+            + (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose')
+                * p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N")
+                / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"N"))
+            $ (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose'))
+        gt 0)
 *parameter shall only be calculated if amount of DAP and PK fertilizer is sufficient to be replaced by manure for P2O5 supply 
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
-        - p_manureSupply(manAmounts,"P2O5")
-            / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"P2O5")
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
+            - p_manureSupply(manAmounts,"P2O5")
+                / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"P2O5")
 *PK fertilizer can only be reduced to allow for more manure supply if it is used in initial situation
-        + (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
-            * p_nutrientSupplyFert(pkFert,"P2O5"))
-            / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"P2O5"))
-        $ (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)))
-    gt 0)
-    )
+            + (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
+                * p_nutrientSupplyFert(pkFert,"P2O5"))
+                / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"P2O5"))
+            $ (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)))
+        gt 0)
+*parameter shall only be calculated for higher manure levels if animals are presented on farm         
+        AND (p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Manure, Farm')
+        ge p_manValue(manAmounts))
+    ) 
     = p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
 *amount of DAP fertilizer shall be reduced first because of P2O5 when no pk fertilizer is used anymore 
-        - (p_manureSupply(manAmounts,"P2O5")
+    - (
+        p_manureSupply(manAmounts,"P2O5")
             / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"P2O5")
         - (sum(pkFert,
             p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
             * p_nutrientSupplyFert(pkFert,"P2O5"))
-            / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"P2O5")))
+            / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"P2O5"))
+    )
 *this calculation shall only be activated if both KAS and PK fertilizer are used in initial situation and there is still enough KAS for N supply replacement
-        $ (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert))
+    $ (
+        (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)))
         AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose'))
         AND (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
             * p_nutrientSupplyFert(pkFert,"P2O5"))
             - p_manureSupply(manAmounts,"P2O5")
-        lt 0)
+            lt 0)
         AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose')
             - p_manureSupply(manAmounts,"N")
                 / p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N") 
             + p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
                 * p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"N")
                 / p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N")
-        gt 0)
-        )
+            gt 0)
+    )
 *amount of DAP fertilizer shall be reduced first because of N when no KAS fertilizer is used anymore
-        - (p_manureSupply(manAmounts,"N")
-            + p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose')
-                * p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N")
-                / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"N"))
+    - (
+        p_manureSupply(manAmounts,"N")
+        + p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose')
+            * p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N")
+            / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"N")
+    )
 *this calculation shall only be activated if both KAS and PK fertilizer are used in initial situation and there is still enough PK fertilizer for P2O5 supply replacement
-        $ (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose')
+    $ (
+        p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose')
         AND (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)))
         AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose')
             - p_manureSupply(manAmounts,"N")
                 / p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N") 
-        lt 0)
+            lt 0)
         AND (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
             * p_nutrientSupplyFert(pkFert,"P2O5"))
             - p_manureSupply(manAmounts,"P2O5")
-        gt 0)
+            gt 0)
         )
 *when no PK fertilizer is used in initial situation, use of DAP has to account fully for the reduction requirement of mineral fertilizer for P2O5 supply 
-        - (p_manureSupply(manAmounts,"P2O5")
-            / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"P2O5"))
-        $ (not(sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)))
+    - (
+        p_manureSupply(manAmounts,"P2O5")
+            / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"P2O5")
+    )
+    $ (
+        (not(sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert))))
         AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose')
             - p_manureSupply(manAmounts,"N")
                 / p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N")
         gt 0)
-        )
+    )
 ;
 
 *it is not necessary to add non-negative parameter assignment for DAP
@@ -314,58 +333,69 @@ p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Diammonphosphat (18 %
 *--- KAS Fertilizer
 *
 p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Kalkammonsalpeter (27 % N), lose')
-    $ ((ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield))
+    $ (
+        (ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield))
 *parameter shall only be calculated if KAS Fertilizer is used in initial situation
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose'))
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose'))
 *parameter shall only be calculated if amount of KAS fertilizer and DAP fertilizer is sufficient to account for increase in supply of N from manure 
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose')
+        AND (
+            p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose')
             - p_manureSupply(manAmounts,"N")
             / p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N")
             + (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
                 * p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"N")
                 / p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N"))
                 $ (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose'))
-    gt 0)
+        gt 0)
+*parameter shall only be calculated for higher manure levels if animals are presented on farm         
+        AND (p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Manure, Farm')
+        ge p_manValue(manAmounts))
     )
 *amount of KAS fertilizer when no manure is spread 
     = p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose') 
 *minus amount of KAS fertilizer replaced by manure 
     - p_manureSupply(manAmounts,"N")
-    / p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N")
+        / p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N")
 *if DAP has to be changed because no pk fertilizer is available anymore or never was available, KAS has to be adapted according to the change of DAP
-    + ((p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
+    + (
+        (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
         - p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Diammonphosphat (18 % N, 46 % P2O5), lose'))
-            * p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"N")
-            / p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N"))
-    $ (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
-        - p_manureSupply(manAmounts,"P2O5")
+        * p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"N")
+        / p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N")
+    )
+    $ (
+        p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
+            - p_manureSupply(manAmounts,"P2O5")
             / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"P2O5")
 *PK fertilizer can only be reduced to allow for more manure supply if it is used in initial situation
-        + (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
-            * p_nutrientSupplyFert(pkFert,"P2O5"))
-            / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"P2O5"))
-        $ (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)))
-    gt 0)
+            + (
+                sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
+                * p_nutrientSupplyFert(pkFert,"P2O5"))
+                / p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"P2O5")
+            )
+            $ (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)))
+        gt 0)
     )
 ;
 
 p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Kalkammonsalpeter (27 % N), lose')
-    $ ((ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield))
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose'))
+    $ (
+        (ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield))
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose'))
 * KAS fertilizer parameter shall become 0 if DAP fertilizer is still available to account for necessary N reduction due to higher manure application amounts
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose') 
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose') 
         - p_manureSupply(manAmounts,"N") 
         / p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N") 
-    lt 0)
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose')
+        lt 0)
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Kalkammonsalpeter (27 % N), lose')
             - p_manureSupply(manAmounts,"N")
             / p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N")
             + (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose')
                 * p_nutrientSupplyFert('Diammonphosphat (18 % N, 46 % P2O5), lose',"N")
                 / p_nutrientSupplyFert('Kalkammonsalpeter (27 % N), lose',"N"))
                 $ (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,'Diammonphosphat (18 % N, 46 % P2O5), lose'))
-    gt 0)
+        gt 0)
     )
     = 0
 ;
@@ -374,19 +404,23 @@ p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Kalkammonsalpeter (27
 *--- Potassium fertilizer
 *
 p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,kaliFert)
-    $ ((ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield))
+    $ (
+        ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield)
 *parameter shall only be calculated if potassium fertilizer is used in initial situation
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert))
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert))
 *parameter shall only be calculated if amount of potassium fertilizer and pk fertilizer is sufficient to account for increase in supply of K2O from manure
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert)
-        - p_manureSupply(manAmounts,"K2O")
-            / p_nutrientSupplyFert(kaliFert,"K2O")
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert)
+            - p_manureSupply(manAmounts,"K2O")
+                / p_nutrientSupplyFert(kaliFert,"K2O")
 *pk fert can only be reduced to account for increase in manure if it is used in initial situation
-        + (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
-            * p_nutrientSupplyFert(pkFert,"K2O"))
+            + (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
+                * p_nutrientSupplyFert(pkFert,"K2O"))
             / p_nutrientSupplyFert(kaliFert,"K2O"))
-        $ (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)))
-    gt 0)
+            $ (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)))
+        gt 0)
+*parameter shall only be calculated for higher manure levels if animals are presented on farm         
+        AND (p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,'Manure, Farm')
+        ge p_manValue(manAmounts))
     )
     = p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert)
     - p_manureSupply(manAmounts,"K2O")
@@ -401,29 +435,30 @@ p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,kaliFert)
 ;
 
 p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,kaliFert) 
-    $ ((ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield))
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert))
+    $ (
+        ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield)
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert))
 *amount of kali fertilizer shall become 0 if there is still enough pk fertilizer available to account for the K2O reduction from mineral fertilizer due to increase of manure 
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert)
-        - p_manureSupply(manAmounts,"K2O")
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert)
+            - p_manureSupply(manAmounts,"K2O")
             / p_nutrientSupplyFert(kaliFert,"K2O")
 *the potassium fertilizer shall only be reduced after the pk fertilizer is reduced (if available) according to the P2O5 reduction requirement
-        + (sum(pkFert,
-            (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
-            - p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,pkFert))
+            + (sum(pkFert,
+                (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
+                - p_fertAmount(KTBL_crops,KTBL_system,KTBL_yield,manAmounts,pkFert))
                 * p_nutrientSupplyFert(pkFert,"K2O"))
                 / p_nutrientSupplyFert(kaliFert,"K2O"))
-        $ (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)))
-    lt 0)
-    AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert)
-        - p_manureSupply(manAmounts,"K2O")
-            / p_nutrientSupplyFert(kaliFert,"K2O")
+            $ (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)))
+        lt 0)
+        AND (p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,kaliFert)
+            - p_manureSupply(manAmounts,"K2O")
+                / p_nutrientSupplyFert(kaliFert,"K2O")
 *pk fert can only be reduced to account for increase in manure if it is used in initial situation
-        + (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
-            * p_nutrientSupplyFert(pkFert,"K2O"))
-            / p_nutrientSupplyFert(kaliFert,"K2O"))
-        $(sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)))
-    gt 0)
+            + (sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)
+                * p_nutrientSupplyFert(pkFert,"K2O"))
+                / p_nutrientSupplyFert(kaliFert,"K2O"))
+            $(sum(pkFert,p_ktbl_minFertNoManure(KTBL_crops,KTBL_system,KTBL_yield,pkFert)))
+        gt 0)
     )
     = 0
 ;

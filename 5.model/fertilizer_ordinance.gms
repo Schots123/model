@@ -37,10 +37,12 @@ e_manureUse(years)..
   =E=
   sum((curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
       $ (
-      curPlots_ktblSize(curPlots,KTBL_size) AND curPlots_ktblDistance(curPlots,KTBL_distance) 
-      AND curPlots_ktblYield(curPlots,KTBL_yield) AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
+      curPlots_ktblSize(curPlots,KTBL_size) 
+      AND curPlots_ktblDistance(curPlots,KTBL_distance) 
+      AND curPlots_ktblYield(curPlots,KTBL_yield) 
+      AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
       AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
-      ),
+    ),
     v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
     * p_plotData(curPlots,"size") * farmSizeVar
     * p_manValue(manAmounts))
@@ -55,10 +57,12 @@ e_man_balance(years)..
   e_170_avg(years)..
     sum((curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
     $ (
-      curPlots_ktblSize(curPlots,KTBL_size) AND curPlots_ktblDistance(curPlots,KTBL_distance) 
-      AND curPlots_ktblYield(curPlots,KTBL_yield) AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
+      curPlots_ktblSize(curPlots,KTBL_size) 
+      AND curPlots_ktblDistance(curPlots,KTBL_distance) 
+      AND curPlots_ktblYield(curPlots,KTBL_yield) 
+      AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
       AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
-      ),
+    ),
     v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
     * p_plotData(curPlots,"size") * farmSizeVar
     * p_manureSupply(manAmounts,"N"))

@@ -1,3 +1,50 @@
+
+set allItems /
+landAv,
+landUsedAvg,
+'Winterweizen',
+'Wintergerste',
+'Zuckerrueben',
+'Winterraps',
+'Mais', 
+BA,
+BA_45kW, 
+BA_67kW, 
+BA_83kW, 
+BA_102kW, 
+BA_120kW, 
+BA_200kW, 
+BA_230kW,
+spot6m,
+spot27m,
+avgAnnFarmProf,
+diCostsPesti, 
+fuelCostsSprayer, 
+repCostsSprayer, 
+labCostsSprayer, 
+deprecSprayer, 
+interestSprayer, 
+otherCostsSprayer, 
+varCostsSprayer, 
+fixCostsSprayer,
+modelVali,
+*elements for sensitivity analysis
+'%SSTValue'
+'%pestiSav'
+'%timeReq'
+'%fuelCons'
+'%repCosts'
+'%algCosts'
+'%anFee'
+/;
+
+
+set measures /
+  amount, capUtiliz, repurchDur, avgAnnProf, dcPesti, fuelCosts, repCosts, labourCosts, deprecSprayer, interestSprayer, otherCostsSprayer, varCostsPesti, fixCostsPesti,
+  MRZ1, MRZ2, APR1, APR2, MAI1, MAI2, JUN1, JUN2, JUL1, JUL2, AUG1, AUG2, SEP1, SEP2, OKT1, OKT2, NOV1, NOV2 
+/;
+
+
 set KTBL_crops /
 'Ackergras - Anwelksilage'
 'Ackergras - Bodenheu'
@@ -70,6 +117,102 @@ set KTBL_yield /
 'niedrig, leichter Boden'
 'sehr niedrig, leichter Boden'
 /;
+
+set ktblCrops_KtblYield(KTBL_crops,KTBL_yield) /
+'Ackergras - Anwelksilage'.'hoch, mittlerer Boden' YES 
+'Ackergras - Anwelksilage'.'mittel, mittlerer Boden' YES 
+'Ackergras - Anwelksilage'.'niedrig, mittlerer Boden' YES 
+'Ackergras - Bodenheu'.'hoch, mittlerer Boden' YES 
+'Ackergras - Bodenheu'.'mittel, leichter Boden' YES 
+'Ackergras - Bodenheu'.'mittel, mittlerer Boden' YES 
+'Ackergras - Bodenheu'.'mittel, schwerer Boden' YES 
+'Ackergras - Bodenheu'.'niedrig, leichter Boden' YES 
+'Dauergruenland, grasbetont - Anwelksilage'.'hoch, mittlerer Boden' YES 
+'Dauergruenland, grasbetont - Anwelksilage'.'mittel, mittlerer Boden' YES 
+'Dauergruenland, grasbetont - Anwelksilage'.'niedrig, mittlerer Boden' YES 
+'Dauergruenland, grasbetont - Bodenheu'.'hoch, mittlerer Boden' YES 
+'Dauergruenland, grasbetont - Bodenheu'.'mittel, mittlerer Boden' YES 
+'Dauergruenland, grasbetont - Bodenheu'.'niedrig, mittlerer Boden' YES 
+'Mais - Corn-Cob-Mix'.'hoch, mittlerer Boden' YES 
+'Mais - Corn-Cob-Mix'.'mittel, leichter Boden' YES 
+'Mais - Corn-Cob-Mix'.'mittel, mittlerer Boden' YES 
+'Mais - Corn-Cob-Mix'.'mittel, schwerer Boden' YES 
+'Mais - Corn-Cob-Mix'.'niedrig, leichter Boden' YES 
+'Mais - Koernermais'.'hoch, mittlerer Boden' YES 
+'Mais - Koernermais'.'mittel, leichter Boden' YES 
+'Mais - Koernermais'.'mittel, mittlerer Boden' YES 
+'Mais - Koernermais'.'mittel, schwerer Boden' YES 
+'Mais - Koernermais'.'niedrig, leichter Boden' YES 
+'Mais - Koernermais'.'niedrig, mittlerer Boden' YES 
+'Mais - Silomais'.'hoch, mittlerer Boden' YES 
+'Mais - Silomais'.'mittel, leichter Boden' YES 
+'Mais - Silomais'.'mittel, mittlerer Boden' YES 
+'Mais - Silomais'.'mittel, schwerer Boden' YES 
+'Mais - Silomais'.'niedrig, leichter Boden' YES 
+'Mais - Silomais'.'niedrig, mittlerer Boden' YES 
+'Speisekartoffeln'.'hoch, mittlerer Boden' YES 
+'Speisekartoffeln'.'mittel, leichter Boden' YES 
+'Speisekartoffeln'.'mittel, mittlerer Boden' YES 
+'Speisekartoffeln'.'mittel, schwerer Boden' YES 
+'Speisekartoffeln'.'niedrig, leichter Boden' YES 
+'Speisekartoffeln'.'niedrig, mittlerer Boden' YES 
+'Staerkekartoffeln'.'hoch, mittlerer Boden' YES 
+'Staerkekartoffeln'.'mittel, leichter Boden' YES 
+'Staerkekartoffeln'.'mittel, mittlerer Boden' YES 
+'Staerkekartoffeln'.'mittel, schwerer Boden' YES 
+'Staerkekartoffeln'.'niedrig, leichter Boden' YES 
+'Wintergerste - Futtergerste'.'hoch, mittlerer Boden' YES 
+'Wintergerste - Futtergerste'.'mittel, leichter Boden' YES 
+'Wintergerste - Futtergerste'.'mittel, mittlerer Boden' YES 
+'Wintergerste - Futtergerste'.'mittel, schwerer Boden' YES 
+'Wintergerste - Futtergerste'.'niedrig, leichter Boden' YES 
+'Wintergerste - Futtergerste'.'niedrig, mittlerer Boden' YES 
+'Winterraps (Rapsoel)'.'hoch, mittlerer Boden' YES 
+'Winterraps (Rapsoel)'.'mittel, mittlerer Boden' YES 
+'Winterraps (Rapsoel)'.'niedrig, leichter Boden' YES 
+'Winterraps'.'hoch, mittlerer Boden' YES 
+'Winterraps'.'mittel, leichter Boden' YES 
+'Winterraps'.'mittel, mittlerer Boden' YES 
+'Winterraps'.'mittel, schwerer Boden' YES 
+'Winterraps'.'niedrig, leichter Boden' YES 
+'Winterraps'.'niedrig, mittlerer Boden' YES 
+'Winterroggen - Korn und Stroh (thermische Nutzung)'.'hoch, mittlerer Boden' YES 
+'Winterroggen - Korn und Stroh (thermische Nutzung)'.'mittel, mittlerer Boden' YES 
+'Winterroggen - Korn und Stroh (thermische Nutzung)'.'niedrig, leichter Boden' YES 
+'Winterroggen - Mahl- und Brotroggen'.'hoch, mittlerer Boden' YES 
+'Winterroggen - Mahl- und Brotroggen'.'mittel, leichter Boden' YES 
+'Winterroggen - Mahl- und Brotroggen'.'mittel, mittlerer Boden' YES 
+'Winterroggen - Mahl- und Brotroggen'.'mittel, schwerer Boden' YES 
+'Winterroggen - Mahl- und Brotroggen'.'niedrig, leichter Boden' YES 
+'Winterroggen - Mahl- und Brotroggen'.'niedrig, mittlerer Boden' YES 
+'Wintertriticale - Futtertriticale'.'hoch, mittlerer Boden' YES 
+'Wintertriticale - Futtertriticale'.'mittel, leichter Boden' YES 
+'Wintertriticale - Futtertriticale'.'mittel, mittlerer Boden' YES 
+'Wintertriticale - Futtertriticale'.'mittel, schwerer Boden' YES 
+'Wintertriticale - Futtertriticale'.'niedrig, leichter Boden' YES 
+'Wintertriticale - Futtertriticale'.'niedrig, mittlerer Boden' YES 
+'Wintertriticale - Korn und Stroh (thermische Nutzung)'.'hoch, mittlerer Boden' YES 
+'Wintertriticale - Korn und Stroh (thermische Nutzung)'.'mittel, mittlerer Boden' YES 
+'Wintertriticale - Korn und Stroh (thermische Nutzung)'.'niedrig, leichter Boden' YES 
+'Winterweizen - Backweizen'.'hoch, mittlerer Boden' YES 
+'Winterweizen - Backweizen'.'mittel, leichter Boden' YES 
+'Winterweizen - Backweizen'.'mittel, mittlerer Boden' YES 
+'Winterweizen - Backweizen'.'mittel, schwerer Boden' YES 
+'Winterweizen - Backweizen'.'niedrig, leichter Boden' YES 
+'Winterweizen - Backweizen'.'niedrig, mittlerer Boden' YES 
+'Winterweizen - Korn und Stroh (thermische Nutzung)'.'hoch, mittlerer Boden' YES 
+'Winterweizen - Korn und Stroh (thermische Nutzung)'.'mittel, mittlerer Boden' YES 
+'Winterweizen - Korn und Stroh (thermische Nutzung)'.'niedrig, leichter Boden' YES 
+'Zuckerrueben'.'hoch, mittlerer Boden' YES 
+'Zuckerrueben'.'mittel, leichter Boden' YES 
+'Zuckerrueben'.'mittel, mittlerer Boden' YES 
+'Zuckerrueben'.'mittel, schwerer Boden' YES 
+'Zuckerrueben'.'niedrig, leichter Boden' YES 
+'Zuckerrueben'.'niedrig, mittlerer Boden' YES 
+'Zuckerrueben'.'sehr niedrig, leichter Boden' YES 
+/;
+
+
 
 
 set ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield) /
@@ -346,6 +489,12 @@ set KTBL_mechanisation /
 '200'
 '230'
 /;
+
+acronyms
+    Lehm, schluffigTonigerLehm, Ton, tonigerLehm, 
+    lehmigerSand, lehmigerSchluff, sandigerLehm, schluffigerLehm,
+    sandigerSchluff, Sand, starkSandigerLehm;
+  
 
 $ontext
 set months /Jan,Feb,Mrz,Apr,Mai,Jun,Jul,Aug,Sep,Okt,Nov,Dez/;

@@ -1,15 +1,15 @@
 
 Binary variable 
   v_binRepCropPlot_1(curPlots,mainCropGroup,years) each plot on which crops are grown in two consecutive years 
-  v_binRepCropPlot_2(curPlots,mainCropGroup,years) each plot on which crops are grown in three consecutive years 
+  v_binRepCropPlot(curPlots,mainCropGroup,years) each plot on which crops are grown in three consecutive years 
 ;
 
 Equations
 *  e_gaec6(years)
   e_preCropSeq_1(curPlots,mainCropGroup,years)
-  e_preCropSeq_2(curPlots,mainCropGroup,years)
+  e_preCropSeq(curPlots,mainCropGroup,years)
   e_gaec7_1(mainCropGroup,years)
-  e_gaec7_2(mainCropGroup,years)
+  e_gaec7(mainCropGroup,years)
   e_gaec8(years)
 *  e_efa
 *  e_75diversification(cropGroup)
@@ -21,19 +21,19 @@ Equations
 * 
 $ontext
 e_gaec6(years)..
-  sum((curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
+  sum((curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
   $ (curPlots_ktblSize(curPlots,KTBL_size) AND curPlots_ktblDistance(curPlots,KTBL_distance) 
     AND curPlots_ktblYield(curPlots,KTBL_yield) AND ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield)
     ),
 * cover crops to fulfil minimum coverage requirements 
-  v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)
+  v_binCropPlot(curPlots,curCrops,solidAmounts,nReduction,catchCrop,autumnFert,years)
     * p_plotData(curPlots,"size")
-    * p_grossMarginData(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,'efaFactor')
+    * p_grossMarginData(curPlots,curCrops,solidAmounts,nReduction,catchCrop,autumnFert,'efaFactor')
 * winter grains as minimum coverage requirement OR stubble fallow as minimum coverage requirement
-  + (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years)      
+  + (v_binCropPlot(curPlots,curCrops,solidAmounts,nReduction,catchCrop,autumnFert,years)      
     * p_plotData(curPlots,"size")) $ curCrops_cropType(curCrops,'Wintergetreide')
 * maize stubble fallow as minimum coverage requirement 
-  + (v_binCropPlot(curPlots,curCrops,manAmounts,solidAmounts,nReduction,catchCrop,autumnFert,years) 
+  + (v_binCropPlot(curPlots,curCrops,solidAmounts,nReduction,catchCrop,autumnFert,years) 
     * p_plotData(curPlots,"size")) 
     $ (sameas(catchCrop,'false') AND curCrops_cropType(curCrops,'Mais'))   
 * if summer grains should become possible to be grown, it would be necessary to add a conditional based on the next period       
@@ -46,18 +46,23 @@ $offtext
 *     the area on which the same crop was grown in two consecutive years has to be smaller than 66 %
 e_preCropSeq_1(curPlots,mainCropGroup,years)
   $ (
-    (years.pos ne 1) AND (p_totArabLand gt 10) AND (not(mainCropGroupExempt(mainCropGroup)))
-    AND (not(p_shareGreenLand gt 0.75 AND p_totArabLand lt 50))
+    (years.pos ne 1) 
+    AND (p_totArabLand gt 10) 
+    AND (not(mainCropGroupExempt(mainCropGroup)))
+    AND (not(p_shareGreenLand gt 0.75 
+    AND p_totArabLand lt 50))
   )..
-  sum((curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
+  sum((curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
   $ (
-    curPlots_ktblSize(curPlots,KTBL_size) AND curPlots_ktblDistance(curPlots,KTBL_distance) 
-    AND curPlots_ktblYield(curPlots,KTBL_yield) AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
-    AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
-    AND cropCropGroup(curCrops,mainCropGroup) AND (not(mainCropGroupExempt(mainCropGroup)))
+    curPlots_ktblSize(curPlots,KTBL_size) 
+    AND curPlots_ktblDistance(curPlots,KTBL_distance) 
+    AND curPlots_ktblYield(curPlots,KTBL_yield) 
+    AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
+    AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
+    AND cropCropGroup(curCrops,mainCropGroup) 
   ),
-  (v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years-1) 
-  + v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)))
+  (v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years-1) 
+  + v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years)))
   =L= 
   1 + v_binRepcropPlot_1(curPlots,mainCropGroup,years)
 ;
@@ -77,14 +82,14 @@ e_gaec7_1(mainCropGroup,years)
     * p_plotData(curPlots,"size") * farmSizeVar)
   + v_devGaec7_1(years)
   =L=
-  sum((curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
+  sum((curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
   $ (
     curPlots_ktblSize(curPlots,KTBL_size) AND curPlots_ktblDistance(curPlots,KTBL_distance) 
     AND curPlots_ktblYield(curPlots,KTBL_yield) AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
-    AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
+    AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
     AND cropCropGroup(curCrops,mainCropGroup) AND (not(mainCropGroupExempt(mainCropGroup)))
   ),
-  v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
+  v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years)
   * p_plotData(curPlots,"size") * farmSizeVar) * 0.66
 ;
 $ontext
@@ -100,51 +105,44 @@ $ontext
 $offtext
 
 
-e_preCropSeq_2(curPlots,mainCropGroup,years)
+
+e_preCropSeq(curPlots,mainCropGroup,years)
   $ (
     (years.pos gt 2) AND (p_totArabLand gt 10) AND (not(mainCropGroupExempt(mainCropGroup)))
     AND (not(p_shareGreenLand gt 0.75 AND p_totArabLand lt 50))
   )..
-  sum((curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
+  sum((curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
   $ (
-    curPlots_ktblSize(curPlots,KTBL_size) AND curPlots_ktblDistance(curPlots,KTBL_distance) 
-    AND curPlots_ktblYield(curPlots,KTBL_yield) AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
-    AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
-    AND cropCropGroup(curCrops,mainCropGroup) AND (not(mainCropGroupExempt(mainCropGroup)))
+    curPlots_ktblSize(curPlots,KTBL_size) 
+    AND curPlots_ktblDistance(curPlots,KTBL_distance) 
+    AND curPlots_ktblYield(curPlots,KTBL_yield) 
+    AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
+    AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
+    AND cropCropGroup(curCrops,mainCropGroup) 
+    AND (not(mainCropGroupExempt(mainCropGroup)))
     ),
-  v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years-2) 
-  + v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years-1)
-  + v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years))
+  v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years-2) 
+  + v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years-1)
+  + v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years))
   =L=
-  2 + v_binRepCropPlot_2(curPlots,mainCropGroup,years)
+  2 + v_binRepCropPlot(curPlots,mainCropGroup,years)
 ;
 
 *a change of the main crop for each plot is required in at least all three years  
-e_gaec7_2(mainCropGroup,years)
+e_gaec7(mainCropGroup,years)
   $ (
     (years.pos gt 2) AND (p_totArabLand gt 10) AND (not(mainCropGroupExempt(mainCropGroup)))
     AND (not(p_shareGreenLand gt 0.75 AND p_totArabLand lt 50))
   )..
   sum(curPlots,
-    v_binRepCropPlot_2(curPlots,mainCropGroup,years) 
+    v_binRepCropPlot(curPlots,mainCropGroup,years) 
     * p_plotData(curPlots,"size") * farmSizeVar) 
-  + v_devGaec7_2(years) 
+  + v_devGaec7(years) 
   =L=
   0
-$ontext  
-  sum((curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
-  $ (
-    curPlots_ktblSize(curPlots,KTBL_size) AND curPlots_ktblDistance(curPlots,KTBL_distance) 
-    AND curPlots_ktblYield(curPlots,KTBL_yield) AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
-    AND p_profitPerHa(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
-    AND cropCropGroup(curCrops,mainCropGroup)
-    ),
-  v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
-  * p_plotData(curPlots,"size")) * 0
-$offtext
 ;
 
-
+$ontext
 *
 * --- gaec 8
 *
@@ -152,14 +150,15 @@ e_gaec8(years)
   $ (
     (p_totArabLand gt 10) AND (p_shareGreenLand lt 0.75)
   )..
-  sum((curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
+  sum((curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
   $ (
       curPlots_ktblSize(curPlots,KTBL_size) AND curPlots_ktblDistance(curPlots,KTBL_distance) 
       AND curPlots_ktblYield(curPlots,KTBL_yield) AND ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
-      AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts)
+      AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
   ),
-  v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,manAmounts,years)
+  v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years)
     * p_plotData(curPlots,"size") * farmSizeVar)
   =L= 
   p_totArabLand - (0.04 * p_totArabLand) + v_devGaec8(years)
 ;  
+$offtext

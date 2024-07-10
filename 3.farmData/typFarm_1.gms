@@ -5,21 +5,37 @@ set cropAttr /maxShare /;
 
 set curCrops(KTBL_crops) /
 'Mais - Silomais'
-'Staerkekartoffeln'
+'Zuckerrueben'
 'Winterweizen - Backweizen'
 'Wintergerste - Futtergerste'
 /;
 
-set curRowCrops(curCrops) /
-'Mais - Silomais'
-'Staerkekartoffeln'
+set curCropGroups /
+'Mais'
+'Zuckerrueben'
+'Winterweizen'
+'Wintergerste'
 /;
 
-parameter p_cropData(curCrops,cropAttr)  /
-'Mais - Silomais'.maxShare 50
-'Staerkekartoffeln'.maxShare 20
-'Winterweizen - Backweizen'.maxShare 33.33
-'Wintergerste - Futtergerste'.maxShare 33.33
+set curCrops_curCropGroups(curCropGroups,curCrops) /
+'Mais'.'Mais - Silomais' YES
+'Zuckerrueben'.'Zuckerrueben' YES
+'Winterweizen'.'Winterweizen - Backweizen' YES
+'Wintergerste'.'Wintergerste - Futtergerste' YES
+/;
+
+
+
+set curRowCrops(curCrops) /
+'Mais - Silomais'
+'Zuckerrueben'
+/;
+
+parameter p_cropData(curCropGroups,cropAttr)  /
+'Mais'.maxShare 50
+'Zuckerrueben'.maxShare 20
+'Winterweizen'.maxShare 50
+'Wintergerste'.maxShare 50
 /;
 
 set curPlots /
@@ -148,4 +164,4 @@ $offtext
 *       in ktblResults_%farmNumber%.gdx
 set animalBranch / milkCows, fattPigs /;
 
-parameter p_animalPlaces(animalBranch) stable places on farm / milkCows 150 /;
+parameter p_animalPlaces(animalBranch) stable places on farm / milkCows 0 /;
