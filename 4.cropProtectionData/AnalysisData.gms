@@ -2,31 +2,18 @@
 * --- Parameter assignment for technology comparison
 *
 set farmSizeSteps /
-sizeStep1*sizeStep175
+sizeStep0*sizeStep1
 /;
-
-$ontext
-set Base_farmSizeStep(farmSizeSteps) /Base0*Base4/;
-set SST6m_FH_farmSizeStep(farmSizeSteps) /SST6m_FH0*SST6m_FH4/;
-set SST27m_FH_farmSizeStep(farmSizeSteps) /SST27m_FH0*SST27m_FH4/;
-set SST6m_FHBonus_farmSizeStep(farmSizeSteps) /SST6m_FHBonus0*SST6m_FHBonus4/;
-set SST27m_FHBonus_farmSizeStep(farmSizeSteps) /SST27m_FHBonus0*SST27m_FHBonus4/;
-$offtext
 
 parameter p_farmSizeFactor(farmSizeSteps);
 p_farmSizeFactor(farmSizeSteps) = 50 + (ord(farmSizeSteps) -1) * 2;
-$ontext
-p_farmSizeFactor(SST6m_FH_farmSizeStep) = 50 + (ord(SST6m_FH_farmSizeStep) -1) * 100;
-p_farmSizeFactor(SST27m_FH_farmSizeStep) = 50 + (ord(SST27m_FH_farmSizeStep) -1) * 100;
-p_farmSizeFactor(SST6m_FHBonus_farmSizeStep) = 50 + (ord(SST6m_FHBonus_farmSizeStep) -1) * 100;
-p_farmSizeFactor(SST27m_FHBonus_farmSizeStep) = 50 + (ord(SST27m_FHBonus_farmSizeStep) -1) * 100;
-$offtext
 
 
 *
-* --- Parameter assignment for sensitivity analysis
+* --- set introduction for loop in sensitivity analysis
 *
-set sensiAnSteps / senStep1*senStep60 /;
+set sensiAnSteps / senStep1*senStep20 /;
+
 
 *
 * -- scalar introduction for random parameter assignment within ranges by assuming normal distribution
@@ -62,16 +49,23 @@ p_saveTechnoValue("BA_120kW") = 51100;
 p_saveTechnoValue("BA_200kW") = 58100;
 p_saveTechnoValue("BA_230kW") = 71100;
 
-parameter p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType);
+parameter 
+    p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) resetting maintenance adjustment according to technology value
+    p_iniTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) maintenance costs as defined by assumption
+;
 
 p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType)
- = p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType);
+ = p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) * (p_technoValue("BA_45kW") / p_technoValue("spot6m"));
 
 p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType)
- = p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType);
+ = p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType) * (54300 / p_technoValue("spot27m"));
 
 p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,BASprayer,pestType)
  = p_technoMaintenance(KTBL_size,KTBL_distance,scenario,BASprayer,pestType);
+
+p_iniTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType)
+ = p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType);
+
 
 
 *
@@ -81,11 +75,15 @@ parameter p_savePestEff(KTBL_crops,technology,scenario,pestType);
 p_savePestEff(KTBL_crops,technology,scenario,pestType) = p_technoPestEff(KTBL_crops,technology,scenario,pestType);
 
 
+
 *
 * -- SST parameter variation placeholders for time requirements, fuel consumption and repair costs
 *
-parameter timeReqVar(scenSprayer) placeholder for SST time requirement variations /set.BASprayer 1, "spot6m" 1, "spot27m" 1/;
+parameter timeReqVar(scenSprayer) placeholder for SST time requirement variations;
+timeReqVar(scenSprayer) = 1;
 
-parameter fuelConsVar(scenSprayer) placeholder for SST fuel consumption variations /set.BASprayer 1, "spot6m" 1, "spot27m" 1/;
+parameter fuelConsVar(scenSprayer) placeholder for SST fuel consumption variations;
+fuelConsVar(scenSprayer) = 1;
 
-parameter repairCostsVar(scenSprayer) placeholder for SST repair costs variations /set.BASprayer 1, "spot6m" 1, "spot27m" 1/;
+parameter repairCostsVar(scenSprayer) placeholder for SST repair costs variations;
+repairCostsVar(scenSprayer) = 1;

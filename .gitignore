@@ -4,3 +4,5 @@ debug.json
 *.gsp
 .RData
 .Rhistory
+*.png
+

@@ -1,22 +1,26 @@
 library(gamstransfer)
 library(tidyverse)
-library(ggplot2)
-library(dplyr)
 setwd("E:\\Studium\\Master of Science Agricultural and Food Economics\\04. Master Thesis\\8. GitHub\\Fruchtfolge Model\\model\\6.Report\\gdxFiles")
 getwd()
-m1 = Container$new("Results_162.141.gdx")
-m2 = Container$new("Results_151_142.gdx")
+m162technoComp = Container$new("Results_162.141.gdx")
+m151technoComp = Container$new("Results_151.142.gdx")
 #showing parameter names stored in container
-m162$listSymbols()
-m151$listSymbols()
+m162technoComp$listSymbols()
+m151technoComp$listSymbols()
 
 #quick overview over parameters 
-m162$describeParameters()
-m151$describeParameters()
+m162technoComp$describeParameters()
+m151technoComp$describeParameters()
 
 #assign records of specific parameter in containter to dataframe
-technoComp_farm162 <- m1["summary"]$records
-technoComp_farm151 <- m2["summary"]$records
+technoComp_farm162 <- m162technoComp["summary"]$records
+technoComp_farm151 <- m151technoComp["summary"]$records
+
+
+#Replace data mistakes by GAMS
+technoComp_farm162$value <- replace(technoComp_farm162$value, technoComp_farm162$value > 0.99 & technoComp_farm162$value < 1.01, 1)
+technoComp_farm151$value <- replace(technoComp_farm151$value, technoComp_farm151$value > 0.99 & technoComp_farm151$value < 1.01, 1)
+
 
 #showing overview about specific parameter
 view(technoComp_farm162)
@@ -32,6 +36,12 @@ technoComp_farm151[["value"]]
 names(technoComp_farm162)
 names(technoComp_farm151)
 
+
+
+#############
+#Farm 162.141
+#############
+
 ##################
 #DATA MANIPULATION
 ##################
@@ -45,9 +55,14 @@ teComp_162_BA45kW <- subset(technoComp_farm162,allItems_1 == "BA_45kW")
 teComp_162_BA67kW <- subset(technoComp_farm162,allItems_1 == "BA_67kW")
 teComp_162_BA83kW <- subset(technoComp_farm162,allItems_1 == "BA_83kW")
 teComp_162_BA_102kW <- subset(technoComp_farm162,allItems_1 == "BA_102kW")
+teComp_162_BA_120kW <- subset(technoComp_farm162,allItems_1 == "BA_120kW")
+teComp_162_BA_200kW <- subset(technoComp_farm162,allItems_1 == "BA_200kW")
+teComp_162_BA_230kW <- subset(technoComp_farm162,allItems_1 == "BA_230kW")
 teComp_162_spot6m <- subset(technoComp_farm162,allItems_1 == "spot6m")
 teComp_162_spot27m <- subset(technoComp_farm162,allItems_1 == "spot27m")
 teComp_162_avgAnProf <- subset(technoComp_farm162,allItems_1 == "avgAnnFarmProf")
+
+
 #rename header of value
 colnames(teComp_162_landAv)[4] <- "landAv"
 colnames(teComp_162_landUsed)[4] <- "landUsedAvg"
@@ -58,9 +73,13 @@ colnames(teComp_162_BA45kW)[4] <- "BA_45kW"
 colnames(teComp_162_BA67kW)[4] <- "BA_67kW"
 colnames(teComp_162_BA83kW)[4] <- "BA_83kW"
 colnames(teComp_162_BA_102kW)[4] <- "BA_102kW"
+colnames(teComp_162_BA_120kW)[4] <- "BA_120kW"
+colnames(teComp_162_BA_200kW)[4] <- "BA_200kW"
+colnames(teComp_162_BA_230kW)[4] <- "BA_230kW"
 colnames(teComp_162_spot6m)[4] <- "spot6m"
 colnames(teComp_162_spot27m)[4] <- "spot27m"
 colnames(teComp_162_avgAnProf)[4] <- "avgAnnFarmProf"
+
 
 #delete allItems column
 teComp_162_landAv$allItems_1 <- NULL
@@ -72,9 +91,13 @@ teComp_162_BA45kW$allItems_1 <- NULL
 teComp_162_BA67kW$allItems_1 <- NULL
 teComp_162_BA83kW$allItems_1 <- NULL
 teComp_162_BA_102kW$allItems_1 <- NULL
+teComp_162_BA_120kW$allItems_1 <- NULL
+teComp_162_BA_200kW$allItems_1 <- NULL
+teComp_162_BA_230kW$allItems_1 <- NULL
 teComp_162_spot6m$allItems_1 <- NULL
 teComp_162_spot27m$allItems_1 <- NULL
 teComp_162_avgAnProf$allItems_1 <- NULL
+
 
 #create new combined dataframe
 technoComp_farm162 <- 
@@ -86,13 +109,19 @@ technoComp_farm162 <-
     left_join(teComp_162_BA45kW, by =c("uni_2","uni_3")) %>% 
     left_join(teComp_162_BA67kW, by =c("uni_2","uni_3")) %>% 
     left_join(teComp_162_BA83kW, by =c("uni_2","uni_3")) %>% 
-    left_join(teComp_162_BA_102kW, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_162_BA_102kW, by =c("uni_2","uni_3")) %>%
+    left_join(teComp_162_BA_120kW, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_162_BA_200kW, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_162_BA_230kW, by =c("uni_2","uni_3")) %>% 
     left_join(teComp_162_spot6m, by =c("uni_2","uni_3")) %>% 
     left_join(teComp_162_spot27m, by =c("uni_2","uni_3")) %>% 
     left_join(teComp_162_avgAnProf, by =c("uni_2","uni_3"))
 
+
+#Rename columns
 colnames(technoComp_farm162)[2] <- "Scenario"
 colnames(technoComp_farm162)[1] <- "sizeStep"
+
 
 #removal of subsets (not needed anymore)
 rm(teComp_162_landAv)
@@ -104,17 +133,27 @@ rm(teComp_162_BA45kW)
 rm(teComp_162_BA67kW)
 rm(teComp_162_BA83kW)
 rm(teComp_162_BA_102kW)
+rm(teComp_162_BA_120kW)
+rm(teComp_162_BA_200kW)
+rm(teComp_162_BA_230kW)
 rm(teComp_162_spot6m)
 rm(teComp_162_spot27m)
 rm(teComp_162_avgAnProf)
 
-#change variable type to combine BA sprayer and remove NA values
-technoComp_farm162$BA_45kW <- as.character(technoComp_farm162$BA_45kW)
-technoComp_farm162$BA_67kW <- as.character(technoComp_farm162$BA_67kW)
-technoComp_farm162$BA_83kW <- as.character(technoComp_farm162$BA_83kW)
-technoComp_farm162$BA_102kW <- as.character(technoComp_farm162$BA_102kW)
 
-technoComp_farm162[is.na(technoComp_farm162)] <- " "
+#delete all NA entries and replace them with blankets
+technoComp_farm162[is.na(technoComp_farm162)] <- ""
+
+
+#Copy BA sprayer columns for two unite operations in the next step
+technoComp_farm162$BA_45kWNum <- technoComp_farm162$BA_45kW
+technoComp_farm162$BA_67kWNum <- technoComp_farm162$BA_67kW
+technoComp_farm162$BA_83kWNum <- technoComp_farm162$BA_83kW
+technoComp_farm162$BA_102kWNum <- technoComp_farm162$BA_102kW
+technoComp_farm162$BA_120kWNum <- technoComp_farm162$BA_120kW
+technoComp_farm162$BA_200kWNum <- technoComp_farm162$BA_200kW
+technoComp_farm162$BA_230kWNum <- technoComp_farm162$BA_230kW 
+
 
 #combine all BA sprayer columns to one
 technoComp_farm162 <- technoComp_farm162 %>%
@@ -123,24 +162,160 @@ technoComp_farm162 <- technoComp_farm162 %>%
     mutate(BA_45kW = str_replace(BA_45kW,"1", "BA_45kW")) %>%
     mutate(BA_83kW = str_replace(BA_83kW,"1", "BA_83kW")) %>%
     mutate(BA_102kW = str_replace(BA_102kW,"1", "BA_102kW")) %>%
+    mutate(BA_120kW = str_replace(BA_120kW,"1", "BA_120kW")) %>%
+    mutate(BA_200kW = str_replace(BA_200kW,"1", "BA_200kW")) %>%
+    mutate(BA_230kW = str_replace(BA_230kW,"1", "BA_230kW")) %>%
 #combine columns of BA Sprayer and SST
-    unite(BA_Sprayer, BA_45kW, BA_67kW, BA_83kW, BA_102kW,
+    unite(BA_Sprayer, BA_45kW, BA_67kW, BA_83kW, BA_102kW, BA_120kW, BA_200kW, BA_230kW,
         sep ="") %>%
-    unite(SST, spot6m, spot27m, sep ="") %>%
-#make corrections after combination of columns
-    mutate(SST = str_replace(SST," 1", "1")) %>%
-    mutate(SST = str_replace(SST,"1 ", "1")) %>%
-    mutate(BA_Sprayer = str_replace(BA_Sprayer,"BA_45kW   ", "BA_45kW")) %>%
-    mutate(BA_Sprayer = str_replace(BA_Sprayer," BA_67kW  ", "BA_67kW")) %>%
-    mutate(BA_Sprayer = str_replace(BA_Sprayer,"  BA_83kW ", "BA_83kW")) %>%
-    mutate(BA_Sprayer = str_replace(BA_Sprayer,"   BA_102kW", "BA_102kW")) %>%
-    mutate(SST = str_replace(SST,"2 ", "2"))
+    unite(BA_Sprayer_Num, BA_45kWNum, BA_67kWNum, BA_83kWNum, BA_102kWNum, BA_120kWNum, BA_200kWNum, BA_230kWNum, 
+        sep="") %>%
+    unite(SST, spot6m, spot27m, sep ="")
+
 
 #change scale of farm profit 
 technoComp_farm162 <- technoComp_farm162 %>%
     mutate(avgAnnFarmProf = avgAnnFarmProf / 1000)
 
 
+
+#############
+#Farm 151.142
+#############
+
+##################
+#DATA MANIPULATION
+##################
+#creating subsets of main dataframe for later recombination
+teComp_151_landAv <- subset(technoComp_farm151,allItems_1 == "landAv")
+teComp_151_landUsed <- subset(technoComp_farm151,allItems_1 == "landUsedAvg")
+teComp_151_WW <- subset(technoComp_farm151,allItems_1 == "Winterweizen")
+teComp_151_WG <- subset(technoComp_farm151,allItems_1 == "Wintergerste")
+teComp_151_SB <- subset(technoComp_farm151,allItems_1 == "Zuckerrueben")
+teComp_151_BA45kW <- subset(technoComp_farm151,allItems_1 == "BA_45kW")
+teComp_151_BA67kW <- subset(technoComp_farm151,allItems_1 == "BA_67kW")
+teComp_151_BA83kW <- subset(technoComp_farm151,allItems_1 == "BA_83kW")
+teComp_151_BA_102kW <- subset(technoComp_farm151,allItems_1 == "BA_102kW")
+teComp_151_BA_120kW <- subset(technoComp_farm151,allItems_1 == "BA_120kW")
+teComp_151_BA_200kW <- subset(technoComp_farm151,allItems_1 == "BA_200kW")
+teComp_151_BA_230kW <- subset(technoComp_farm151,allItems_1 == "BA_230kW")
+teComp_151_spot6m <- subset(technoComp_farm151,allItems_1 == "spot6m")
+teComp_151_spot27m <- subset(technoComp_farm151,allItems_1 == "spot27m")
+teComp_151_avgAnProf <- subset(technoComp_farm151,allItems_1 == "avgAnnFarmProf")
+
+
+#rename header of value
+colnames(teComp_151_landAv)[4] <- "landAv"
+colnames(teComp_151_landUsed)[4] <- "landUsedAvg"
+colnames(teComp_151_WW)[4] <- "Winterweizen"
+colnames(teComp_151_WG)[4] <- "Wintergerste"
+colnames(teComp_151_SB)[4] <- "Zuckerrueben"
+colnames(teComp_151_BA45kW)[4] <- "BA_45kW"
+colnames(teComp_151_BA67kW)[4] <- "BA_67kW"
+colnames(teComp_151_BA83kW)[4] <- "BA_83kW"
+colnames(teComp_151_BA_102kW)[4] <- "BA_102kW"
+colnames(teComp_151_BA_120kW)[4] <- "BA_120kW"
+colnames(teComp_151_BA_200kW)[4] <- "BA_200kW"
+colnames(teComp_151_BA_230kW)[4] <- "BA_230kW"
+colnames(teComp_151_spot6m)[4] <- "spot6m"
+colnames(teComp_151_spot27m)[4] <- "spot27m"
+colnames(teComp_151_avgAnProf)[4] <- "avgAnnFarmProf"
+
+
+#delete allItems column
+teComp_151_landAv$allItems_1 <- NULL
+teComp_151_landUsed$allItems_1 <- NULL
+teComp_151_WW$allItems_1 <- NULL
+teComp_151_WG$allItems_1 <- NULL
+teComp_151_SB$allItems_1 <- NULL
+teComp_151_BA45kW$allItems_1 <- NULL
+teComp_151_BA67kW$allItems_1 <- NULL
+teComp_151_BA83kW$allItems_1 <- NULL
+teComp_151_BA_102kW$allItems_1 <- NULL
+teComp_151_BA_120kW$allItems_1 <- NULL
+teComp_151_BA_200kW$allItems_1 <- NULL
+teComp_151_BA_230kW$allItems_1 <- NULL
+teComp_151_spot6m$allItems_1 <- NULL
+teComp_151_spot27m$allItems_1 <- NULL
+teComp_151_avgAnProf$allItems_1 <- NULL
+
+
+#create new combined dataframe
+technoComp_farm151 <- 
+    teComp_151_landAv %>% 
+    left_join(teComp_151_landUsed, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_151_WW, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_151_WG, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_151_SB, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_151_BA45kW, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_151_BA67kW, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_151_BA83kW, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_151_BA_102kW, by =c("uni_2","uni_3")) %>%
+    left_join(teComp_151_BA_120kW, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_151_BA_200kW, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_151_BA_230kW, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_151_spot6m, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_151_spot27m, by =c("uni_2","uni_3")) %>% 
+    left_join(teComp_151_avgAnProf, by =c("uni_2","uni_3"))
+
+#Rename columns
+colnames(technoComp_farm151)[2] <- "Scenario"
+colnames(technoComp_farm151)[1] <- "sizeStep"
+
+
+#removal of subsets (not needed anymore)
+rm(teComp_151_landAv)
+rm(teComp_151_landUsed)
+rm(teComp_151_WW)
+rm(teComp_151_WG)
+rm(teComp_151_SB)
+rm(teComp_151_BA45kW)
+rm(teComp_151_BA67kW)
+rm(teComp_151_BA83kW)
+rm(teComp_151_BA_102kW)
+rm(teComp_151_BA_120kW)
+rm(teComp_151_BA_200kW)
+rm(teComp_151_BA_230kW)
+rm(teComp_151_spot6m)
+rm(teComp_151_spot27m)
+rm(teComp_151_avgAnProf)
+
+
+#delete all NA entries and replace them with blankets
+technoComp_farm151[is.na(technoComp_farm151)] <- ""
+
+
+#Copy BA sprayer columns for two unite operations in the next step
+technoComp_farm151$BA_45kWNum <- technoComp_farm151$BA_45kW
+technoComp_farm151$BA_67kWNum <- technoComp_farm151$BA_67kW
+technoComp_farm151$BA_83kWNum <- technoComp_farm151$BA_83kW
+technoComp_farm151$BA_102kWNum <- technoComp_farm151$BA_102kW
+technoComp_farm151$BA_120kWNum <- technoComp_farm151$BA_120kW
+technoComp_farm151$BA_200kWNum <- technoComp_farm151$BA_200kW
+technoComp_farm151$BA_230kWNum <- technoComp_farm151$BA_230kW 
+
+
+#combine all BA sprayer columns to one
+technoComp_farm151 <- technoComp_farm151 %>%
+#rename number values to respective BA Sprayer used
+    mutate(BA_67kW = str_replace(BA_67kW, "1", "BA_67kW")) %>%
+    mutate(BA_45kW = str_replace(BA_45kW,"1", "BA_45kW")) %>%
+    mutate(BA_83kW = str_replace(BA_83kW,"1", "BA_83kW")) %>%
+    mutate(BA_102kW = str_replace(BA_102kW,"1", "BA_102kW")) %>%
+    mutate(BA_120kW = str_replace(BA_120kW,"1", "BA_120kW")) %>%
+    mutate(BA_200kW = str_replace(BA_200kW,"1", "BA_200kW")) %>%
+    mutate(BA_230kW = str_replace(BA_230kW,"1", "BA_230kW")) %>%
+#combine columns of BA Sprayer and SST
+    unite(BA_Sprayer, BA_45kW, BA_67kW, BA_83kW, BA_102kW, BA_120kW, BA_200kW, BA_230kW,
+        sep ="") %>%
+    unite(BA_Sprayer_Num, BA_45kWNum, BA_67kWNum, BA_83kWNum, BA_102kWNum, BA_120kWNum, BA_200kWNum, BA_230kWNum, 
+        sep="") %>%
+    unite(SST, spot6m, spot27m, sep ="")
+
+
+#change scale of farm profit 
+technoComp_farm151 <- technoComp_farm151 %>%
+    mutate(avgAnnFarmProf = avgAnnFarmProf / 1000)
 
 
 ###################
@@ -150,41 +325,203 @@ PteComp162 <- technoComp_farm162 %>%
 #aes tells R which variables are mapped against which visual characteristics on the canvas 
     ggplot(aes(x = landAv,
            y = avgAnnFarmProf,
-           colour = Scenario)) +
+           colour = Scenario))+ 
 #    geom_smooth(se = F)+
 #geom_point tells R to use points as the geometry (scatter plot)
-    geom_point(aes(size = SST,
-                    shape = BA_Sprayer))+
-#geom_smooth connects points 
+    geom_point(aes(alpha = SST,
+                    shape = BA_Sprayer_Num), size = 1)+
 #rename graph labels 
     labs(x = "Farm size (in ha)",
-         y = "Average annual net farm profit (in 1,000€)")
-
+         y = "Average annual net farm profit (in 1,000€)")+
 #Formatting of graph
 #Formatting of graph tite
-PteComp162 <- PteComp162 + ggtitle("Comparison of both SSTs (spot6m & spot27m)\nand scenarios (FH & FHBonus) with the baseline scenario") +
-    theme(plot.title = element_text(lineheight =.8, face="bold", size=20, hjust=0.5))
-#Formatting of things which have to do with the legend
-PteComp162 <- PteComp162 + scale_colour_manual(name = "Used Technology\nin Scenario",
+    ggtitle("Farm 161_152")+
+    theme(plot.title = element_text(lineheight =.8, face="bold", size=15, hjust=0.5))+
+#adjusting plot widths and height
+    plot_layout(heights = unit(7, "cm"), widths = unit(10, "cm"))+
+#Formatting of legend
+    scale_shape_manual(name = "BA Sprayer used",
+                            breaks = c("", "1"),
+                            labels = c("No", "Yes"),
+                            values=c(4,10))+
+    scale_colour_manual(name = "Scenario & technology\nused",
                             breaks = c("Base", "SST6m_FH", "SST27m_FH", "SST6m_FHBonus", "SST27m_FHBonus"),
                             labels = c("Base", "Scenario 1: SST6m", "Scenario 1: SST27m", "Scenario 2: SST6m", "Scenario 2: SST27m"),
-                            values = c("#FF0000", "#3333FF", "#339900", "#66CCFF", "#33FF66"))
-
-PteComp162 <- PteComp162 + scale_shape_manual(name = "Used BA sprayer",
-                            breaks = c("    ", "BA_45kW", "BA_67kW", "BA_83kW", "BA_102kW"),
-                            labels = c("None", "45kW Sprayer", "67kW Sprayer", "83kW Sprayer", "102kW Sprayer"),
-                            values=c(8,15,16,17,18))
-
-PteComp162 <- PteComp162 + scale_size_manual(name = "Number of SST used",
-                            breaks = c("  ", "1", "2"),
+                            values = c("#333333", "#339900", "#00CC33", "#0000FF", "#0099CC"))+
+    scale_alpha_manual(name = "Number of SST used",
+                            breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(3,6,12))
-#legend appearance
-PteComp162 <- PteComp162 + theme(legend.title = element_text(face = "bold", size = 14, hjust=.5))
-PteComp162 <- PteComp162 + theme(legend.justification=c(1,0), legend.position=c(1,0))
-PteComp162 <- PteComp162 + theme(legend.background = element_rect(fill="gray90", size =.5, linetype = "dotted"))
-PteComp162 <- PteComp162 + theme(legend.text = element_text(size = 12))
+                            values = c(0.4, 0.4, 1))+           
 #formatting of axis
-PteComp162 <- PteComp162 + scale_y_continuous(breaks=seq(0,350,25))
-PteComp162 <- PteComp162 + theme(axis.title.y = element_text(face="bold", vjust=2, size = 20))+
-        theme(axis.title.x = element_text(face="bold", vjust=0.3, size = 20))
+    scale_y_continuous(breaks=seq(0,350,25))+
+    scale_x_continuous(breaks=seq(0,400,25))+
+    theme(axis.title.y = element_text(face="bold", vjust=2, size = 10))+
+    theme(axis.title.x = element_text(face="bold", vjust=0.3, size = 10))
+
+PteComp162
+ggsave("teComp162.png")
+
+
+
+PteComp151 <- technoComp_farm151 %>%
+    ggplot(aes(x = landAv,
+           y = avgAnnFarmProf,
+           colour = Scenario))+ 
+    geom_point(aes(alpha = SST,
+                    shape = BA_Sprayer_Num), size = 1)+
+    labs(x = "Farm size (in ha)",
+         y = "Average annual net farm profit (in 1,000€)")+
+    ggtitle("Farm 151_142") +
+    theme(plot.title = element_text(lineheight =.8, face="bold", size=15, hjust=0.5))+
+#adjusting plot widths and height
+    plot_layout(heights = unit(7, "cm"), widths = unit(10, "cm"))+
+    scale_shape_manual(name = "BA Sprayer used",
+                            breaks = c("", "1"),
+                            labels = c("No", "Yes"),
+                            values=c(4,10))+
+    scale_colour_manual(name = "Scenario & technology\nused",
+                            breaks = c("Base", "SST6m_FH", "SST27m_FH", "SST6m_FHBonus", "SST27m_FHBonus"),
+                            labels = c("Base", "Scenario 1: SST6m", "Scenario 1: SST27m", "Scenario 2: SST6m", "Scenario 2: SST27m"),
+                            values = c("#333333", "#339900", "#00CC33", "#0000FF", "#0099CC"))+
+    scale_alpha_manual(name = "Number of SST used",
+                            breaks = c("", "1", "2"),
+                            labels = c("None", "1 Sprayer", "2 Sprayer"),
+                            values = c(0.4, 0.4, 1))+           
+    scale_y_continuous(breaks=seq(0,300,25))+
+    scale_x_continuous(breaks=seq(0,400,25))+
+    theme(axis.title.y = element_text(face="bold", vjust=2, size = 10))+
+    theme(axis.title.x = element_text(face="bold", vjust=0.3, size = 10))
+
+PteComp151
+ggsave("teComp151.png")
+
+
+
+##########################
+#Combination of both plots
+##########################
+library(patchwork)
+TeCompPlot <- (PteComp162 + plot_spacer()+ PteComp151)+ 
+#controlling the grid
+    plot_layout(ncol = 1, nrow = 3)+
+    #the height (and widths) ratio of the individual plots in the grid is specified in the following row
+    plot_layout(heights = unit(c(7,0,7), "cm"))+
+#Title of grid
+    plot_annotation(title = "Comparison of both SSTs and scenarios with the\nbaseline scenario for both typical farms",
+        theme = theme(plot.title  = element_text(face = "bold", size = 15, hjust = 0.5)))+
+#Creation of shared legend 
+    plot_layout(guides = "collect") & 
+    theme(legend.position="bottom", legend.box = "horizontal", legend.direction = "vertical") &
+    theme(legend.title = element_text(face = "bold", size = 9, hjust=.5)) &
+    theme((legend.text = element_text(size = 9))) & 
+    guides(colour = guide_legend(order=1, override.aes = list(size=4)), alpha = guide_legend(order=2, override.aes = list(size=4)), shape = guide_legend(order=3, override.aes = list(size = 4)))&
+    theme(legend.key.size = unit(1,"line"))
+
+TeCompPlot
+ggsave("TeCompPlot.png")
+
+rm(PteComp162)
+rm(teComp162)
+rm(technoComp_farm162)
+rm(PteComp151)
+rm(teComp151)
+rm(technoComp_farm151)
+
+
+
+###########################################################################################
+#Combination of average annual net profit plots with average annual net profit per ha plots
+###########################################################################################
+#Create column for net profit per ha
+technoComp_farm162$farmProfHa <- technoComp_farm162$avgAnnFarmProf / technoComp_farm162$landAv * 1000
+technoComp_farm151$farmProfHa <- technoComp_farm151$avgAnnFarmProf / technoComp_farm151$landAv * 1000
+view(technoComp_farm162)
+
+PteComp162Ha <- technoComp_farm162 %>%
+#aes tells R which variables are mapped against which visual characteristics on the canvas 
+    ggplot(aes(x = landAv,
+           y = farmProfHa,
+           colour = Scenario))+ 
+#    geom_smooth(se = F)+
+#geom_point tells R to use points as the geometry (scatter plot)
+    geom_point(aes(alpha = SST,
+                    shape = BA_Sprayer_Num), size = 1)+
+#rename graph labels 
+    labs(x = "Farm size (in ha)",
+         y = "Average annual net farm profit per ha (in €)")+
+#Formatting of graph
+#Formatting of graph tite
+    ggtitle("Farm 161_152")+
+    theme(plot.title = element_text(lineheight =.8, face="bold", size=15, hjust=0.5))+
+#adjusting plot widths and height
+    plot_layout(heights = unit(7, "cm"), widths = unit(10, "cm"))+
+#Formatting of legend
+    scale_shape_manual(name = "BA Sprayer used",
+                            breaks = c("", "1"),
+                            labels = c("No", "Yes"),
+                            values=c(4,10))+
+    scale_colour_manual(name = "Scenario & technology\nused",
+                            breaks = c("Base", "SST6m_FH", "SST27m_FH", "SST6m_FHBonus", "SST27m_FHBonus"),
+                            labels = c("Base", "Scenario 1: SST6m", "Scenario 1: SST27m", "Scenario 2: SST6m", "Scenario 2: SST27m"),
+                            values = c("#333333", "#339900", "#00CC33", "#0000FF", "#0099CC"))+
+    scale_alpha_manual(name = "Number of SST used",
+                            breaks = c("", "1", "2"),
+                            labels = c("None", "1 Sprayer", "2 Sprayer"),
+                            values = c(0.4, 0.4, 1))+           
+#formatting of axis
+    scale_y_continuous(breaks=seq(0,1000,100))+
+    scale_x_continuous(breaks=seq(0,400,25))+
+    theme(axis.title.y = element_text(face="bold", vjust=2, size = 10))+
+    theme(axis.title.x = element_text(face="bold", vjust=0.3, size = 10))
+PteComp162Ha
+ggsave("teCompHa162.png")
+
+
+PteComp151Ha <- technoComp_farm151 %>%
+    ggplot(aes(x = landAv,
+           y = farmProfHa,
+           colour = Scenario))+ 
+    geom_point(aes(alpha = SST,
+                    shape = BA_Sprayer_Num), size = 1)+
+    labs(x = "Farm size (in ha)",
+         y = "Average annual net farm profit per ha (in €)")+
+    ggtitle("Farm 151_142") +
+    theme(plot.title = element_text(lineheight =.8, face="bold", size=15, hjust=0.5))+
+#adjusting plot widths and height
+    plot_layout(heights = unit(7, "cm"), widths = unit(10, "cm"))+
+    scale_shape_manual(name = "BA Sprayer used",
+                            breaks = c("", "1"),
+                            labels = c("No", "Yes"),
+                            values=c(4,10))+
+    scale_colour_manual(name = "Scenario & technology\nused",
+                            breaks = c("Base", "SST6m_FH", "SST27m_FH", "SST6m_FHBonus", "SST27m_FHBonus"),
+                            labels = c("Base", "Scenario 1: SST6m", "Scenario 1: SST27m", "Scenario 2: SST6m", "Scenario 2: SST27m"),
+                            values = c("#333333", "#339900", "#00CC33", "#0000FF", "#0099CC"))+
+    scale_alpha_manual(name = "Number of SST used",
+                            breaks = c("", "1", "2"),
+                            labels = c("None", "1 Sprayer", "2 Sprayer"),
+                            values = c(0.4, 0.4, 1))+           
+    scale_y_continuous(breaks=seq(0,1000,100))+
+    scale_x_continuous(breaks=seq(0,400,25))+
+    theme(axis.title.y = element_text(face="bold", vjust=2, size = 10))+
+    theme(axis.title.x = element_text(face="bold", vjust=0.3, size = 10))
+PteComp151Ha
+ggsave("teCompHa151.png")
+
+
+TeCompPlotComb <- PteComp162 + PteComp151 + PteComp162Ha + PteComp151Ha +
+    plot_layout(ncol = 2, nrow = 2)+
+    #the height (and widths) ratio of the individual plots in the grid is specified in the following row
+    plot_layout(heights = unit(c(7,7,7,7), "cm"), widths = unit(c(10,10,10,10), "cm"))+
+#Title of grid
+    plot_annotation(title = "Comparison of both SSTs and scenarios with the\nbaseline scenario for both typical farms",
+        theme = theme(plot.title  = element_text(face = "bold", size = 15, hjust = 0.5)))+
+#Creation of shared legend 
+    plot_layout(guides = "collect") & 
+    theme(legend.position="bottom", legend.box = "horizontal", legend.direction = "vertical") &
+    theme(legend.title = element_text(face = "bold", size = 9, hjust=.5)) &
+    theme((legend.text = element_text(size = 9))) & 
+    guides(colour = guide_legend(order=1, override.aes = list(size=4)), alpha = guide_legend(order=2, override.aes = list(size=4)), shape = guide_legend(order=3, override.aes = list(size = 4)))&
+    theme(legend.key.size = unit(1,"line"))
+TeCompPlotComb
+ggsave("teCompProf&Ha.png")

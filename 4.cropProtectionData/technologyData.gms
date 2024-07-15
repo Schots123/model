@@ -1,121 +1,31 @@
-
-
+*
+*  --- Sets with technologies and scenarios of interest for the study objective
+*
 set technology(allItems) /BA, spot6m, spot27m/;
+set SST(technology) /spot6m, spot27m/;
+
 set scenSprayer(allItems) /spot6m, spot27m, BA_45kW, BA_67kW, BA_83kW, BA_102kW, BA_120kW, BA_200kW, BA_230kW/;
 set BASprayer(scenSprayer) /BA_45kW, BA_67kW, BA_83kW, BA_102kW, BA_120kW, BA_200kW, BA_230kW/;
 set spotSprayer(scenSprayer) /spot6m, spot27m/;
+set spot6m_BASprayer(scenSprayer) /spot6m, BA_45kW, BA_67kW, BA_83kW, BA_102kW, BA_120kW, BA_200kW, BA_230kW/;
+set spot27m_BASprayer(scenSprayer) /spot27m, BA_45kW, BA_67kW, BA_83kW, BA_102kW, BA_120kW, BA_200kW, BA_230kW/;
 
 set scenario / 
     Base BA only with BA sprayer, 
     FH SS of foliar herbicides with SST and BA of remaining pesticides with BA sprayer
     FH+BA SS of foliar herbicides and BA of remaining pesticides with SST
-    FH+Bonus SS of foliar herbicides fungicides and insecticides on row crops with SST and BA of remaining pesticides with BA sprayer, 
-    FH+Bonus+BA SS of foliar herbicides fungicides and insecticides on row crops and BA of remaining pesticides with SST
-    /;
-
-parameter p_technology_scenario(technology,scenario) /
-"BA"."Base" 1
-"spot6m"."FH" 1
-"spot27m"."FH" 1
-"spot6m"."FH+BA" 1
-"spot27m"."FH+BA" 1
-"spot6m"."FH+Bonus" 1
-"spot27m"."FH+Bonus" 1
-"spot6m"."FH+Bonus+BA" 1
-"spot27m"."FH+Bonus+BA" 1
+    FH+Bonus SS of foliar herbicides fungicides insecticides and growth regulators with SST and BA of remaining pesticides with BA sprayer, 
+    FH+Bonus+BA SS of foliar herbicides fungicides insecticides and growth regulators and BA of remaining pesticides with SST
 /;
+set scenarioFH(scenario) /FH, FH+BA/;
+set scenarioFHBonus(scenario) /FH+Bonus, FH+Bonus+BA/;
 
-parameter p_scenario_scenSprayer(scenario,scenSprayer) /
-"Base"."BA_45kW" 1
-"Base"."BA_67kW" 1
-"Base"."BA_83kW" 1
-"Base"."BA_102kW" 1
-"Base"."BA_120kW" 1
-"Base"."BA_200kW" 1
-"Base"."BA_230kW" 1
-
-"FH"."BA_45kW" 1
-"FH"."BA_67kW" 1
-"FH"."BA_83kW" 1
-"FH"."BA_102kW" 1
-"FH"."BA_120kW" 1
-"FH"."BA_200kW" 1
-"FH"."BA_230kW" 1
-"FH"."spot6m" 1
-"FH"."spot27m" 1
-
-"FH+BA"."spot6m" 1
-"FH+BA"."spot27m" 1
-
-"FH+Bonus"."spot6m" 1
-"FH+Bonus"."spot27m" 1
-"FH+Bonus"."BA_45kW" 1
-"FH+Bonus"."BA_67kW" 1
-"FH+Bonus"."BA_83kW" 1
-"FH+Bonus"."BA_102kW" 1
-"FH+Bonus"."BA_120kW" 1
-"FH+Bonus"."BA_200kW" 1
-"FH+Bonus"."BA_230kW" 1
-
-"FH+Bonus+BA"."spot6m" 1
-"FH+Bonus+BA"."spot27m" 1
-/;
-
-parameter p_technology_scenario_scenSprayer(technology,scenario,scenSprayer) /
-"BA"."Base"."BA_45kW" 1
-"BA"."Base"."BA_67kW" 1
-"BA"."Base"."BA_83kW" 1
-"BA"."Base"."BA_102kW" 1
-"BA"."Base"."BA_120kW" 1
-"BA"."Base"."BA_200kW" 1
-"BA"."Base"."BA_230kW" 1
-
-
-"spot6m"."FH"."spot6m" 1
-"spot6m"."FH"."BA_45kW" 1
-"spot6m"."FH"."BA_67kW" 1
-"spot6m"."FH"."BA_83kW" 1
-"spot6m"."FH"."BA_102kW" 1
-"spot6m"."FH"."BA_120kW" 1
-"spot6m"."FH"."BA_200kW" 1
-"spot6m"."FH"."BA_230kW" 1
-
-"spot27m"."FH"."spot27m" 1
-"spot27m"."FH"."BA_45kW" 1
-"spot27m"."FH"."BA_67kW" 1
-"spot27m"."FH"."BA_83kW" 1
-"spot27m"."FH"."BA_102kW" 1
-"spot27m"."FH"."BA_120kW" 1
-"spot27m"."FH"."BA_200kW" 1
-"spot27m"."FH"."BA_230kW" 1
-
-
-"spot6m"."FH+BA"."spot6m" 1
-"spot27m"."FH+BA"."spot27m" 1
-
-
-"spot6m"."FH+Bonus"."spot6m" 1
-"spot6m"."FH+Bonus"."BA_45kW" 1
-"spot6m"."FH+Bonus"."BA_67kW" 1
-"spot6m"."FH+Bonus"."BA_83kW" 1
-"spot6m"."FH+Bonus"."BA_102kW" 1
-"spot6m"."FH+Bonus"."BA_120kW" 1
-"spot6m"."FH+Bonus"."BA_200kW" 1
-"spot6m"."FH+Bonus"."BA_230kW" 1
-
-"spot27m"."FH+Bonus"."spot27m" 1
-"spot27m"."FH+Bonus"."BA_45kW" 1
-"spot27m"."FH+Bonus"."BA_67kW" 1
-"spot27m"."FH+Bonus"."BA_83kW" 1
-"spot27m"."FH+Bonus"."BA_102kW" 1
-"spot27m"."FH+Bonus"."BA_120kW" 1
-"spot27m"."FH+Bonus"."BA_200kW" 1
-"spot27m"."FH+Bonus"."BA_230kW" 1
-
-
-"spot6m"."FH+Bonus+BA"."spot6m" 1
-"spot27m"."FH+Bonus+BA"."spot27m" 1
-/;
+*the following three parameters are only used to confine the possible solutions to the desired scenarios and investigation objectives
+parameters 
+    p_technology_scenario(technology,scenario)
+    p_scenario_scenSprayer(scenario,scenSprayer)
+    p_technology_scenario_scenSprayer(technology,scenario,scenSprayer)
+;
 
 parameters
     p_technoValue(scenSprayer)
@@ -236,7 +146,7 @@ parameter p_technoFieldDayHours(scenSprayer);
 
 *hours per field day available for spraying (S-S requires good light conditions, 
 *wich are facilitated over night for spot6m with cover on top of the boom and light sources)
-p_technoFieldDayHours(BASprayer) = 16;
+p_technoFieldDayHours(BASprayer) = 24;
 p_technoFieldDayHours("spot6m") = 24;
 p_technoFieldDayHours("spot27m") = 12;
 ;
@@ -3552,3 +3462,4 @@ p_numberSprayPassesScenarios(KTBL_crops,KTBL_yield,technology,scenario,scenSpray
 
 *option p_numberSprayPassesScenarios:1:4:1 display p_numberSprayPassesScenarios;
 
+*display p_numberSprayPassesScenarios;

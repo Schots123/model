@@ -9,13 +9,13 @@ set curCrops(KTBL_crops) /
 'Wintergerste - Futtergerste' 
 /;
 
-set cropsBreak2(curCrops) /
-'Zuckerrueben'
-/;
-
 set curCropGroups(allItems) /
 'Winterweizen'
 'Wintergerste'
+'Zuckerrueben'
+/;
+
+set cropsBreak2(curCropGroups) /
 'Zuckerrueben'
 /;
 
@@ -34,7 +34,6 @@ parameter p_cropData(curCropGroups,cropAttr)  /
 'Winterweizen'.maxShare 50
 'Wintergerste'.maxShare 50
 'Zuckerrueben'.maxShare 50
-'Zuckerrueben'.minShare 20
 /;
 
 
@@ -69,7 +68,8 @@ set curPlots /
 '4444559'
 /;
 
-set plots_permPast(curPlots)//;
+set plots_permPast(curPlots) /
+/;
 $ontext
 set plots_permPast(curPlots) /
 '4001270'

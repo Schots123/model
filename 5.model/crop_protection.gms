@@ -183,7 +183,7 @@ e_sprayerTechno(scenSprayer,halfMonth)..
         AND curPlots_ktblDistance(curPlots,KTBL_distance)
         AND curPlots_ktblYield(curPlots,KTBL_yield) 
         AND ktblCrops_KtblYield(curCrops,KTBL_yield)
-        AND p_technology_scenario(technology,scenario)
+        AND p_technology_scenario_scenSprayer(technology,scenario,scenSprayer)
     ),      
         v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer,years)
             * p_plotData(curPlots,"size") * farmSizeVar
@@ -217,7 +217,7 @@ e_deprecTechnoHa(scenSprayer,years)..
         AND curPlots_ktblDistance(curPlots,KTBL_distance)
         AND curPlots_ktblYield(curPlots,KTBL_yield) 
         AND ktblCrops_KtblYield(curCrops,KTBL_yield)
-        AND p_technology_scenario(technology,scenario)
+        AND p_technology_scenario_scenSprayer(technology,scenario,scenSprayer)
     ),       
         v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer,years)
             * p_plotData(curPlots,"size") * farmSizeVar
@@ -257,18 +257,19 @@ equations
     e_varCostsPestiTechno(scenSprayer,years)
 ;
 
-parameter p_annualFeeSST(scenSprayer,years) parameter only required in sensitivity analysis where the impact of an annual fee is evaluated;
-p_annualFeeSST(scenSprayer,years) = 0;
+parameter p_annualFeeSST(scenSprayer) parameter only required in sensitivity analysis where the impact of an annual fee is evaluated;
+p_annualFeeSST(scenSprayer) = 0;
 
 e_fixCostsPestiTechno(scenSprayer,years)..
     v_fixCostsSprayer(scenSprayer,years) =E=
         v_deprecSprayer(scenSprayer,years) 
         + v_interestSprayer(scenSprayer,years)
         + v_otherCostsSprayer(scenSprayer,years)
-        + p_annualFeeSST(scenSprayer,years)
+        + p_annualFeeSST(scenSprayer)
 ;
 
-scalar algorithmCostsPerHa parameter only important for sensitivity analysis where algorithm costs are considered /0/;
+parameter algorithmCostsPerHa(scenSprayer) parameter only important for sensitivity analysis where algorithm costs are considered;
+algorithmCostsPerHa(scenSprayer) = 0;
 
 e_varCostsPestiTechno(scenSprayer,years)..
     v_varCostsSprayer(scenSprayer,years)  =E= 
@@ -277,7 +278,7 @@ e_varCostsPestiTechno(scenSprayer,years)..
         curPlots_ktblSize(curPlots,KTBL_size) 
         AND curPlots_ktblDistance(curPlots,KTBL_distance)
         AND curPlots_ktblYield(curPlots,KTBL_yield) 
-        AND p_technology_scenario(technology,scenario)
+        AND p_technology_scenario_scenSprayer(technology,scenario,scenSprayer)
     ), 
         v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer,years)
             * p_plotData(curPlots,"size") * farmSizeVar
@@ -299,7 +300,7 @@ e_varCostsPestiTechno(scenSprayer,years)..
             * p_plotData(curPlots,"size") * farmSizeVar
             * sum(pestType,
                 p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType))
-            * algorithmCostsPerHa
+            * algorithmCostsPerHa(scenSprayer)
     )
     + v_labReq(scenSprayer,years) * labPrice
 ;

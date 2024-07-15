@@ -60,21 +60,29 @@ e_oneCropPlot(curPlots,years)..
   =L= 1
 ;
 
+*
+*  --- Crop break restriction
+*
 e_cropBreak2years(curPlots,cropsBreak2,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years)
   $ (
     curPlots_ktblSize(curPlots,KTBL_size) 
     AND curPlots_ktblDistance(curPlots,KTBL_distance) 
-    AND curPlots_ktblYield(curPlots,KTBL_yield) 
+    AND curPlots_ktblYield(curPlots,KTBL_yield)
   )..
-  sum(KTBL_system 
+  sum((KTBL_system,curCrops) 
   $ (
-    ktblCrops_KtblSystem_KtblYield(cropsBreak2,KTBL_system,KTBL_yield)
-    AND p_profitPerHaNoPesti(cropsBreak2,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
+    ktblCrops_KtblSystem_KtblYield(curCrops,KTBL_system,KTBL_yield)
+    AND p_profitPerHaNoPesti(curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
+    AND curCrops_curCropGroups(cropsBreak2,curCrops) 
   ),
-  v_binCropPlot(curPlots,cropsBreak2,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years)
-  + v_binCropPlot(curPlots,cropsBreak2,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years-1)
-  + v_binCropPlot(curPlots,cropsBreak2,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years-2)
+  v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years)
+  + v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years-1)
+  + v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years-2)
   )
   =L=
   1
 ;
+
+*
+* --- Mechanization variation
+*
