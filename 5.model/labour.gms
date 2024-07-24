@@ -21,9 +21,9 @@ e_labReq(scenSprayer,years)..
     v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer,years)
       * p_plotData(curPlots,"size") * farmSizeVar
       * sum(pestType,
-        p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
+        p_numberSprayPasScenTimeFuel(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType)
         * p_technoTimeReq(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
-        * timeReqVar(scenSprayer)
+        * timeReqVar(technology,scenario,scenSprayer,pestType)
       )
   )
 ;

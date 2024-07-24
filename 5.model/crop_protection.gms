@@ -189,7 +189,7 @@ e_sprayerTechno(scenSprayer,halfMonth)..
             * p_plotData(curPlots,"size") * farmSizeVar
             * sum(pestType,
                 p_datePestOpTechno(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)
-                * p_technoTimeReq(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) * timeReqVar(scenSprayer)
+                * p_technoTimeReq(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) * timeReqVar(technology,scenario,scenSprayer,pestType)
             )
     ) 
     / card(years)
@@ -202,14 +202,15 @@ e_deprecTechnoTime(scenSprayer,years)..
     v_deprecSprayer(scenSprayer,years) 
     =G=
     v_numberSprayer(scenSprayer) 
-    * (p_technoValue(scenSprayer) - p_technoRemValue(scenSprayer)) 
+    * ((p_technoValue(scenSprayer) - p_technoRemValue(scenSprayer)) * technoValueVar(scenSprayer))
     / p_technoLifetime(scenSprayer)
+    + p_tractorDeprec(scenSprayer) * v_labReq(scenSprayer,years)
 ;
 
 e_deprecTechnoHa(scenSprayer,years)..
     v_deprecSprayer(scenSprayer,years) 
     =G=
-    (p_technoValue(scenSprayer) - p_technoRemValue(scenSprayer)) 
+    ((p_technoValue(scenSprayer) - p_technoRemValue(scenSprayer)) * technoValueVar(scenSprayer)) 
     / p_technoAreaCapac(scenSprayer)
     * sum((curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario)
     $ (
@@ -221,8 +222,9 @@ e_deprecTechnoHa(scenSprayer,years)..
     ),       
         v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer,years)
             * p_plotData(curPlots,"size") * farmSizeVar
-*            * p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
+*            * p_numberSprayPasScenTimeFuel(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
     )
+    + p_tractorDeprec(scenSprayer) * v_labReq(scenSprayer,years)
 ;
 
 *
@@ -231,8 +233,9 @@ e_deprecTechnoHa(scenSprayer,years)..
 e_interestTechno(scenSprayer,years)..
     v_interestSprayer(scenSprayer,years) 
     =E=
-    (p_technoValue(scenSprayer) + p_technoRemValue(scenSprayer)) / 2 * 0.03
+    ((p_technoValue(scenSprayer) + p_technoRemValue(scenSprayer)) * technoValueVar(scenSprayer)) / 2 * 0.03
     * v_numberSprayer(scenSprayer)
+    + p_tractorInterest(scenSprayer) * v_labReq(scenSprayer,years)
 ;
 
 *
@@ -242,6 +245,7 @@ e_otherCostsTechno(scenSprayer,years)..
     v_otherCostsSprayer(scenSprayer,years)
     =E=
     v_deprecSprayer(scenSprayer,years) * 0.1
+    + p_tractorOtherCosts(scenSprayer) * v_labReq(scenSprayer,years)
 ;
 
 *
@@ -268,8 +272,8 @@ e_fixCostsPestiTechno(scenSprayer,years)..
         + p_annualFeeSST(scenSprayer)
 ;
 
-parameter algorithmCostsPerHa(scenSprayer) parameter only important for sensitivity analysis where algorithm costs are considered;
-algorithmCostsPerHa(scenSprayer) = 0;
+parameter p_algorithmCostsPerHa(technology,scenario,scenSprayer,pestType) parameter only important for sensitivity analysis where algorithm costs are considered;
+p_algorithmCostsPerHa(technology,scenario,scenSprayer,pestType) = 0;
 
 e_varCostsPestiTechno(scenSprayer,years)..
     v_varCostsSprayer(scenSprayer,years)  =E= 
@@ -283,15 +287,15 @@ e_varCostsPestiTechno(scenSprayer,years)..
         v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer,years)
             * p_plotData(curPlots,"size") * farmSizeVar
             * sum(pestType,
-                p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
+                p_numberSprayPasScenTimeFuel(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType)
                 * p_technoFuelCons(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
-                * fuelConsVar(scenSprayer)
+                * fuelConsVar(technology,scenario,scenSprayer,pestType)
                 * newFuelPrice 
             )
         + v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer,years)
             * p_plotData(curPlots,"size") * farmSizeVar
             * sum(pestType,
-                p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
+                p_numberSprayPasScenRepair(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType)
                 * p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
                 * repairCostsVar(scenSprayer)
             )
@@ -299,8 +303,9 @@ e_varCostsPestiTechno(scenSprayer,years)..
         + v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer,years)
             * p_plotData(curPlots,"size") * farmSizeVar
             * sum(pestType,
-                p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType))
-            * algorithmCostsPerHa(scenSprayer)
+                p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
+                * p_algorithmCostsPerHa(technology,scenario,scenSprayer,pestType)
+            )
     )
     + v_labReq(scenSprayer,years) * labPrice
 ;

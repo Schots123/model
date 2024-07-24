@@ -2,7 +2,5 @@
 debug.json
 *.xlsx
 *.gsp
-.RData
-.Rhistory
 *.png
-
+*.gdx

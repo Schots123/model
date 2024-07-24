@@ -79,7 +79,7 @@ summarySenAn('%repCosts',%1,%2,%3) $ (technoRepRandom ne 0) = technoRepRandom;
 *
 summarySenAn("avgAnnFarmProf",%1,%2,%3) = v_totProfit.l/card(years);
 
-summarySenAn("diCostsPesti",%1,%2,%3) = sum(years,v_dcPesti.l(years))/card(years);
+summarySenAn("diCostsPesti",%1,%2,%3) = sum(years,v_dcPesti.l(years) + v_dcPesti.l(years) * 0.03 * (3/12)) / card(years);
 
 summarySenAn("fuelCostsSprayer",%1,%2,%3) = 
   sum((curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer,years)
@@ -93,9 +93,9 @@ summarySenAn("fuelCostsSprayer",%1,%2,%3) =
         v_binPlotTechno.l(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer,years)
             * p_plotData(curPlots,"size") * farmSizeVar
             * sum(pestType,
-              p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
+              p_numberSprayPasScenTimeFuel(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType)
               * p_technoFuelCons(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
-              * fuelConsVar(scenSprayer)
+              * fuelConsVar(technology,scenario,scenSprayer,pestType)
             )
             * newFuelPrice
   ) 
@@ -114,7 +114,7 @@ summarySenAn("repCostsSprayer",%1,%2,%3) =
   v_binPlotTechno.l(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer,years)
             * p_plotData(curPlots,"size") * farmSizeVar
             * sum(pestType,
-              p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
+              p_numberSprayPasScenRepair(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType)
               * p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
               * repairCostsVar(scenSprayer)
             )
@@ -130,17 +130,17 @@ summarySenAn("labCostsSprayer",%1,%2,%3) =
 
 summarySenAn("deprecSprayer",%1,%2,%3) = 
     sum((scenSprayer,years),
-    v_deprecSprayer.l(scenSprayer,years))/card(years)
+    v_deprecSprayer.l(scenSprayer,years)) / card(years)
 ;
 
 summarySenAn("interestSprayer",%1,%2,%3) = 
     sum((scenSprayer,years),
-    v_interestSprayer.l(scenSprayer,years))/card(years)
+    v_interestSprayer.l(scenSprayer,years)) / card(years)
 ;
 
 summarySenAn("otherCostsSprayer",%1,%2,%3) = 
     sum((scenSprayer,years),
-    v_otherCostsSprayer.l(scenSprayer,years))/card(years)
+    v_otherCostsSprayer.l(scenSprayer,years)) / card(years)
 ;
 
 summarySenAn("varCostsSprayer",%1,%2,%3) =  

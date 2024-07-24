@@ -177,18 +177,25 @@ parameter p_plotData(curPlots,plotAttr) /
 '4153261'.soilQual 55
 '4025523'.soilQual 55
 '4227556'.soilQual 55
-'4048407'.soilQual 32.5
+*32.5
+'4048407'.soilQual 42.5
 '3824579'.soilQual 55
 '3858737'.soilQual 55
 '4431424'.soilQual 55
-'4150587'.soilQual 32.5
-'3872255'.soilQual 40
-'4370868'.soilQual 30
-'3741503'.soilQual 32.5
+*32.5
+'4150587'.soilQual 42.5
+*40
+'3872255'.soilQual 42.5
+*30
+'4370868'.soilQual 42.5
+*32.5
+'3741503'.soilQual 42.5
 '3813190'.soilQual 42.5
-'3823255'.soilQual 40
-'3998351'.soilQual 30
-'3969216'.soilQual 40
+*40
+'3823255'.soilQual 42.5
+*30
+'3998351'.soilQual 42.5
+'3969216'.soilQual 42.5
 
 '3871999'.soilType sandigerLehm
 *'4025521'.soilType lehmigerSand

@@ -3,6 +3,7 @@
 #############
 getwd()
 m151senAn = Container$new("ResultsSenAn_151.142.gdx")
+m151senAn = Container$new("ResultsSenAn&TechnoComp_151.142.gdx")
 m151senAn$listSymbols()
 m151senAn$describeParameters()
 senAn_farm151 <- m151senAn["summarySenAn"]$records
@@ -23,7 +24,7 @@ senAn_151_landAv <- subset(senAn_farm151, allItems_1 == "landAv")
 senAn_151_landUsed <- subset(senAn_farm151, allItems_1 == "landUsedAvg")
 senAn_151_WW <- subset(senAn_farm151, allItems_1 == "Winterweizen")
 senAn_151_WG <- subset(senAn_farm151, allItems_1 == "Wintergerste")
-senAn_151_SB <- subset(senAn_farm151, allItems_1 == "Winterraps")
+senAn_151_WR <- subset(senAn_farm151, allItems_1 == "Winterraps")
 senAn_151_BA45kW <- subset(senAn_farm151, allItems_1 == "BA_45kW")
 senAn_151_BA67kW <- subset(senAn_farm151, allItems_1 == "BA_67kW")
 senAn_151_BA83kW <- subset(senAn_farm151, allItems_1 == "BA_83kW")
@@ -55,7 +56,7 @@ colnames(senAn_151_landAv)[5] <- "landAv"
 colnames(senAn_151_landUsed)[5] <- "landUsedAvg"
 colnames(senAn_151_WW)[5] <- "Winterweizen"
 colnames(senAn_151_WG)[5] <- "Wintergerste"
-colnames(senAn_151_SB)[5] <- "Winterraps"
+colnames(senAn_151_WR)[5] <- "Winterraps"
 colnames(senAn_151_BA45kW)[5] <- "BA_45kW"
 colnames(senAn_151_BA67kW)[5] <- "BA_67kW"
 colnames(senAn_151_BA83kW)[5] <- "BA_83kW"
@@ -85,7 +86,7 @@ senAn_151_landAv$allItems_1 <- NULL
 senAn_151_landUsed$allItems_1 <- NULL
 senAn_151_WW$allItems_1 <- NULL
 senAn_151_WG$allItems_1 <- NULL
-senAn_151_SB$allItems_1 <- NULL
+senAn_151_WR$allItems_1 <- NULL
 senAn_151_BA45kW$allItems_1 <- NULL
 senAn_151_BA67kW$allItems_1 <- NULL
 senAn_151_BA83kW$allItems_1 <- NULL
@@ -116,7 +117,7 @@ senAn_151_teValue <- senAn_151_teValue %>%
     left_join(senAn_151_landUsed, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_WW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_WG, by =c("uni_2","uni_3","uni_4")) %>% 
-    left_join(senAn_151_SB, by =c("uni_2","uni_3","uni_4")) %>% 
+    left_join(senAn_151_WR, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA45kW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA67kW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA83kW, by =c("uni_2","uni_3","uni_4")) %>% 
@@ -139,7 +140,7 @@ senAn_151_algoCosts <- senAn_151_algoCosts %>%
     left_join(senAn_151_landUsed, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_WW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_WG, by =c("uni_2","uni_3","uni_4")) %>% 
-    left_join(senAn_151_SB, by =c("uni_2","uni_3","uni_4")) %>% 
+    left_join(senAn_151_WR, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA45kW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA67kW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA83kW, by =c("uni_2","uni_3","uni_4")) %>% 
@@ -162,7 +163,7 @@ senAn_151_annFee <- senAn_151_annFee %>%
     left_join(senAn_151_landUsed, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_WW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_WG, by =c("uni_2","uni_3","uni_4")) %>% 
-    left_join(senAn_151_SB, by =c("uni_2","uni_3","uni_4")) %>% 
+    left_join(senAn_151_WR, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA45kW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA67kW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA83kW, by =c("uni_2","uni_3","uni_4")) %>% 
@@ -184,7 +185,7 @@ senAn_151_PestEff <- senAn_151_PestEff %>%
     left_join(senAn_151_landUsed, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_WW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_WG, by =c("uni_2","uni_3","uni_4")) %>% 
-    left_join(senAn_151_SB, by =c("uni_2","uni_3","uni_4")) %>% 
+    left_join(senAn_151_WR, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA45kW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA67kW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA83kW, by =c("uni_2","uni_3","uni_4")) %>% 
@@ -206,7 +207,7 @@ senAn_151_time <- senAn_151_time %>%
     left_join(senAn_151_landUsed, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_WW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_WG, by =c("uni_2","uni_3","uni_4")) %>% 
-    left_join(senAn_151_SB, by =c("uni_2","uni_3","uni_4")) %>% 
+    left_join(senAn_151_WR, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA45kW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA67kW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA83kW, by =c("uni_2","uni_3","uni_4")) %>% 
@@ -228,7 +229,7 @@ senAn_151_fuel <- senAn_151_fuel %>%
     left_join(senAn_151_landUsed, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_WW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_WG, by =c("uni_2","uni_3","uni_4")) %>% 
-    left_join(senAn_151_SB, by =c("uni_2","uni_3","uni_4")) %>% 
+    left_join(senAn_151_WR, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA45kW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA67kW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA83kW, by =c("uni_2","uni_3","uni_4")) %>% 
@@ -250,7 +251,7 @@ senAn_151_repair <- senAn_151_repair %>%
     left_join(senAn_151_landUsed, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_WW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_WG, by =c("uni_2","uni_3","uni_4")) %>% 
-    left_join(senAn_151_SB, by =c("uni_2","uni_3","uni_4")) %>% 
+    left_join(senAn_151_WR, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA45kW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA67kW, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_151_BA83kW, by =c("uni_2","uni_3","uni_4")) %>% 
@@ -272,7 +273,7 @@ rm(senAn_151_landAv)
 rm(senAn_151_landUsed)
 rm(senAn_151_WW)
 rm(senAn_151_WG)
-rm(senAn_151_SB)
+rm(senAn_151_WR)
 rm(senAn_151_BA45kW)
 rm(senAn_151_BA67kW)
 rm(senAn_151_BA83kW)
@@ -292,12 +293,7 @@ rm(senAn_151_deprecSprayer)
 #####################################
 #Column Preperation for Visualization
 #####################################
-view(senAn_151_teValue)
 ###################Technology Value 
-
-#small Correction
-#senAn_162_teValue[615, "BA_102kW"] = 1
-view(senAn_151_teValue)
 #combine all BA sprayer columns to one
 senAn_151_teValue$numberSST6m <- senAn_151_teValue$spot6m
 senAn_151_teValue$numberSST27m <- senAn_151_teValue$spot27m
@@ -327,7 +323,7 @@ senAn_151_teValue <- senAn_151_teValue %>%
     unite(numberSST, numberSST6m, numberSST27m, sep ="") %>%
     unite(Technology, spot6m, spot27m, sep ="")
 senAn_151_teValue$Technology[senAn_151_teValue$Technology==""]<-"BA Sprayer"
-view(senAn_151_teValue)
+
 
 
 ###################Algorithm Costs
@@ -358,7 +354,7 @@ senAn_151_algoCosts <- senAn_151_algoCosts %>%
     unite(numberSST, numberSST6m, numberSST27m, sep ="") %>%
     unite(Technology, spot6m, spot27m, sep ="")
 senAn_151_algoCosts$Technology[senAn_151_algoCosts$Technology==""]<-"BA Sprayer"
-view(senAn_151_algoCosts)
+
 
 
 ###################Annual Fee
@@ -389,7 +385,7 @@ senAn_151_annFee <- senAn_151_annFee %>%
     unite(numberSST, numberSST6m, numberSST27m, sep ="") %>%
     unite(Technology, spot6m, spot27m, sep ="")
 senAn_151_annFee$Technology[senAn_151_annFee$Technology==""]<-"BA Sprayer"
-view(senAn_151_annFee)
+
 
 
 ###################Pesticide Efficiency
@@ -420,7 +416,6 @@ senAn_151_PestEff <- senAn_151_PestEff %>%
     unite(numberSST, numberSST6m, numberSST27m, sep ="") %>%
     unite(Technology, spot6m, spot27m, sep ="")
 senAn_151_PestEff$Technology[senAn_151_PestEff$Technology==""]<-"BA Sprayer"
-view(senAn_151_PestEff)
 
 
 ###################Time Requirement
@@ -451,7 +446,6 @@ senAn_151_time <- senAn_151_time %>%
     unite(numberSST, numberSST6m, numberSST27m, sep ="") %>%
     unite(Technology, spot6m, spot27m, sep ="")
 senAn_151_time$Technology[senAn_151_time$Technology==""]<-"BA Sprayer"
-view(senAn_151_time)
 
 
 ###################Fuel Consumption
@@ -482,7 +476,6 @@ senAn_151_fuel <- senAn_151_fuel %>%
     unite(numberSST, numberSST6m, numberSST27m, sep ="") %>%
     unite(Technology, spot6m, spot27m, sep ="")
 senAn_151_fuel$Technology[senAn_151_fuel$Technology==""]<-"BA Sprayer"
-view(senAn_151_fuel)
 
 
 ###################Repair Costs
@@ -513,7 +506,6 @@ senAn_151_repair <- senAn_151_repair %>%
     unite(numberSST, numberSST6m, numberSST27m, sep ="") %>%
     unite(Technology, spot6m, spot27m, sep ="")
 senAn_151_repair$Technology[senAn_151_repair$Technology==""]<-"BA Sprayer"
-view(senAn_151_repair)
 
 
 ####################
@@ -525,16 +517,12 @@ rm(senAn_151_teValue)
 
 senAn_151_algoCosts100_1 <- subset(senAn_151_algoCosts, uni_4 == "Base|FH" & uni_3 == "100%AlgoVar")
 senAn_151_algoCosts100_2 <- subset(senAn_151_algoCosts, uni_4 == "Base|FHBonus" & uni_3 == "100%AlgoVar")
-senAn_151_algoCosts150_1 <- subset(senAn_151_algoCosts, uni_4 == "Base|FH" & uni_3 == "150%AlgoVar")
-senAn_151_algoCosts150_2 <- subset(senAn_151_algoCosts, uni_4 == "Base|FHBonus" & uni_3 == "150%AlgoVar")
 senAn_151_algoCosts50_1 <- subset(senAn_151_algoCosts, uni_4 == "Base|FH" & uni_3 == "50%AlgoVar")
 senAn_151_algoCosts50_2 <- subset(senAn_151_algoCosts, uni_4 == "Base|FHBonus" & uni_3 == "50%AlgoVar")
 rm(senAn_151_algoCosts)
 
 senAn_151_annFee100_1 <- subset(senAn_151_annFee, uni_4 == "Base|FH" & uni_3 == "100%AnFeeVar")
 senAn_151_annFee100_2 <- subset(senAn_151_annFee, uni_4 == "Base|FHBonus" & uni_3 == "100%AnFeeVar")
-senAn_151_annFee150_1 <- subset(senAn_151_annFee, uni_4 == "Base|FH" & uni_3 == "150%AnFeeVar")
-senAn_151_annFee150_2 <- subset(senAn_151_annFee, uni_4 == "Base|FHBonus" & uni_3 == "150%AnFeeVar")
 senAn_151_annFee50_1 <- subset(senAn_151_annFee, uni_4 == "Base|FH" & uni_3 == "50%AnFeeVar")
 senAn_151_annFee50_2 <- subset(senAn_151_annFee, uni_4 == "Base|FHBonus" & uni_3 == "50%AnFeeVar")
 rm(senAn_151_annFee)
@@ -569,77 +557,93 @@ PsenAn_151_teValue1 <- senAn_151_teValue1 %>%
 #    geom_smooth(se = F)+
 #geom_point tells R to use points as the geometry (scatter plot)
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
 #geom_smooth connects points 
 #rename graph labels 
     labs(x = "Farm size (in ha)",
-         y = "Share of the initial SST acquisition costs (in %)")+
+         y = "Proportion of initial SST acquisition costs (in %)")+
 #Formatting of graph
 #Formatting of graph tite
     #ggtitle("Acquisition costs")+
     #theme(plot.title = element_text(lineheight =.8, face="bold", size=9, hjust=0.5))+ 
 #title & subtitle
-    ggtitle(label ="Acquisition costs", subtitle = "Farm 151_142")+
+    ggtitle(label ="Acquisition costs", subtitle = "Cereal farm")+
     theme(
             plot.title = element_text(face ="bold", size =9, hjust=0.5, color = "red"),
-            plot.subtitle = element_text(face ="bold", size =12)
+            plot.subtitle = element_text(face ="bold", size =12, colour = "#CC9900")
     )+
 #Formatting of legend
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#0000FF", "#990033"))+
+                        values = c("#333333", "#006600", "#33FF00"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
+                            values=c(0.7,0.7,1))+
 #formatting of axis
-    scale_y_continuous(breaks=seq(50,150,10))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+    scale_y_continuous(breaks=seq(50,200,30), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_teValue1
-ggsave("Scen1_teValue.png")
-rm(senAn_151_teValue1)
-
 
 PsenAn_151_teValue2 <- senAn_151_teValue2 %>%
     ggplot(aes(x = landAv,
                y = SSTValue,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
-         y = "Share of the initial SST acquisition costs (in %)")+
-    ggtitle(label ="Acquisition costs", subtitle = "Farm 151_142")+
+         y = "Proportion of initial SST acquisition costs (in %)")+
+    ggtitle(label ="Acquisition costs", subtitle = "Cereal farm")+
     theme(
             plot.title = element_text(face ="bold", size =9, hjust=0.5, color = "red"),
-            plot.subtitle = element_text(face ="bold", size =12)
+            plot.subtitle = element_text(face ="bold", size =12, colour = "#CC9900")
     )+
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#9933CC", "#FF0000"))+
+                        values = c("#333333", "#000099", "#0099FF"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(50,150,10))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(50,200,30), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_teValue2
-ggsave("Scen2_teValue.png")
-rm(senAn_151_teValue2)
-
 
 
 ###################Algorithm Costs
@@ -648,123 +652,78 @@ PsenAn_151_algoCosts100_1 <- senAn_151_algoCosts100_1 %>%
                y = algCosts,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
-         y = "Algorithm costs per sprayed ha (in €)")+
+         y = "Algorithm costs per ha with SSPA (in €)")+
     ggtitle("Algorithm costs at 100 % acquisition costs")+
     theme(plot.title = element_text(face="bold", size=9, hjust=0.5, color = "red"))+
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#0000FF", "#990033"))+
+                        values = c("#333333", "#006600", "#33FF00"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(0,10,1))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(0,10,2), limits = c(0,10), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_algoCosts100_1
-ggsave("Scen1_algCosts100.png")
-rm(senAn_151_algoCosts100_1)
-
 
 PsenAn_151_algoCosts100_2 <- senAn_151_algoCosts100_2 %>%
     ggplot(aes(x = landAv,
                y = algCosts,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
-         y = "Algorithm costs per sprayed ha (in €)")+
+         y = "Algorithm costs per ha with SSPA (in €)")+
     ggtitle("Algorithm costs at 100 % acquisition costs")+
     theme(plot.title = element_text(face="bold", size=9, hjust=0.5, color = "red"))+
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#9933CC", "#FF0000"))+
+                        values = c("#333333", "#000099", "#0099FF"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.4,0.4,1))+
-    scale_y_continuous(breaks=seq(0,10,1))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
-PsenAn_151_algoCosts100_2
-ggsave("Scen2_algCosts100.png")
-rm(senAn_151_algoCosts100_2)
-
-
-PsenAn_151_algoCosts150_1 <- senAn_151_algoCosts150_1 %>%
-    ggplot(aes(x = landAv,
-               y = algCosts,
-               colour = Technology))+
-    geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
-    labs(x = "Farm size (in ha)",
-         y = "Algorithm costs per sprayed ha (in €)")+
-    ggtitle("Algorithm costs at 150 % acquisition costs")+
-    theme(plot.title = element_text(face="bold", size=9, hjust=0.5))+
-    scale_colour_manual(name = "Technology",
-                        breaks = c("BA Sprayer", "SST6m", "SST27m"),
-                        labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#0000FF", "#990033"))+
-    scale_shape_manual(name = "BA Sprayer",
-                        breaks = c("", "1"),
-                        labels = c("No", "Yes"),
-                        values=c(4,10))+
-    scale_alpha_manual(name = "SST",
-                            breaks = c("", "1", "2"),
-                            labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(0,10,1))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
-PsenAn_151_algoCosts150_1
-ggsave("Scen1_algCosts150.png")
-rm(senAn_151_algoCosts150_1)
-
-
-PsenAn_151_algoCosts150_2 <- senAn_151_algoCosts150_2 %>%
-    ggplot(aes(x = landAv,
-               y = algCosts,
-               colour = Technology))+
-    geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
-    labs(x = "Farm size (in ha)",
-         y = "Algorithm costs per sprayed ha (in €)")+
-    ggtitle("Algorithm costs at 150 % acquisition costs")+
-    theme(plot.title = element_text(face="bold", size=9, hjust=0.5))+
-    scale_colour_manual(name = "Technology",
-                        breaks = c("BA Sprayer", "SST6m", "SST27m"),
-                        labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#9933CC", "#FF0000"))+
-    scale_shape_manual(name = "BA Sprayer",
-                        breaks = c("", "1"),
-                        labels = c("No", "Yes"),
-                        values=c(4,10))+
-    scale_alpha_manual(name = "SST",
-                            breaks = c("", "1", "2"),
-                            labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.4,0.4,1))+
-    scale_y_continuous(breaks=seq(0,10,1))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
-PsenAn_151_algoCosts150_2
-ggsave("Scen2_algCosts150.png")
-rm(senAn_151_algoCosts150_2)
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(0,10,2), limits = c(0,10), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
+PsenAn_151_algoCosts100_2 
 
 
 PsenAn_151_algoCosts50_1 <- senAn_151_algoCosts50_1 %>%
@@ -772,77 +731,93 @@ PsenAn_151_algoCosts50_1 <- senAn_151_algoCosts50_1 %>%
                y = algCosts,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
-         y = "Algorithm costs per sprayed ha (in €)")+
-    ggtitle(label ="Algorithm costs at 50 % acquisition costs", subtitle = "Farm 151_142")+
+         y = "Algorithm costs per ha with SSPA (in €)")+
+    ggtitle(label ="Algorithm costs at 50 % acquisition costs", subtitle = "Cereal farm")+
     theme(
             plot.title = element_text(face ="bold", size =9, hjust=0.5, color = "red"),
-            plot.subtitle = element_text(face ="bold", size =12)
+            plot.subtitle = element_text(face ="bold", size =12, colour ="#CC9900")
     )+
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#0000FF", "#990033"))+
+                        values = c("#333333", "#006600", "#33FF00"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(0,10,1))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(0,10,2), limits = c(0,10), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_algoCosts50_1
-ggsave("Scen1_algCosts50.png")
-rm(senAn_151_algoCosts50_1)
-
 
 PsenAn_151_algoCosts50_2 <- senAn_151_algoCosts50_2 %>%
     ggplot(aes(x = landAv,
                y = algCosts,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
-         y = "Algorithm costs per sprayed ha (in €)")+
-    ggtitle(label ="Algorithm costs at 50 % acquisition costs", subtitle = "Farm 151_142")+
+         y = "Algorithm costs per ha with SSPA (in €)")+
+    ggtitle(label ="Algorithm costs at 50 % acquisition costs", subtitle = "Cereal farm")+
     theme(
             plot.title = element_text(face ="bold", size =9, hjust=0.5, color = "red"),
-            plot.subtitle = element_text(face ="bold", size =12)
+            plot.subtitle = element_text(face ="bold", size =12, colour ="#CC9900")
     )+
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#9933CC", "#FF0000"))+
+                        values = c("#333333", "#000099", "#0099FF"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.4,0.4,1))+
-    scale_y_continuous(breaks=seq(0,10,1))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(0,10,2), limits = c(0,10), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_algoCosts50_2
-ggsave("Scen2_algCosts50.png")
-rm(senAn_151_algoCosts50_2)
 
 
 ###################Annual Fee
-view(senAn_151_annFee100_1)
 PsenAn_151_annFee100_1 <- senAn_151_annFee100_1 %>%
     ggplot(aes(x = landAv,
                y = annFee,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
          y = "Annual fee for SST (in €)")+
     ggtitle("Annual fee at 100 % SST acquisition costs")+
@@ -850,29 +825,38 @@ PsenAn_151_annFee100_1 <- senAn_151_annFee100_1 %>%
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#0000FF", "#990033"))+
+                        values = c("#333333", "#006600", "#33FF00"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(0,15000,1500))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(0,15000,3000), limits = c(0,15000), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_annFee100_1
-ggsave("Scen1_annFee100_1.png")
-rm(senAn_151_annFee100_1)
 
 PsenAn_151_annFee100_2 <- senAn_151_annFee100_2 %>%
     ggplot(aes(x = landAv,
                y = annFee,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
          y = "Annual fee for SST (in €)")+
     ggtitle("Annual fee at 100 % SST acquisition costs")+
@@ -880,92 +864,39 @@ PsenAn_151_annFee100_2 <- senAn_151_annFee100_2 %>%
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#9933CC", "#FF0000"))+
+                        values = c("#333333", "#000099", "#0099FF"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.4,0.4,1))+
-    scale_y_continuous(breaks=seq(0,15000,1500))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(0,15000,3000), limits = c(0,15000), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_annFee100_2
-ggsave("Scen2_annFee100.png")
-rm(senAn_151_annFee100_2)
 
 
-PsenAn_151_annFee150_1 <- senAn_151_annFee150_1 %>%
-    ggplot(aes(x = landAv,
-               y = annFee,
-               colour = Technology))+
-    geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
-    labs(x = "Farm size (in ha)",
-         y = "Annual fee for SST (in €)")+
-    ggtitle("Annual fee at 150 % SST acquisition costs")+
-    theme(plot.title = element_text(face="bold", size=9, hjust=0.5))+
-    scale_colour_manual(name = "Technology",
-                        breaks = c("BA Sprayer", "SST6m", "SST27m"),
-                        labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#0000FF", "#990033"))+
-    scale_shape_manual(name = "BA Sprayer",
-                        breaks = c("", "1"),
-                        labels = c("No", "Yes"),
-                        values=c(4,10))+
-    scale_alpha_manual(name = "SST",
-                            breaks = c("", "1", "2"),
-                            labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(0,15000,1500))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
-PsenAn_151_annFee150_1
-ggsave("Scen1_annFee150.png")
-rm(senAn_151_annFee150_1)
-
-
-PsenAn_151_annFee150_2 <- senAn_151_annFee150_2 %>%
-    ggplot(aes(x = landAv,
-               y = annFee,
-               colour = Technology))+
-    geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
-    labs(x = "Farm size (in ha)",
-         y = "Annual fee for SST (in €)")+
-    ggtitle("Annual fee at 150 % SST acquisition costs")+
-    theme(plot.title = element_text(face="bold", size=9, hjust=0.5))+
-    scale_colour_manual(name = "Technology",
-                        breaks = c("BA Sprayer", "SST6m", "SST27m"),
-                        labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#9933CC", "#FF0000"))+
-    scale_shape_manual(name = "BA Sprayer",
-                        breaks = c("", "1"),
-                        labels = c("No", "Yes"),
-                        values=c(4,10))+
-    scale_alpha_manual(name = "SST",
-                            breaks = c("", "1", "2"),
-                            labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.4,0.4,1))+
-    scale_y_continuous(breaks=seq(0,15000,1500))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
-PsenAn_151_annFee150_2
-ggsave("Scen2_annFee150.png")
-rm(senAn_151_annFee150_2)
-
-view(senAn_151_annFee50_1)
 PsenAn_151_annFee50_1 <- senAn_151_annFee50_1 %>%
     ggplot(aes(x = landAv,
                y = annFee,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
          y = "Annual fee for SST (in €)")+
     ggtitle("Annual fee at 50 % SST acquisition costs")+
@@ -973,22 +904,31 @@ PsenAn_151_annFee50_1 <- senAn_151_annFee50_1 %>%
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#0000FF", "#990033"))+
+                        values = c("#333333", "#006600", "#33FF00"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(0,15000,1500))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(0,15000,3000), limits = c(0,15000), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_annFee50_1
-ggsave("Scen1_annFee50.png")
-rm(senAn_151_annFee50_1)
 
 
 PsenAn_151_annFee50_2 <- senAn_151_annFee50_2 %>%
@@ -996,7 +936,7 @@ PsenAn_151_annFee50_2 <- senAn_151_annFee50_2 %>%
                y = annFee,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
          y = "Annual fee for SST (in €)")+
     ggtitle("Annual fee at 50 % SST acquisition costs")+
@@ -1004,122 +944,157 @@ PsenAn_151_annFee50_2 <- senAn_151_annFee50_2 %>%
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#9933CC", "#FF0000"))+
+                        values = c("#333333", "#000099", "#0099FF"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.4,0.4,1))+
-    scale_y_continuous(breaks=seq(0,15000,1500))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(0,15000,3000), limits = c(0,15000), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_annFee50_2
-ggsave("Scen2_annFee50.png")
-rm(senAn_151_annFee50_2)
 
 
 ###################Pesticide Efficiency
-view(senAn_151_PestEff1)
 PsenAn_151_PestEff1 <- senAn_151_PestEff1 %>%
     ggplot(aes(x = landAv,
                y = PestEff,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
-         y = "Additional/lower pesticide savings for SSPAs (in %)")+
+         y = "Pesticide saving deviations for SSPAs (in deviating %-points)")+
     ggtitle("Pesticide savings")+
     theme(plot.title = element_text(face="bold", size=9, hjust=0.5, color = "red"))+
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#0000FF", "#990033"))+
+                        values = c("#333333", "#006600", "#33FF00"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(-20,20,5))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(-20,20,5), limits = c(-20,20), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_PestEff1
-ggsave("Scen1_PestEff.png")
-rm(senAn_151_PestEff1)
-
 
 PsenAn_151_PestEff2 <- senAn_151_PestEff2 %>%
     ggplot(aes(x = landAv,
                y = PestEff,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
-         y = "Additional/lower pesticide savings for SSPAs (in %)")+
+         y = "Pesticide saving deviations for SSPAs (in deviating %-points)")+
     ggtitle("Pesticide savings")+
     theme(plot.title = element_text(face="bold", size=9, hjust=0.5, color = "red"))+
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#9933CC", "#FF0000"))+
+                        values = c("#333333", "#000099", "#0099FF"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(-20,20,5))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
-PsenAn_151_PestEff2
-ggsave("Scen2_PestEff.png")
-rm(senAn_151_PestEff2)
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(-20,20,5), limits = c(-20,20), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
+PsenAn_151_PestEff2 
+
 
 
 ###################Time Requirements
-view(senAn_151_time1)
 PsenAn_151_time1 <- senAn_151_time1 %>%
     ggplot(aes(x = landAv,
                y = timeReq,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
          y = "Proportion of initial time requirements for each SST operation (in %)")+
-        ggtitle(label ="Time requirements", subtitle = "Farm 151_142")+
+        ggtitle(label ="Time requirements", subtitle = "Cereal farm")+
     theme(
             plot.title = element_text(face ="bold", size =9, hjust=0.5, color = "red"),
-            plot.subtitle = element_text(face ="bold", size =12)
+            plot.subtitle = element_text(face ="bold", size =12, colour = "#CC9900")
     )+
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#0000FF", "#990033"))+
+                        values = c("#333333", "#006600", "#33FF00"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(50,150,10))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
-PsenAn_151_time1
-ggsave("Scen1_time.png")
-rm(senAn_151_time1)
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(50,200,30), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
+PsenAn_151_time1 
+
 
 
 PsenAn_151_time2 <- senAn_151_time2 %>%
@@ -1127,43 +1102,52 @@ PsenAn_151_time2 <- senAn_151_time2 %>%
                y = timeReq,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
          y = "Proportion of initial time requirements for each SST operation (in %)")+
-        ggtitle(label ="Time requirements", subtitle = "Farm 151_142")+
+        ggtitle(label ="Time requirements", subtitle = "Cereal farm")+
     theme(
             plot.title = element_text(face ="bold", size =9, hjust=0.5, color = "red"),
-            plot.subtitle = element_text(face ="bold", size =12)
+            plot.subtitle = element_text(face ="bold", size =12, colour = "#CC9900")
     )+
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#9933CC", "#FF0000"))+
+                        values = c("#333333", "#000099", "#0099FF"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(50,150,10))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(50,200,30), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_time2
-ggsave("Scen2_time.png")
-rm(senAn_151_time2)
+
 
 
 ###################Fuel Consumption
-view(senAn_151_fuel1)
 PsenAn_151_fuel1 <- senAn_151_fuel1 %>%
     ggplot(aes(x = landAv,
                y = fuelCons,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
          y = "Proportion of initial fuel consumption for each SST operation (in %)")+
     ggtitle("Fuel consumption")+
@@ -1171,22 +1155,32 @@ PsenAn_151_fuel1 <- senAn_151_fuel1 %>%
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#0000FF", "#990033"))+
+                        values = c("#333333", "#006600", "#33FF00"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(50,150,10))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(50,200,30), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_fuel1
-ggsave("Scen1_fuel.png")
-rm(senAn_151_fuel1)
+
 
 
 PsenAn_151_fuel2 <- senAn_151_fuel2 %>%
@@ -1194,7 +1188,7 @@ PsenAn_151_fuel2 <- senAn_151_fuel2 %>%
                y = fuelCons,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
          y = "Proportion of initial fuel consumption for each SST operation (in %)")+
     ggtitle("Fuel consumption")+
@@ -1202,32 +1196,40 @@ PsenAn_151_fuel2 <- senAn_151_fuel2 %>%
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#9933CC", "#FF0000"))+
+                        values = c("#333333", "#000099", "#0099FF"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(50,150,10))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(50,200,30), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_fuel2
-ggsave("Scen2_fuel.png")
-rm(senAn_151_fuel2)
 
 
 ###################Repair
-view(senAn_151_repair1)
 PsenAn_151_repair1 <- senAn_151_repair1 %>%
     ggplot(aes(x = landAv,
                y = repCosts,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
          y = "Proportion of initial repair costs for each SST (in %)")+
     ggtitle("Repair costs")+
@@ -1235,22 +1237,31 @@ PsenAn_151_repair1 <- senAn_151_repair1 %>%
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#0000FF", "#990033"))+
+                        values = c("#333333", "#006600", "#33FF00"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(50,150,10))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(50,200,30), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_repair1
-ggsave("Scen1_repair.png")
-rm(senAn_151_repair1)
 
 
 PsenAn_151_repair2 <- senAn_151_repair2 %>%
@@ -1258,7 +1269,7 @@ PsenAn_151_repair2 <- senAn_151_repair2 %>%
                y = repCosts,
                colour = Technology))+
     geom_point(aes(alpha = numberSST,
-                    shape = BA_Sprayer_Num), size = 2, show.legend = FALSE)+
+                    shape = BA_Sprayer_Num), size = 3, show.legend = FALSE)+
     labs(x = "Farm size (in ha)",
          y = "Proportion of initial repair costs for each SST (in %)")+
     ggtitle("Repair costs")+
@@ -1266,19 +1277,47 @@ PsenAn_151_repair2 <- senAn_151_repair2 %>%
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
                         labels = c("BA Sprayer", "SST6m", "SST27m"),
-                        values = c("#666666", "#9933CC", "#FF0000"))+
+                        values = c("#333333", "#000099", "#0099FF"))+
     scale_shape_manual(name = "BA Sprayer",
                         breaks = c("", "1"),
                         labels = c("No", "Yes"),
-                        values=c(4,10))+
+                        values=c(1,19))+
     scale_alpha_manual(name = "SST",
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values=c(0.5,0.5,1))+
-    scale_y_continuous(breaks=seq(50,150,10))+
-    scale_x_continuous(breaks=seq(0,400,50))+
-    theme(axis.title.y = element_text(vjust=2, size = 9))+
-    theme(axis.title.x = element_text(vjust=0.3, size = 9))
+                            values=c(0.7,0.7,1))+
+    scale_y_continuous(breaks=seq(50,200,30), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
+        plot.margin = margin(t =0, r =0, b=0, l=0)
+    )+
+    theme(
+        axis.title.y = element_text(vjust=2, size = 9),
+        axis.title.x = element_text(vjust=0.3, size = 9),
+        axis.text = element_text(size = 9),
+        axis.line = element_line(size = 0.2, colour = "#CC9900", linetype =1),
+        axis.ticks = element_line(size = 0.4, colour = "#CC9900"),
+        axis.ticks.length = unit(0.15, "cm")
+    )
 PsenAn_151_repair2
-ggsave("Scen2_repair.png")
+
+rm(senAn_151_teValue1)
+rm(senAn_151_teValue2)
+rm(senAn_151_algoCosts100_1)
+rm(senAn_151_algoCosts100_2)
+rm(senAn_151_algoCosts50_1)
+rm(senAn_151_algoCosts50_2)
+rm(senAn_151_annFee100_1)
+rm(senAn_151_annFee100_2)
+rm(senAn_151_annFee50_1)
+rm(senAn_151_annFee50_2)
+rm(senAn_151_PestEff1)
+rm(senAn_151_PestEff2)
+rm(senAn_151_time1)
+rm(senAn_151_time2)
+rm(senAn_151_fuel1)
+rm(senAn_151_fuel2)
+rm(senAn_151_repair1)
 rm(senAn_151_repair2)

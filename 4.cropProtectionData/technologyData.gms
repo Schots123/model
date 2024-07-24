@@ -48,6 +48,41 @@ p_technoRemValue(scenSprayer)
     = p_technoValue(scenSprayer) * 0.2;
 
 
+*fixec costs per working hour for tractor used to pull the sprayer according to maKost assuming full capacity exploitation(24.07.2024)
+parameter p_tractorDeprec(scenSprayer) /
+"spot6m" 3.56
+"spot27m" 5.2
+"BA_45kW" 3.56
+"BA_67kW" 3.56
+"BA_83kW" 5.2
+"BA_102kW" 5.2
+"BA_120kW" 5.2
+"BA_200kW" 6.4
+"BA_230kW" 6.4
+/;
+parameter p_tractorInterest(scenSprayer) /
+"spot6m" 0.96
+"spot27m" 1.4
+"BA_45kW" 0.96
+"BA_67kW" 0.96
+"BA_83kW" 1.4
+"BA_102kW" 1.4
+"BA_120kW" 1.4
+"BA_200kW" 1.73
+"BA_230kW" 1.73
+/;
+parameter p_tractorOtherCosts(scenSprayer) /
+"spot6m" 0.49
+"spot27m" 0.76
+"BA_45kW" 0.49
+"BA_67kW" 0.49
+"BA_83kW" 0.76
+"BA_102kW" 0.76
+"BA_120kW" 0.76
+"BA_200kW" 0.93
+"BA_230kW" 0.93
+/;
+
 parameter p_technoPestEff(KTBL_crops,technology,scenario,pestType) pesticide savings due to technology utilization for each type;
 
 *pesticide efficiency block for SST
@@ -2054,6 +2089,379 @@ p_technoMaintenance(KTBL_size,KTBL_distance,"FH+Bonus+BA","spot6m",notFHBonus) =
 
 
 
+*
+* --- Parameters for correction of data for spot6m which is drawn from a sprayer with 12m
+* it is assumed, that the factor by which the parameters are higher for the spot6m sprayer is the same like the factor by which the data is higher for a 12m sprayer compared to a 24m sprayer with same tank volume
+parameters
+   p_spot6mCorTimeReq(KTBL_size,KTBL_distance,scenario,pestType)
+   p_spot6mCorFuelCons(KTBL_size,KTBL_distance,scenario,pestType)
+   p_spot6mCorMaintenance(KTBL_size,KTBL_distance,scenario,pestType)
+;
+
+p_spot6mCorTimeReq("1","1","FH",FH) = 0.26;
+p_spot6mCorFuelCons("1","1","FH",FH) = 0.81;
+p_spot6mCorMaintenance("1","1","FH",FH) = 3.25;
+p_spot6mCorTimeReq("1","2","FH",FH) = 0.27;
+p_spot6mCorFuelCons("1","2","FH",FH) = 0.85;
+p_spot6mCorMaintenance("1","2","FH",FH) = 3.3; 
+p_spot6mCorTimeReq("1","3","FH",FH) = 0.28;
+p_spot6mCorFuelCons("1","3","FH",FH) = 0.89;
+p_spot6mCorMaintenance("1","3","FH",FH) = 3.34;
+p_spot6mCorTimeReq("1","4","FH",FH) = 0.29;
+p_spot6mCorFuelCons("1","4","FH",FH) = 0.92;
+p_spot6mCorMaintenance("1","4","FH",FH) = 3.38;
+p_spot6mCorTimeReq("1","5","FH",FH) = 0.30;
+p_spot6mCorFuelCons("1","5","FH",FH) = 0.96;
+p_spot6mCorMaintenance("1","5","FH",FH) = 3.42;
+p_spot6mCorTimeReq("1","10","FH",FH) = 0.35;
+p_spot6mCorFuelCons("1","10","FH",FH) = 1.14;
+p_spot6mCorMaintenance("1","10","FH",FH) = 3.61;
+p_spot6mCorTimeReq("1","15","FH",FH) = 0.4;
+p_spot6mCorFuelCons("1","15","FH",FH) = 1.33;
+p_spot6mCorMaintenance("1","15","FH",FH) = 3.81;
+
+p_spot6mCorTimeReq("2","1","FH",FH) = 0.21;
+p_spot6mCorFuelCons("2","1","FH",FH) = 0.73;
+p_spot6mCorMaintenance("2","1","FH",FH) = 3.03;
+p_spot6mCorTimeReq("2","2","FH",FH) = 0.22;
+p_spot6mCorFuelCons("2","2","FH",FH) = 0.77;
+p_spot6mCorMaintenance("2","2","FH",FH) = 3.08;
+p_spot6mCorTimeReq("2","3","FH",FH) = 0.23;
+p_spot6mCorFuelCons("2","3","FH",FH) = 0.81;
+p_spot6mCorMaintenance("2","3","FH",FH) = 3.13;
+p_spot6mCorTimeReq("2","4","FH",FH) = 0.24;
+p_spot6mCorFuelCons("2","4","FH",FH) = 0.84;
+p_spot6mCorMaintenance("2","4","FH",FH) = 3.16;
+p_spot6mCorTimeReq("2","5","FH",FH) = 0.25;
+p_spot6mCorFuelCons("2","5","FH",FH) = 0.88;
+p_spot6mCorMaintenance("2","5","FH",FH) = 3.21;
+p_spot6mCorTimeReq("2","10","FH",FH) = 0.3;
+p_spot6mCorFuelCons("2","10","FH",FH) = 1.06;
+p_spot6mCorMaintenance("2","10","FH",FH) = 3.4;
+p_spot6mCorTimeReq("2","15","FH",FH) = 0.35;
+p_spot6mCorFuelCons("2","15","FH",FH) = 1.24;
+p_spot6mCorMaintenance("2","15","FH",FH) = 3.59;
+
+p_spot6mCorTimeReq("5","1","FH",FH) = 0.15;
+p_spot6mCorFuelCons("5","1","FH",FH) =  0.59;
+p_spot6mCorMaintenance("5","1","FH",FH) = 2.82;
+p_spot6mCorTimeReq("5","2","FH",FH) = 0.17;
+p_spot6mCorFuelCons("5","2","FH",FH) = 0.62;
+p_spot6mCorMaintenance("5","2","FH",FH) = 2.86;
+p_spot6mCorTimeReq("5","3","FH",FH) = 0.18;
+p_spot6mCorFuelCons("5","3","FH",FH) = 0.66;
+p_spot6mCorMaintenance("5","3","FH",FH) = 2.91;
+p_spot6mCorTimeReq("5","4","FH",FH) = 0.19;
+p_spot6mCorFuelCons("5","4","FH",FH) = 0.69;
+p_spot6mCorMaintenance("5","4","FH",FH) = 2.95;
+p_spot6mCorTimeReq("5","5","FH",FH) = 0.2;
+p_spot6mCorFuelCons("5","5","FH",FH) = 0.73;
+p_spot6mCorMaintenance("5","5","FH",FH) = 2.98;
+p_spot6mCorTimeReq("5","10","FH",FH) = 0.25;
+p_spot6mCorFuelCons("5","10","FH",FH) = 0.90;
+p_spot6mCorMaintenance("5","10","FH",FH) = 3.18;
+p_spot6mCorTimeReq("5","15","FH",FH) = 0.29;
+p_spot6mCorFuelCons("5","15","FH",FH) = 1.08;
+p_spot6mCorMaintenance("5","15","FH",FH) = 3.37;
+
+p_spot6mCorTimeReq("10","1","FH",FH) = 0.16;
+p_spot6mCorFuelCons("10","1","FH",FH) = 0.64;
+p_spot6mCorMaintenance("10","1","FH",FH) = 2.83;
+p_spot6mCorTimeReq("10","2","FH",FH) = 0.17;
+p_spot6mCorFuelCons("10","2","FH",FH) = 0.67;
+p_spot6mCorMaintenance("10","2","FH",FH) = 2.88;
+p_spot6mCorTimeReq("10","3","FH",FH) = 0.18;
+p_spot6mCorFuelCons("10","3","FH",FH) = 0.71;
+p_spot6mCorMaintenance("10","3","FH",FH) = 2.92;
+p_spot6mCorTimeReq("10","4","FH",FH) = 0.19;
+p_spot6mCorFuelCons("10","4","FH",FH) = 0.74;
+p_spot6mCorMaintenance("10","4","FH",FH) = 2.96;
+p_spot6mCorTimeReq("10","5","FH",FH) = 0.20;
+p_spot6mCorFuelCons("10","5","FH",FH) = 0.77;
+p_spot6mCorMaintenance("10","5","FH",FH) = 3.00;
+p_spot6mCorTimeReq("10","10","FH",FH) = 0.25;
+p_spot6mCorFuelCons("10","10","FH",FH) = 0.95;
+p_spot6mCorMaintenance("10","10","FH",FH) = 3.2;
+p_spot6mCorTimeReq("10","15","FH",FH) = 0.30;
+p_spot6mCorFuelCons("10","15","FH",FH) = 1.13;
+p_spot6mCorMaintenance("10","15","FH",FH) = 3.39;
+
+p_spot6mCorTimeReq("20","1","FH",FH) = 0.16;
+p_spot6mCorFuelCons("20","1","FH",FH) = 0.64;
+p_spot6mCorMaintenance("20","1","FH",FH) = 2.82;
+p_spot6mCorTimeReq("20","2","FH",FH) = 0.17;
+p_spot6mCorFuelCons("20","2","FH",FH) = 0.68;
+p_spot6mCorMaintenance("20","2","FH",FH) = 2.87;
+p_spot6mCorTimeReq("20","3","FH",FH) = 0.18;
+p_spot6mCorFuelCons("20","3","FH",FH) = 0.71;
+p_spot6mCorMaintenance("20","3","FH",FH) = 2.92;
+p_spot6mCorTimeReq("20","4","FH",FH) = 0.19;
+p_spot6mCorFuelCons("20","4","FH",FH) = 0.75;
+p_spot6mCorMaintenance("20","4","FH",FH) = 2.96;
+p_spot6mCorTimeReq("20","5","FH",FH) = 0.20;
+p_spot6mCorFuelCons("20","5","FH",FH) = 0.78;
+p_spot6mCorMaintenance("20","5","FH",FH) = 3.00;
+p_spot6mCorTimeReq("20","10","FH",FH) = 0.25;
+p_spot6mCorFuelCons("20","10","FH",FH) = 0.96;
+p_spot6mCorMaintenance("20","10","FH",FH) = 3.20;
+p_spot6mCorTimeReq("20","15","FH",FH) = 0.30;
+p_spot6mCorFuelCons("20","15","FH",FH) = 1.14;
+p_spot6mCorMaintenance("20","15","FH",FH) = 3.38;
+
+p_spot6mCorTimeReq("40","1","FH",FH) = 0.15;
+p_spot6mCorFuelCons("40","1","FH",FH) = 0.63;
+p_spot6mCorMaintenance("40","1","FH",FH) = 2.80;
+p_spot6mCorTimeReq("40","2","FH",FH) = 0.16;
+p_spot6mCorFuelCons("40","2","FH",FH) = 0.67;
+p_spot6mCorMaintenance("40","2","FH",FH) = 2.85;
+p_spot6mCorTimeReq("40","3","FH",FH) = 0.17;
+p_spot6mCorFuelCons("40","3","FH",FH) = 0.7;
+p_spot6mCorMaintenance("40","3","FH",FH) = 2.90;
+p_spot6mCorTimeReq("40","4","FH",FH) = 0.18;
+p_spot6mCorFuelCons("40","4","FH",FH) = 0.74;
+p_spot6mCorMaintenance("40","4","FH",FH) = 2.94;
+p_spot6mCorTimeReq("40","5","FH",FH) = 0.19;
+p_spot6mCorFuelCons("40","5","FH",FH) = 0.77;
+p_spot6mCorMaintenance("40","5","FH",FH) = 2.98;
+p_spot6mCorTimeReq("40","10","FH",FH) = 0.24;
+p_spot6mCorFuelCons("40","10","FH",FH) = 0.95;
+p_spot6mCorMaintenance("40","10","FH",FH) = 3.17;
+p_spot6mCorTimeReq("40","15","FH",FH) = 0.29;
+p_spot6mCorFuelCons("40","15","FH",FH) = 1.13;
+p_spot6mCorMaintenance("40","15","FH",FH) = 3.37;
+
+p_spot6mCorTimeReq("80","1","FH",FH) = 0.16;
+p_spot6mCorFuelCons("80","1","FH",FH) = 0.68;
+p_spot6mCorMaintenance("80","1","FH",FH) = 2.84;
+p_spot6mCorTimeReq("80","2","FH",FH) = 0.17;
+p_spot6mCorFuelCons("80","2","FH",FH) = 0.71;
+p_spot6mCorMaintenance("80","2","FH",FH) = 2.88;
+p_spot6mCorTimeReq("80","3","FH",FH) = 0.18;
+p_spot6mCorFuelCons("80","3","FH",FH) = 0.75;
+p_spot6mCorMaintenance("80","3","FH",FH) = 2.93;
+p_spot6mCorTimeReq("80","4","FH",FH) = 0.19;
+p_spot6mCorFuelCons("80","4","FH",FH) = 0.78;
+p_spot6mCorMaintenance("80","4","FH",FH) = 2.97;
+p_spot6mCorTimeReq("80","5","FH",FH) = 0.20;
+p_spot6mCorFuelCons("80","5","FH",FH) = 0.82;
+p_spot6mCorMaintenance("80","5","FH",FH) = 3.01;
+p_spot6mCorTimeReq("80","10","FH",FH) = 0.25;
+p_spot6mCorFuelCons("80","10","FH",FH) = 0.99;
+p_spot6mCorMaintenance("80","10","FH",FH) = 3.20;
+p_spot6mCorTimeReq("80","15","FH",FH) = 0.30;
+p_spot6mCorFuelCons("80","15","FH",FH) = 1.18;
+p_spot6mCorMaintenance("80","15","FH",FH) = 3.40;
+
+
+*
+* -- spot6m scenario FH+BA FH: 100 l/ha, notFH: 300 l/ha
+*
+p_spot6mCorTimeReq(KTBL_size,KTBL_distance,"FH+BA",FH) = p_spot6mCorTimeReq(KTBL_size,KTBL_distance,"FH",FH);
+p_spot6mCorFuelCons(KTBL_size,KTBL_distance,"FH+BA",FH) = p_spot6mCorFuelCons(KTBL_size,KTBL_distance,"FH",FH);
+p_spot6mCorMaintenance(KTBL_size,KTBL_distance,"FH+BA",FH) = p_spot6mCorMaintenance(KTBL_size,KTBL_distance,"FH",FH);
+
+p_spot6mCorTimeReq("1","1","FH+BA",notFH) = 0.35;
+p_spot6mCorFuelCons("1","1","FH+BA",notFH) = 1.00;
+p_spot6mCorMaintenance("1","1","FH+BA",notFH) = 3.99;
+p_spot6mCorTimeReq("1","2","FH+BA",notFH) = 0.38;
+p_spot6mCorFuelCons("1","2","FH+BA",notFH) = 1.11;
+p_spot6mCorMaintenance("1","2","FH+BA",notFH) = 4.13;
+p_spot6mCorTimeReq("1","3","FH+BA",notFH) = 0.41;
+p_spot6mCorFuelCons("1","3","FH+BA",notFH) = 1.21;
+p_spot6mCorMaintenance("1","3","FH+BA",notFH) = 4.26;
+p_spot6mCorTimeReq("1","4","FH+BA",notFH) = 0.45;
+p_spot6mCorFuelCons("1","4","FH+BA",notFH) = 1.31;
+p_spot6mCorMaintenance("1","4","FH+BA",notFH) = 4.38;
+p_spot6mCorTimeReq("1","5","FH+BA",notFH) = 0.47;
+p_spot6mCorFuelCons("1","5","FH+BA",notFH) = 1.41;
+p_spot6mCorMaintenance("1","5","FH+BA",notFH) = 4.50;
+p_spot6mCorTimeReq("1","10","FH+BA",notFH) = 0.62;
+p_spot6mCorFuelCons("1","10","FH+BA",notFH) = 1.93;
+p_spot6mCorMaintenance("1","10","FH+BA",notFH) = 5.08;
+p_spot6mCorTimeReq("1","15","FH+BA",notFH) = 0.77;
+p_spot6mCorFuelCons("1","15","FH+BA",notFH) = 2.48;
+p_spot6mCorMaintenance("1","15","FH+BA",notFH) = 5.68;
+
+p_spot6mCorTimeReq("2","1","FH+BA",notFH) = 0.28;
+p_spot6mCorFuelCons("2","1","FH+BA",notFH) = 0.89;
+p_spot6mCorMaintenance("2","1","FH+BA",notFH) = 3.71;
+p_spot6mCorTimeReq("2","2","FH+BA",notFH) = 0.31;
+p_spot6mCorFuelCons("2","2","FH+BA",notFH) = 0.99;
+p_spot6mCorMaintenance("2","2","FH+BA",notFH) = 3.85;
+p_spot6mCorTimeReq("2","3","FH+BA",notFH) = 0.35;
+p_spot6mCorFuelCons("2","3","FH+BA",notFH) = 1.10;
+p_spot6mCorMaintenance("2","3","FH+BA",notFH) = 3.98;
+p_spot6mCorTimeReq("2","4","FH+BA",notFH) = 0.38;
+p_spot6mCorFuelCons("2","4","FH+BA",notFH) = 1.20;
+p_spot6mCorMaintenance("2","4","FH+BA",notFH) = 4.10;
+p_spot6mCorTimeReq("2","5","FH+BA",notFH) = 0.41;
+p_spot6mCorFuelCons("2","5","FH+BA",notFH) = 1.30;
+p_spot6mCorMaintenance("2","5","FH+BA",notFH) = 4.22;
+p_spot6mCorTimeReq("2","10","FH+BA",notFH) = 0.55;
+p_spot6mCorFuelCons("2","10","FH+BA",notFH) = 1.81;
+p_spot6mCorMaintenance("2","10","FH+BA",notFH) = 4.81; 
+p_spot6mCorTimeReq("2","15","FH+BA",notFH) = 0.70;
+p_spot6mCorFuelCons("2","15","FH+BA",notFH) = 2.35;
+p_spot6mCorMaintenance("2","15","FH+BA",notFH) = 5.40;
+
+p_spot6mCorTimeReq("5","1","FH+BA",notFH) = 0.30;
+p_spot6mCorFuelCons("5","1","FH+BA",notFH) = 0.98;
+p_spot6mCorMaintenance("5","1","FH+BA",notFH) = 3.80;
+p_spot6mCorTimeReq("5","2","FH+BA",notFH) = 0.34;
+p_spot6mCorFuelCons("5","2","FH+BA",notFH) = 1.09;
+p_spot6mCorMaintenance("5","2","FH+BA",notFH) = 3.94;
+p_spot6mCorTimeReq("5","3","FH+BA",notFH) = 0.37;
+p_spot6mCorFuelCons("5","3","FH+BA",notFH) = 1.19;
+p_spot6mCorMaintenance("5","3","FH+BA",notFH) = 4.08;
+p_spot6mCorTimeReq("5","4","FH+BA",notFH) = 0.40;
+p_spot6mCorFuelCons("5","4","FH+BA",notFH) = 1.28;
+p_spot6mCorMaintenance("5","4","FH+BA",notFH) = 4.19;
+p_spot6mCorTimeReq("5","5","FH+BA",notFH) = 0.43;
+p_spot6mCorFuelCons("5","5","FH+BA",notFH) = 1.39;
+p_spot6mCorMaintenance("5","5","FH+BA",notFH) = 4.31;
+p_spot6mCorTimeReq("5","10","FH+BA",notFH) = 0.57;
+p_spot6mCorFuelCons("5","10","FH+BA",notFH) = 1.89;
+p_spot6mCorMaintenance("5","10","FH+BA",notFH) = 4.88;
+p_spot6mCorTimeReq("5","15","FH+BA",notFH) = 0.72;
+p_spot6mCorFuelCons("5","15","FH+BA",notFH) = 2.44;
+p_spot6mCorMaintenance("5","15","FH+BA",notFH) = 5.48;
+
+p_spot6mCorTimeReq("10","1","FH+BA",notFH) = 0.28;
+p_spot6mCorFuelCons("10","1","FH+BA",notFH) = 0.96;
+p_spot6mCorMaintenance("10","1","FH+BA",notFH) = 3.74;
+p_spot6mCorTimeReq("10","2","FH+BA",notFH) = 0.32;
+p_spot6mCorFuelCons("10","2","FH+BA",notFH) = 1.07;
+p_spot6mCorMaintenance("10","2","FH+BA",notFH) = 3.87;
+p_spot6mCorTimeReq("10","3","FH+BA",notFH) = 0.35;
+p_spot6mCorFuelCons("10","3","FH+BA",notFH) = 1.17;
+p_spot6mCorMaintenance("10","3","FH+BA",notFH) = 4.00;
+p_spot6mCorTimeReq("10","4","FH+BA",notFH) = 0.38;
+p_spot6mCorFuelCons("10","4","FH+BA",notFH) = 1.27;
+p_spot6mCorMaintenance("10","4","FH+BA",notFH) = 4.13;
+p_spot6mCorTimeReq("10","5","FH+BA",notFH) = 0.41;
+p_spot6mCorFuelCons("10","5","FH+BA",notFH) = 1.37;
+p_spot6mCorMaintenance("10","5","FH+BA",notFH) = 4.24;
+p_spot6mCorTimeReq("10","10","FH+BA",notFH) = 0.56;
+p_spot6mCorFuelCons("10","10","FH+BA",notFH) = 1.88;
+p_spot6mCorMaintenance("10","10","FH+BA",notFH) = 4.83;
+p_spot6mCorTimeReq("10","15","FH+BA",notFH) = 0.71;
+p_spot6mCorFuelCons("10","15","FH+BA",notFH) = 2.42;
+p_spot6mCorMaintenance("10","15","FH+BA",notFH) = 5.42;
+
+p_spot6mCorTimeReq("20","1","FH+BA",notFH) = 0.29;
+p_spot6mCorFuelCons("20","1","FH+BA",notFH) = 1.02;
+p_spot6mCorMaintenance("20","1","FH+BA",notFH) = 3.77;
+p_spot6mCorTimeReq("20","2","FH+BA",notFH) = 0.33;
+p_spot6mCorFuelCons("20","2","FH+BA",notFH) = 1.12;
+p_spot6mCorMaintenance("20","2","FH+BA",notFH) = 3.91;
+p_spot6mCorTimeReq("20","3","FH+BA",notFH) = 0.36;
+p_spot6mCorFuelCons("20","3","FH+BA",notFH) = 1.22;
+p_spot6mCorMaintenance("20","3","FH+BA",notFH) = 4.04;
+p_spot6mCorTimeReq("20","4","FH+BA",notFH) = 0.39;
+p_spot6mCorFuelCons("20","4","FH+BA",notFH) = 1.32;
+p_spot6mCorMaintenance("20","4","FH+BA",notFH) = 4.16;
+p_spot6mCorTimeReq("20","5","FH+BA",notFH) = 0.42;
+p_spot6mCorFuelCons("20","5","FH+BA",notFH) = 1.42;
+p_spot6mCorMaintenance("20","5","FH+BA",notFH) = 4.28;
+p_spot6mCorTimeReq("20","10","FH+BA",notFH) = 0.57;
+p_spot6mCorFuelCons("20","10","FH+BA",notFH) = 1.93;
+p_spot6mCorMaintenance("20","10","FH+BA",notFH) = 4.87;
+p_spot6mCorTimeReq("20","15","FH+BA",notFH) = 0.71;
+p_spot6mCorFuelCons("20","15","FH+BA",notFH) = 2.47;
+p_spot6mCorMaintenance("20","15","FH+BA",notFH) = 5.46;
+
+p_spot6mCorTimeReq("40","1","FH+BA",notFH) = 0.30;
+p_spot6mCorFuelCons("40","1","FH+BA",notFH) = 1.09;
+p_spot6mCorMaintenance("40","1","FH+BA",notFH) = 3.82;
+p_spot6mCorTimeReq("40","2","FH+BA",notFH) = 0.34;
+p_spot6mCorFuelCons("40","2","FH+BA",notFH) = 1.19;
+p_spot6mCorMaintenance("40","2","FH+BA",notFH) = 3.96;
+p_spot6mCorTimeReq("40","3","FH+BA",notFH) = 0.37;
+p_spot6mCorFuelCons("40","3","FH+BA",notFH) = 1.30;
+p_spot6mCorMaintenance("40","3","FH+BA",notFH) = 4.09;
+p_spot6mCorTimeReq("40","4","FH+BA",notFH) = 0.40;
+p_spot6mCorFuelCons("40","4","FH+BA",notFH) = 1.40;
+p_spot6mCorMaintenance("40","4","FH+BA",notFH) = 4.21;
+p_spot6mCorTimeReq("40","5","FH+BA",notFH) = 0.43;
+p_spot6mCorFuelCons("40","5","FH+BA",notFH) = 1.50;
+p_spot6mCorMaintenance("40","5","FH+BA",notFH) = 4.33;
+p_spot6mCorTimeReq("40","10","FH+BA",notFH) = 0.58;
+p_spot6mCorFuelCons("40","10","FH+BA",notFH) = 2.01;
+p_spot6mCorMaintenance("40","10","FH+BA",notFH) = 4.92;
+p_spot6mCorTimeReq("40","15","FH+BA",notFH) = 0.73;
+p_spot6mCorFuelCons("40","15","FH+BA",notFH) = 2.55;
+p_spot6mCorMaintenance("40","15","FH+BA",notFH) = 5.51;
+
+p_spot6mCorTimeReq("80","1","FH+BA",notFH) = 0.33;
+p_spot6mCorFuelCons("80","1","FH+BA",notFH) = 1.22;
+p_spot6mCorMaintenance("80","1","FH+BA",notFH) = 3.91;
+p_spot6mCorTimeReq("80","2","FH+BA",notFH) = 0.36;
+p_spot6mCorFuelCons("80","2","FH+BA",notFH) = 1.33;
+p_spot6mCorMaintenance("80","2","FH+BA",notFH) = 4.06;
+p_spot6mCorTimeReq("80","3","FH+BA",notFH) = 0.40;
+p_spot6mCorFuelCons("80","3","FH+BA",notFH) = 1.43;
+p_spot6mCorMaintenance("80","3","FH+BA",notFH) = 4.19;
+p_spot6mCorTimeReq("80","4","FH+BA",notFH) = 0.43;
+p_spot6mCorFuelCons("80","4","FH+BA",notFH) = 1.53;
+p_spot6mCorMaintenance("80","4","FH+BA",notFH) = 4.31;
+p_spot6mCorTimeReq("80","5","FH+BA",notFH) = 0.46;
+p_spot6mCorFuelCons("80","5","FH+BA",notFH) = 1.63;
+p_spot6mCorMaintenance("80","5","FH+BA",notFH) = 4.42;
+p_spot6mCorTimeReq("80","10","FH+BA",notFH) = 0.60;
+p_spot6mCorFuelCons("80","10","FH+BA",notFH) = 2.15;
+p_spot6mCorMaintenance("80","10","FH+BA",notFH) = 5.01;
+p_spot6mCorTimeReq("80","15","FH+BA",notFH) = 0.75;
+p_spot6mCorFuelCons("80","15","FH+BA",notFH) = 2.69;
+p_spot6mCorMaintenance("80","15","FH+BA",notFH) = 5.60;
+
+
+*
+* -- Correction spot6m scenario FH+Bonus: FHBonus: 100 l/ha
+*
+p_spot6mCorTimeReq(KTBL_size,KTBL_distance,"FH+Bonus",FHBonus) = p_spot6mCorTimeReq(KTBL_size,KTBL_distance,"FH","foliarHerb");
+p_spot6mCorFuelCons(KTBL_size,KTBL_distance,"FH+Bonus",FHBonus) = p_spot6mCorFuelCons(KTBL_size,KTBL_distance,"FH","foliarHerb");
+p_spot6mCorMaintenance(KTBL_size,KTBL_distance,"FH+Bonus",FHBonus) = p_spot6mCorMaintenance(KTBL_size,KTBL_distance,"FH","foliarHerb");
+
+
+*
+* -- Correction spot6m scenario FH+Bonus+BA: FHBonus: 100 l/ha, notFHBonus: 300 l/ha
+*
+p_spot6mCorTimeReq(KTBL_size,KTBL_distance,"FH+Bonus+BA",FHBonus) = p_spot6mCorTimeReq(KTBL_size,KTBL_distance,"FH","foliarHerb");
+p_spot6mCorFuelCons(KTBL_size,KTBL_distance,"FH+Bonus+BA",FHBonus) = p_spot6mCorFuelCons(KTBL_size,KTBL_distance,"FH","foliarHerb");
+p_spot6mCorMaintenance(KTBL_size,KTBL_distance,"FH+Bonus+BA",FHBonus) = p_spot6mCorMaintenance(KTBL_size,KTBL_distance,"FH","foliarHerb");
+
+p_spot6mCorTimeReq(KTBL_size,KTBL_distance,"FH+Bonus+BA",notFHBonus) = p_spot6mCorTimeReq(KTBL_size,KTBL_distance,"FH+BA","soilHerb");
+p_spot6mCorFuelCons(KTBL_size,KTBL_distance,"FH+Bonus+BA",notFHBonus) = p_spot6mCorFuelCons(KTBL_size,KTBL_distance,"FH+BA","soilHerb");
+p_spot6mCorMaintenance(KTBL_size,KTBL_distance,"FH+Bonus+BA",notFHBonus) = p_spot6mCorMaintenance(KTBL_size,KTBL_distance,"FH+BA","soilHerb");
+
+
+
+
+
+
+p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) = 
+    p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) 
+    * (p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"BA_45kW",pestType) / p_spot6mCorMaintenance(KTBL_size,KTBL_distance,scenario,pestType))
+;
+
+p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) = 
+    p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"BA_45kW",pestType) * 2
+;
+
+
+p_technoTimeReq(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) = 
+    p_technoTimeReq(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) 
+    * (p_technoTimeReq(KTBL_size,KTBL_distance,scenario,"BA_45kW",pestType) / p_spot6mCorTimeReq(KTBL_size,KTBL_distance,scenario,pestType))
+;
+
+
+p_technoFuelCons(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) =
+    p_technoFuelCons(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) 
+    * (p_technoFuelCons(KTBL_size,KTBL_distance,scenario,"BA_45kW",pestType) / p_spot6mCorFuelCons(KTBL_size,KTBL_distance,scenario,pestType))
+;
+
+
+
 *assumption: 27m, 3.000 l; 67 kW (KTBL Feldarbeitsrechner) -> 24.06.2024, 100 l/ha
 *
 * -- spot 27m scenario FH: FH: 100 l/ha, notFH: 300 l/ha
@@ -2262,209 +2670,6 @@ p_technoOtherCosts("80","15","FH","spot27m",FH) = 0.26;
 p_technoMaintenance("80","15","FH","spot27m",FH) = 2.88;
 
 
-p_technoTimeReq("1","1","FH","spot27m",notFH) = 0.27;
-p_technoFuelCons("1","1","FH","spot27m",notFH) = 1.49;
-p_technoOtherCosts("1","1","FH","spot27m",notFH) = 0.61;
-p_technoMaintenance("1","1","FH","spot27m",notFH) = 4.22;
-p_technoTimeReq("1","2","FH","spot27m",notFH) = 0.28;
-p_technoFuelCons("1","2","FH","spot27m",notFH) = 1.53;
-p_technoOtherCosts("1","2","FH","spot27m",notFH) = 0.62;
-p_technoMaintenance("1","2","FH","spot27m",notFH) = 4.27;
-p_technoTimeReq("1","3","FH","spot27m",notFH) = 0.28;
-p_technoFuelCons("1","3","FH","spot27m",notFH) = 1.58;
-p_technoOtherCosts("1","3","FH","spot27m",notFH) = 0.62;
-p_technoMaintenance("1","3","FH","spot27m",notFH) = 4.31;
-p_technoTimeReq("1","4","FH","spot27m",notFH) = 0.29;
-p_technoFuelCons("1","4","FH","spot27m",notFH) = 1.62;
-p_technoOtherCosts("1","4","FH","spot27m",notFH) = 0.63;
-p_technoMaintenance("1","4","FH","spot27m",notFH) = 4.34;
-p_technoTimeReq("1","5","FH","spot27m",notFH) = 0.3;
-p_technoFuelCons("1","5","FH","spot27m",notFH) = 1.67;
-p_technoOtherCosts("1","5","FH","spot27m",notFH) = 0.63;
-p_technoMaintenance("1","5","FH","spot27m",notFH) = 4.38;
-p_technoTimeReq("1","10","FH","spot27m",notFH) = 0.33;
-p_technoFuelCons("1","10","FH","spot27m",notFH) = 1.9;
-p_technoOtherCosts("1","10","FH","spot27m",notFH) = 0.66;
-p_technoMaintenance("1","10","FH","spot27m",notFH) = 4.56;
-p_technoTimeReq("1","15","FH","spot27m",notFH) = 0.36;
-p_technoFuelCons("1","15","FH","spot27m",notFH) = 2.13;
-p_technoOtherCosts("1","15","FH","spot27m",notFH) = 0.69;
-p_technoMaintenance("1","15","FH","spot27m",notFH) = 4.74;
-
-p_technoTimeReq("2","1","FH","spot27m",notFH) = 0.2;
-p_technoFuelCons("2","1","FH","spot27m",notFH) = 1.16;
-p_technoOtherCosts("2","1","FH","spot27m",notFH) = 0.54;
-p_technoMaintenance("2","1","FH","spot27m",notFH) = 3.76;
-p_technoTimeReq("2","2","FH","spot27m",notFH) = 0.2;
-p_technoFuelCons("2","2","FH","spot27m",notFH) = 1.2;
-p_technoOtherCosts("2","2","FH","spot27m",notFH) = 0.54;
-p_technoMaintenance("2","2","FH","spot27m",notFH) = 3.8;
-p_technoTimeReq("2","3","FH","spot27m",notFH) = 0.21;
-p_technoFuelCons("2","3","FH","spot27m",notFH) = 1.24;
-p_technoOtherCosts("2","3","FH","spot27m",notFH) = 0.55;
-p_technoMaintenance("2","3","FH","spot27m",notFH) = 3.84;
-p_technoTimeReq("2","4","FH","spot27m",notFH) = 0.21;
-p_technoFuelCons("2","4","FH","spot27m",notFH) = 1.28;
-p_technoOtherCosts("2","4","FH","spot27m",notFH) = 0.56;
-p_technoMaintenance("2","4","FH","spot27m",notFH) = 3.87;
-p_technoTimeReq("2","5","FH","spot27m",notFH) = 0.22;
-p_technoFuelCons("2","5","FH","spot27m",notFH) = 1.33;
-p_technoOtherCosts("2","5","FH","spot27m",notFH) = 0.56;
-p_technoMaintenance("2","5","FH","spot27m",notFH) = 3.91;
-p_technoTimeReq("2","10","FH","spot27m",notFH) = 0.25;
-p_technoFuelCons("2","10","FH","spot27m",notFH) = 1.54; 
-p_technoOtherCosts("2","10","FH","spot27m",notFH) = 0.59;
-p_technoMaintenance("2","10","FH","spot27m",notFH) = 4.09;
-p_technoTimeReq("2","15","FH","spot27m",notFH) = 0.28;
-p_technoFuelCons("2","15","FH","spot27m",notFH) = 1.76;
-p_technoOtherCosts("2","15","FH","spot27m",notFH) = 0.62;
-p_technoMaintenance("2","15","FH","spot27m",notFH) = 4.26;
-
-p_technoTimeReq("5","1","FH","spot27m",notFH) = 0.14;
-p_technoFuelCons("5","1","FH","spot27m",notFH) = 0.91;
-p_technoOtherCosts("5","1","FH","spot27m",notFH) = 0.48;
-p_technoMaintenance("5","1","FH","spot27m",notFH) = 3.42;
-p_technoTimeReq("5","2","FH","spot27m",notFH) = 0.14;
-p_technoFuelCons("5","2","FH","spot27m",notFH) = 0.95;
-p_technoOtherCosts("5","2","FH","spot27m",notFH) = 0.49;
-p_technoMaintenance("5","2","FH","spot27m",notFH) = 3.46;
-p_technoTimeReq("5","3","FH","spot27m",notFH) = 0.15;
-p_technoFuelCons("5","3","FH","spot27m",notFH) = 0.99;
-p_technoOtherCosts("5","3","FH","spot27m",notFH) = 0.5;
-p_technoMaintenance("5","3","FH","spot27m",notFH) = 3.5;
-p_technoTimeReq("5","4","FH","spot27m",notFH) = 0.16;
-p_technoFuelCons("5","4","FH","spot27m",notFH) = 1.03;
-p_technoOtherCosts("5","4","FH","spot27m",notFH) = 0.5;
-p_technoMaintenance("5","4","FH","spot27m",notFH) = 3.54;
-p_technoTimeReq("5","5","FH","spot27m",notFH) = 0.16;
-p_technoFuelCons("5","5","FH","spot27m",notFH) = 1.07;
-p_technoOtherCosts("5","5","FH","spot27m",notFH) = 0.51;
-p_technoMaintenance("5","5","FH","spot27m",notFH) = 3.57;
-p_technoTimeReq("5","10","FH","spot27m",notFH) = 0.19;
-p_technoFuelCons("5","10","FH","spot27m",notFH) = 1.28;
-p_technoOtherCosts("5","10","FH","spot27m",notFH) = 0.54;
-p_technoMaintenance("5","10","FH","spot27m",notFH) = 3.74;
-p_technoTimeReq("5","15","FH","spot27m",notFH) = 0.22;
-p_technoFuelCons("5","15","FH","spot27m",notFH) = 1.49;
-p_technoOtherCosts("5","15","FH","spot27m",notFH) = 0.56;
-p_technoMaintenance("5","15","FH","spot27m",notFH) = 3.92;
-
-p_technoTimeReq("10","1","FH","spot27m",notFH) = 0.12;
-p_technoFuelCons("10","1","FH","spot27m",notFH) = 0.84;
-p_technoOtherCosts("10","1","FH","spot27m",notFH) = 0.46;
-p_technoMaintenance("10","1","FH","spot27m",notFH) = 3.29;
-p_technoTimeReq("10","2","FH","spot27m",notFH) = 0.12;
-p_technoFuelCons("10","2","FH","spot27m",notFH) = 0.88;
-p_technoOtherCosts("10","2","FH","spot27m",notFH) = 0.47;
-p_technoMaintenance("10","2","FH","spot27m",notFH) = 3.33;
-p_technoTimeReq("10","3","FH","spot27m",notFH) = 0.13;
-p_technoFuelCons("10","3","FH","spot27m",notFH) = 0.92;
-p_technoOtherCosts("10","3","FH","spot27m",notFH) = 0.48;
-p_technoMaintenance("10","3","FH","spot27m",notFH) = 3.37;
-p_technoTimeReq("10","4","FH","spot27m",notFH) = 0.14;
-p_technoFuelCons("10","4","FH","spot27m",notFH) = 0.96;
-p_technoOtherCosts("10","4","FH","spot27m",notFH) = 0.48;
-p_technoMaintenance("10","4","FH","spot27m",notFH) = 3.41;
-p_technoTimeReq("10","5","FH","spot27m",notFH) = 0.14;
-p_technoFuelCons("10","5","FH","spot27m",notFH) = 1.0;
-p_technoOtherCosts("10","5","FH","spot27m",notFH) = 0.49;
-p_technoMaintenance("10","5","FH","spot27m",notFH) = 3.44;
-p_technoTimeReq("10","10","FH","spot27m",notFH) = 0.17;
-p_technoFuelCons("10","10","FH","spot27m",notFH) = 1.21;
-p_technoOtherCosts("10","10","FH","spot27m",notFH) = 0.52;
-p_technoMaintenance("10","10","FH","spot27m",notFH) = 3.62;
-p_technoTimeReq("10","15","FH","spot27m",notFH) = 0.2;
-p_technoFuelCons("10","15","FH","spot27m",notFH) = 1.42;
-p_technoOtherCosts("10","15","FH","spot27m",notFH) = 0.54;
-p_technoMaintenance("10","15","FH","spot27m",notFH) = 3.8;
-
-p_technoTimeReq("20","1","FH","spot27m",notFH) = 0.12;
-p_technoFuelCons("20","1","FH","spot27m",notFH) = 0.87;
-p_technoOtherCosts("20","1","FH","spot27m",notFH) = 0.46;
-p_technoMaintenance("20","1","FH","spot27m",notFH) = 3.29;
-p_technoTimeReq("20","2","FH","spot27m",notFH) = 0.12;
-p_technoFuelCons("20","2","FH","spot27m",notFH) = 0.91;
-p_technoOtherCosts("20","2","FH","spot27m",notFH) = 0.47;
-p_technoMaintenance("20","2","FH","spot27m",notFH) = 3.33;
-p_technoTimeReq("20","3","FH","spot27m",notFH) = 0.13;
-p_technoFuelCons("20","3","FH","spot27m",notFH) = 0.95;
-p_technoOtherCosts("20","3","FH","spot27m",notFH) = 0.48;
-p_technoMaintenance("20","3","FH","spot27m",notFH) = 3.37; 
-p_technoTimeReq("20","4","FH","spot27m",notFH) = 0.13;
-p_technoFuelCons("20","4","FH","spot27m",notFH) = 0.99;
-p_technoOtherCosts("20","4","FH","spot27m",notFH) = 0.48;
-p_technoMaintenance("20","4","FH","spot27m",notFH) = 3.41;
-p_technoTimeReq("20","5","FH","spot27m",notFH) = 0.14;
-p_technoFuelCons("20","5","FH","spot27m",notFH) = 1.03;
-p_technoOtherCosts("20","5","FH","spot27m",notFH) = 0.49;
-p_technoMaintenance("20","5","FH","spot27m",notFH) = 3.44;
-p_technoTimeReq("20","10","FH","spot27m",notFH) = 0.17;
-p_technoFuelCons("20","10","FH","spot27m",notFH) = 1.24;
-p_technoOtherCosts("20","10","FH","spot27m",notFH) = 0.52;
-p_technoMaintenance("20","10","FH","spot27m",notFH) = 3.62;
-p_technoTimeReq("20","15","FH","spot27m",notFH) = 0.2;
-p_technoFuelCons("20","15","FH","spot27m",notFH) = 1.45;
-p_technoOtherCosts("20","15","FH","spot27m",notFH) = 0.54;
-p_technoMaintenance("20","15","FH","spot27m",notFH) = 3.8;
-
-p_technoTimeReq("40","1","FH","spot27m",notFH) = 0.12;
-p_technoFuelCons("40","1","FH","spot27m",notFH) = 0.89;
-p_technoOtherCosts("40","1","FH","spot27m",notFH) = 0.47; 
-p_technoMaintenance("40","1","FH","spot27m",notFH) = 3.29;
-p_technoTimeReq("40","2","FH","spot27m",notFH) = 0.12;
-p_technoFuelCons("40","2","FH","spot27m",notFH) = 0.94;
-p_technoOtherCosts("40","2","FH","spot27m",notFH) = 0.47;
-p_technoMaintenance("40","2","FH","spot27m",notFH) = 3.34;
-p_technoTimeReq("40","3","FH","spot27m",notFH) = 0.13;
-p_technoFuelCons("40","3","FH","spot27m",notFH) = 0.98;
-p_technoOtherCosts("40","3","FH","spot27m",notFH) = 0.48;
-p_technoMaintenance("40","3","FH","spot27m",notFH) = 3.38;
-p_technoTimeReq("40","4","FH","spot27m",notFH) = 0.14;
-p_technoFuelCons("40","4","FH","spot27m",notFH) = 1.02;
-p_technoOtherCosts("40","4","FH","spot27m",notFH) = 0.48;
-p_technoMaintenance("40","4","FH","spot27m",notFH) = 3.41;
-p_technoTimeReq("40","5","FH","spot27m",notFH) = 0.14;
-p_technoFuelCons("40","5","FH","spot27m",notFH) = 1.06;
-p_technoOtherCosts("40","5","FH","spot27m",notFH) = 0.49;
-p_technoMaintenance("40","5","FH","spot27m",notFH) = 3.45;
-p_technoTimeReq("40","10","FH","spot27m",notFH) = 0.17;
-p_technoFuelCons("40","10","FH","spot27m",notFH) = 1.26;
-p_technoOtherCosts("40","10","FH","spot27m",notFH) = 0.52;
-p_technoMaintenance("40","10","FH","spot27m",notFH) = 3.62;
-p_technoTimeReq("40","15","FH","spot27m",notFH) = 0.2;
-p_technoFuelCons("40","15","FH","spot27m",notFH) = 1.47;
-p_technoOtherCosts("40","15","FH","spot27m",notFH) = 0.54;
-p_technoMaintenance("40","15","FH","spot27m",notFH) = 3.8;
-
-p_technoTimeReq("80","1","FH","spot27m",notFH) = 0.12;
-p_technoFuelCons("80","1","FH","spot27m",notFH) = 0.94;
-p_technoOtherCosts("80","1","FH","spot27m",notFH) = 0.47;
-p_technoMaintenance("80","1","FH","spot27m",notFH) = 3.31;
-p_technoTimeReq("80","2","FH","spot27m",notFH) = 0.13;
-p_technoFuelCons("80","2","FH","spot27m",notFH) = 0.98;
-p_technoOtherCosts("80","2","FH","spot27m",notFH) = 0.47;
-p_technoMaintenance("80","2","FH","spot27m",notFH) = 3.35;
-p_technoTimeReq("80","3","FH","spot27m",notFH) = 0.13;
-p_technoFuelCons("80","3","FH","spot27m",notFH) = 1.02;
-p_technoOtherCosts("80","3","FH","spot27m",notFH) = 0.48;
-p_technoMaintenance("80","3","FH","spot27m",notFH) = 3.39;
-p_technoTimeReq("80","4","FH","spot27m",notFH) = 0.14;
-p_technoFuelCons("80","4","FH","spot27m",notFH) = 1.06;
-p_technoOtherCosts("80","4","FH","spot27m",notFH) = 0.49;
-p_technoMaintenance("80","4","FH","spot27m",notFH) = 3.43;
-p_technoTimeReq("80","5","FH","spot27m",notFH) = 0.14;
-p_technoFuelCons("80","5","FH","spot27m",notFH) = 1.1;
-p_technoOtherCosts("80","5","FH","spot27m",notFH) = 0.49;
-p_technoMaintenance("80","5","FH","spot27m",notFH) = 3.46;
-p_technoTimeReq("80","10","FH","spot27m",notFH) = 0.17;
-p_technoFuelCons("80","10","FH","spot27m",notFH) = 1.3;
-p_technoOtherCosts("80","10","FH","spot27m",notFH) = 0.52;
-p_technoMaintenance("80","10","FH","spot27m",notFH) = 3.64;
-p_technoTimeReq("80","15","FH","spot27m",notFH) = 0.2;
-p_technoFuelCons("80","15","FH","spot27m",notFH) = 1.51;
-p_technoOtherCosts("80","15","FH","spot27m",notFH) = 0.55;
-p_technoMaintenance("80","15","FH","spot27m",notFH) = 3.82;
-
 
 *
 * -- scenario FH+BA spot 27m: FH: 100 l/ha, notFH: 300 l/ha
@@ -2474,10 +2679,208 @@ p_technoFuelCons(KTBL_size,KTBL_distance,"FH+BA","spot27m",FH) = p_technoFuelCon
 p_technoOtherCosts(KTBL_size,KTBL_distance,"FH+BA","spot27m",FH) = p_technoOtherCosts(KTBL_size,KTBL_distance,"FH","spot27m","foliarHerb");
 p_technoMaintenance(KTBL_size,KTBL_distance,"FH+BA","spot27m",FH) = p_technoMaintenance(KTBL_size,KTBL_distance,"FH","spot27m","foliarHerb");
 
-p_technoTimeReq(KTBL_size,KTBL_distance,"FH+BA","spot27m",notFH) = p_technoTimeReq(KTBL_size,KTBL_distance,"FH","spot27m","soilHerb");
-p_technoFuelCons(KTBL_size,KTBL_distance,"FH+BA","spot27m",notFH) = p_technoFuelCons(KTBL_size,KTBL_distance,"FH","spot27m","soilHerb");
-p_technoOtherCosts(KTBL_size,KTBL_distance,"FH+BA","spot27m",notFH) = p_technoOtherCosts(KTBL_size,KTBL_distance,"FH","spot27m","soilHerb");
-p_technoMaintenance(KTBL_size,KTBL_distance,"FH+BA","spot27m",notFH) = p_technoMaintenance(KTBL_size,KTBL_distance,"FH","spot27m","soilHerb");
+p_technoTimeReq("1","1","FH+BA","spot27m",notFH) = 0.27;
+p_technoFuelCons("1","1","FH+BA","spot27m",notFH) = 1.49;
+p_technoOtherCosts("1","1","FH+BA","spot27m",notFH) = 0.61;
+p_technoMaintenance("1","1","FH+BA","spot27m",notFH) = 4.22;
+p_technoTimeReq("1","2","FH+BA","spot27m",notFH) = 0.28;
+p_technoFuelCons("1","2","FH+BA","spot27m",notFH) = 1.53;
+p_technoOtherCosts("1","2","FH+BA","spot27m",notFH) = 0.62;
+p_technoMaintenance("1","2","FH+BA","spot27m",notFH) = 4.27;
+p_technoTimeReq("1","3","FH+BA","spot27m",notFH) = 0.28;
+p_technoFuelCons("1","3","FH+BA","spot27m",notFH) = 1.58;
+p_technoOtherCosts("1","3","FH+BA","spot27m",notFH) = 0.62;
+p_technoMaintenance("1","3","FH+BA","spot27m",notFH) = 4.31;
+p_technoTimeReq("1","4","FH+BA","spot27m",notFH) = 0.29;
+p_technoFuelCons("1","4","FH+BA","spot27m",notFH) = 1.62;
+p_technoOtherCosts("1","4","FH+BA","spot27m",notFH) = 0.63;
+p_technoMaintenance("1","4","FH+BA","spot27m",notFH) = 4.34;
+p_technoTimeReq("1","5","FH+BA","spot27m",notFH) = 0.3;
+p_technoFuelCons("1","5","FH+BA","spot27m",notFH) = 1.67;
+p_technoOtherCosts("1","5","FH+BA","spot27m",notFH) = 0.63;
+p_technoMaintenance("1","5","FH+BA","spot27m",notFH) = 4.38;
+p_technoTimeReq("1","10","FH+BA","spot27m",notFH) = 0.33;
+p_technoFuelCons("1","10","FH+BA","spot27m",notFH) = 1.9;
+p_technoOtherCosts("1","10","FH+BA","spot27m",notFH) = 0.66;
+p_technoMaintenance("1","10","FH+BA","spot27m",notFH) = 4.56;
+p_technoTimeReq("1","15","FH+BA","spot27m",notFH) = 0.36;
+p_technoFuelCons("1","15","FH+BA","spot27m",notFH) = 2.13;
+p_technoOtherCosts("1","15","FH+BA","spot27m",notFH) = 0.69;
+p_technoMaintenance("1","15","FH+BA","spot27m",notFH) = 4.74;
+
+p_technoTimeReq("2","1","FH+BA","spot27m",notFH) = 0.2;
+p_technoFuelCons("2","1","FH+BA","spot27m",notFH) = 1.16;
+p_technoOtherCosts("2","1","FH+BA","spot27m",notFH) = 0.54;
+p_technoMaintenance("2","1","FH+BA","spot27m",notFH) = 3.76;
+p_technoTimeReq("2","2","FH+BA","spot27m",notFH) = 0.2;
+p_technoFuelCons("2","2","FH+BA","spot27m",notFH) = 1.2;
+p_technoOtherCosts("2","2","FH+BA","spot27m",notFH) = 0.54;
+p_technoMaintenance("2","2","FH+BA","spot27m",notFH) = 3.8;
+p_technoTimeReq("2","3","FH+BA","spot27m",notFH) = 0.21;
+p_technoFuelCons("2","3","FH+BA","spot27m",notFH) = 1.24;
+p_technoOtherCosts("2","3","FH+BA","spot27m",notFH) = 0.55;
+p_technoMaintenance("2","3","FH+BA","spot27m",notFH) = 3.84;
+p_technoTimeReq("2","4","FH+BA","spot27m",notFH) = 0.21;
+p_technoFuelCons("2","4","FH+BA","spot27m",notFH) = 1.28;
+p_technoOtherCosts("2","4","FH+BA","spot27m",notFH) = 0.56;
+p_technoMaintenance("2","4","FH+BA","spot27m",notFH) = 3.87;
+p_technoTimeReq("2","5","FH+BA","spot27m",notFH) = 0.22;
+p_technoFuelCons("2","5","FH+BA","spot27m",notFH) = 1.33;
+p_technoOtherCosts("2","5","FH+BA","spot27m",notFH) = 0.56;
+p_technoMaintenance("2","5","FH+BA","spot27m",notFH) = 3.91;
+p_technoTimeReq("2","10","FH+BA","spot27m",notFH) = 0.25;
+p_technoFuelCons("2","10","FH+BA","spot27m",notFH) = 1.54; 
+p_technoOtherCosts("2","10","FH+BA","spot27m",notFH) = 0.59;
+p_technoMaintenance("2","10","FH+BA","spot27m",notFH) = 4.09;
+p_technoTimeReq("2","15","FH+BA","spot27m",notFH) = 0.28;
+p_technoFuelCons("2","15","FH+BA","spot27m",notFH) = 1.76;
+p_technoOtherCosts("2","15","FH+BA","spot27m",notFH) = 0.62;
+p_technoMaintenance("2","15","FH+BA","spot27m",notFH) = 4.26;
+
+p_technoTimeReq("5","1","FH+BA","spot27m",notFH) = 0.14;
+p_technoFuelCons("5","1","FH+BA","spot27m",notFH) = 0.91;
+p_technoOtherCosts("5","1","FH+BA","spot27m",notFH) = 0.48;
+p_technoMaintenance("5","1","FH+BA","spot27m",notFH) = 3.42;
+p_technoTimeReq("5","2","FH+BA","spot27m",notFH) = 0.14;
+p_technoFuelCons("5","2","FH+BA","spot27m",notFH) = 0.95;
+p_technoOtherCosts("5","2","FH+BA","spot27m",notFH) = 0.49;
+p_technoMaintenance("5","2","FH+BA","spot27m",notFH) = 3.46;
+p_technoTimeReq("5","3","FH+BA","spot27m",notFH) = 0.15;
+p_technoFuelCons("5","3","FH+BA","spot27m",notFH) = 0.99;
+p_technoOtherCosts("5","3","FH+BA","spot27m",notFH) = 0.5;
+p_technoMaintenance("5","3","FH+BA","spot27m",notFH) = 3.5;
+p_technoTimeReq("5","4","FH+BA","spot27m",notFH) = 0.16;
+p_technoFuelCons("5","4","FH+BA","spot27m",notFH) = 1.03;
+p_technoOtherCosts("5","4","FH+BA","spot27m",notFH) = 0.5;
+p_technoMaintenance("5","4","FH+BA","spot27m",notFH) = 3.54;
+p_technoTimeReq("5","5","FH+BA","spot27m",notFH) = 0.16;
+p_technoFuelCons("5","5","FH+BA","spot27m",notFH) = 1.07;
+p_technoOtherCosts("5","5","FH+BA","spot27m",notFH) = 0.51;
+p_technoMaintenance("5","5","FH+BA","spot27m",notFH) = 3.57;
+p_technoTimeReq("5","10","FH+BA","spot27m",notFH) = 0.19;
+p_technoFuelCons("5","10","FH+BA","spot27m",notFH) = 1.28;
+p_technoOtherCosts("5","10","FH+BA","spot27m",notFH) = 0.54;
+p_technoMaintenance("5","10","FH+BA","spot27m",notFH) = 3.74;
+p_technoTimeReq("5","15","FH+BA","spot27m",notFH) = 0.22;
+p_technoFuelCons("5","15","FH+BA","spot27m",notFH) = 1.49;
+p_technoOtherCosts("5","15","FH+BA","spot27m",notFH) = 0.56;
+p_technoMaintenance("5","15","FH+BA","spot27m",notFH) = 3.92;
+
+p_technoTimeReq("10","1","FH+BA","spot27m",notFH) = 0.12;
+p_technoFuelCons("10","1","FH+BA","spot27m",notFH) = 0.84;
+p_technoOtherCosts("10","1","FH+BA","spot27m",notFH) = 0.46;
+p_technoMaintenance("10","1","FH+BA","spot27m",notFH) = 3.29;
+p_technoTimeReq("10","2","FH+BA","spot27m",notFH) = 0.12;
+p_technoFuelCons("10","2","FH+BA","spot27m",notFH) = 0.88;
+p_technoOtherCosts("10","2","FH+BA","spot27m",notFH) = 0.47;
+p_technoMaintenance("10","2","FH+BA","spot27m",notFH) = 3.33;
+p_technoTimeReq("10","3","FH+BA","spot27m",notFH) = 0.13;
+p_technoFuelCons("10","3","FH+BA","spot27m",notFH) = 0.92;
+p_technoOtherCosts("10","3","FH+BA","spot27m",notFH) = 0.48;
+p_technoMaintenance("10","3","FH+BA","spot27m",notFH) = 3.37;
+p_technoTimeReq("10","4","FH+BA","spot27m",notFH) = 0.14;
+p_technoFuelCons("10","4","FH+BA","spot27m",notFH) = 0.96;
+p_technoOtherCosts("10","4","FH+BA","spot27m",notFH) = 0.48;
+p_technoMaintenance("10","4","FH+BA","spot27m",notFH) = 3.41;
+p_technoTimeReq("10","5","FH+BA","spot27m",notFH) = 0.14;
+p_technoFuelCons("10","5","FH+BA","spot27m",notFH) = 1.0;
+p_technoOtherCosts("10","5","FH+BA","spot27m",notFH) = 0.49;
+p_technoMaintenance("10","5","FH+BA","spot27m",notFH) = 3.44;
+p_technoTimeReq("10","10","FH+BA","spot27m",notFH) = 0.17;
+p_technoFuelCons("10","10","FH+BA","spot27m",notFH) = 1.21;
+p_technoOtherCosts("10","10","FH+BA","spot27m",notFH) = 0.52;
+p_technoMaintenance("10","10","FH+BA","spot27m",notFH) = 3.62;
+p_technoTimeReq("10","15","FH+BA","spot27m",notFH) = 0.2;
+p_technoFuelCons("10","15","FH+BA","spot27m",notFH) = 1.42;
+p_technoOtherCosts("10","15","FH+BA","spot27m",notFH) = 0.54;
+p_technoMaintenance("10","15","FH+BA","spot27m",notFH) = 3.8;
+
+p_technoTimeReq("20","1","FH+BA","spot27m",notFH) = 0.12;
+p_technoFuelCons("20","1","FH+BA","spot27m",notFH) = 0.87;
+p_technoOtherCosts("20","1","FH+BA","spot27m",notFH) = 0.46;
+p_technoMaintenance("20","1","FH+BA","spot27m",notFH) = 3.29;
+p_technoTimeReq("20","2","FH+BA","spot27m",notFH) = 0.12;
+p_technoFuelCons("20","2","FH+BA","spot27m",notFH) = 0.91;
+p_technoOtherCosts("20","2","FH+BA","spot27m",notFH) = 0.47;
+p_technoMaintenance("20","2","FH+BA","spot27m",notFH) = 3.33;
+p_technoTimeReq("20","3","FH+BA","spot27m",notFH) = 0.13;
+p_technoFuelCons("20","3","FH+BA","spot27m",notFH) = 0.95;
+p_technoOtherCosts("20","3","FH+BA","spot27m",notFH) = 0.48;
+p_technoMaintenance("20","3","FH+BA","spot27m",notFH) = 3.37; 
+p_technoTimeReq("20","4","FH+BA","spot27m",notFH) = 0.13;
+p_technoFuelCons("20","4","FH+BA","spot27m",notFH) = 0.99;
+p_technoOtherCosts("20","4","FH+BA","spot27m",notFH) = 0.48;
+p_technoMaintenance("20","4","FH+BA","spot27m",notFH) = 3.41;
+p_technoTimeReq("20","5","FH+BA","spot27m",notFH) = 0.14;
+p_technoFuelCons("20","5","FH+BA","spot27m",notFH) = 1.03;
+p_technoOtherCosts("20","5","FH+BA","spot27m",notFH) = 0.49;
+p_technoMaintenance("20","5","FH+BA","spot27m",notFH) = 3.44;
+p_technoTimeReq("20","10","FH+BA","spot27m",notFH) = 0.17;
+p_technoFuelCons("20","10","FH+BA","spot27m",notFH) = 1.24;
+p_technoOtherCosts("20","10","FH+BA","spot27m",notFH) = 0.52;
+p_technoMaintenance("20","10","FH+BA","spot27m",notFH) = 3.62;
+p_technoTimeReq("20","15","FH+BA","spot27m",notFH) = 0.2;
+p_technoFuelCons("20","15","FH+BA","spot27m",notFH) = 1.45;
+p_technoOtherCosts("20","15","FH+BA","spot27m",notFH) = 0.54;
+p_technoMaintenance("20","15","FH+BA","spot27m",notFH) = 3.8;
+
+p_technoTimeReq("40","1","FH+BA","spot27m",notFH) = 0.12;
+p_technoFuelCons("40","1","FH+BA","spot27m",notFH) = 0.89;
+p_technoOtherCosts("40","1","FH+BA","spot27m",notFH) = 0.47; 
+p_technoMaintenance("40","1","FH+BA","spot27m",notFH) = 3.29;
+p_technoTimeReq("40","2","FH+BA","spot27m",notFH) = 0.12;
+p_technoFuelCons("40","2","FH+BA","spot27m",notFH) = 0.94;
+p_technoOtherCosts("40","2","FH+BA","spot27m",notFH) = 0.47;
+p_technoMaintenance("40","2","FH+BA","spot27m",notFH) = 3.34;
+p_technoTimeReq("40","3","FH+BA","spot27m",notFH) = 0.13;
+p_technoFuelCons("40","3","FH+BA","spot27m",notFH) = 0.98;
+p_technoOtherCosts("40","3","FH+BA","spot27m",notFH) = 0.48;
+p_technoMaintenance("40","3","FH+BA","spot27m",notFH) = 3.38;
+p_technoTimeReq("40","4","FH+BA","spot27m",notFH) = 0.14;
+p_technoFuelCons("40","4","FH+BA","spot27m",notFH) = 1.02;
+p_technoOtherCosts("40","4","FH+BA","spot27m",notFH) = 0.48;
+p_technoMaintenance("40","4","FH+BA","spot27m",notFH) = 3.41;
+p_technoTimeReq("40","5","FH+BA","spot27m",notFH) = 0.14;
+p_technoFuelCons("40","5","FH+BA","spot27m",notFH) = 1.06;
+p_technoOtherCosts("40","5","FH+BA","spot27m",notFH) = 0.49;
+p_technoMaintenance("40","5","FH+BA","spot27m",notFH) = 3.45;
+p_technoTimeReq("40","10","FH+BA","spot27m",notFH) = 0.17;
+p_technoFuelCons("40","10","FH+BA","spot27m",notFH) = 1.26;
+p_technoOtherCosts("40","10","FH+BA","spot27m",notFH) = 0.52;
+p_technoMaintenance("40","10","FH+BA","spot27m",notFH) = 3.62;
+p_technoTimeReq("40","15","FH+BA","spot27m",notFH) = 0.2;
+p_technoFuelCons("40","15","FH+BA","spot27m",notFH) = 1.47;
+p_technoOtherCosts("40","15","FH+BA","spot27m",notFH) = 0.54;
+p_technoMaintenance("40","15","FH+BA","spot27m",notFH) = 3.8;
+
+p_technoTimeReq("80","1","FH+BA","spot27m",notFH) = 0.12;
+p_technoFuelCons("80","1","FH+BA","spot27m",notFH) = 0.94;
+p_technoOtherCosts("80","1","FH+BA","spot27m",notFH) = 0.47;
+p_technoMaintenance("80","1","FH+BA","spot27m",notFH) = 3.31;
+p_technoTimeReq("80","2","FH+BA","spot27m",notFH) = 0.13;
+p_technoFuelCons("80","2","FH+BA","spot27m",notFH) = 0.98;
+p_technoOtherCosts("80","2","FH+BA","spot27m",notFH) = 0.47;
+p_technoMaintenance("80","2","FH+BA","spot27m",notFH) = 3.35;
+p_technoTimeReq("80","3","FH+BA","spot27m",notFH) = 0.13;
+p_technoFuelCons("80","3","FH+BA","spot27m",notFH) = 1.02;
+p_technoOtherCosts("80","3","FH+BA","spot27m",notFH) = 0.48;
+p_technoMaintenance("80","3","FH+BA","spot27m",notFH) = 3.39;
+p_technoTimeReq("80","4","FH+BA","spot27m",notFH) = 0.14;
+p_technoFuelCons("80","4","FH+BA","spot27m",notFH) = 1.06;
+p_technoOtherCosts("80","4","FH+BA","spot27m",notFH) = 0.49;
+p_technoMaintenance("80","4","FH+BA","spot27m",notFH) = 3.43;
+p_technoTimeReq("80","5","FH+BA","spot27m",notFH) = 0.14;
+p_technoFuelCons("80","5","FH+BA","spot27m",notFH) = 1.1;
+p_technoOtherCosts("80","5","FH+BA","spot27m",notFH) = 0.49;
+p_technoMaintenance("80","5","FH+BA","spot27m",notFH) = 3.46;
+p_technoTimeReq("80","10","FH+BA","spot27m",notFH) = 0.17;
+p_technoFuelCons("80","10","FH+BA","spot27m",notFH) = 1.3;
+p_technoOtherCosts("80","10","FH+BA","spot27m",notFH) = 0.52;
+p_technoMaintenance("80","10","FH+BA","spot27m",notFH) = 3.64;
+p_technoTimeReq("80","15","FH+BA","spot27m",notFH) = 0.2;
+p_technoFuelCons("80","15","FH+BA","spot27m",notFH) = 1.51;
+p_technoOtherCosts("80","15","FH+BA","spot27m",notFH) = 0.55;
+p_technoMaintenance("80","15","FH+BA","spot27m",notFH) = 3.82;
 
 
 *
@@ -2488,11 +2891,6 @@ p_technoFuelCons(KTBL_size,KTBL_distance,"FH+Bonus","spot27m",FHBonus) = p_techn
 p_technoOtherCosts(KTBL_size,KTBL_distance,"FH+Bonus","spot27m",FHBonus) = p_technoOtherCosts(KTBL_size,KTBL_distance,"FH","spot27m","foliarHerb");
 p_technoMaintenance(KTBL_size,KTBL_distance,"FH+Bonus","spot27m",FHBonus) = p_technoMaintenance(KTBL_size,KTBL_distance,"FH","spot27m","foliarHerb");
 
-p_technoTimeReq(KTBL_size,KTBL_distance,"FH+Bonus","spot27m",notFHBonus) = p_technoTimeReq(KTBL_size,KTBL_distance,"FH","spot27m","soilHerb");
-p_technoFuelCons(KTBL_size,KTBL_distance,"FH+Bonus","spot27m",notFHBonus) = p_technoFuelCons(KTBL_size,KTBL_distance,"FH","spot27m","soilHerb");
-p_technoOtherCosts(KTBL_size,KTBL_distance,"FH+Bonus","spot27m",notFHBonus) = p_technoOtherCosts(KTBL_size,KTBL_distance,"FH","spot27m","soilHerb");
-p_technoMaintenance(KTBL_size,KTBL_distance,"FH+Bonus","spot27m",notFHBonus) = p_technoMaintenance(KTBL_size,KTBL_distance,"FH","spot27m","soilHerb");
-
 
 *
 * -- scenario FH+Bonus+BA spot 27m: FHBonus: 100 l/ha, not FHBonus: 300 l/ha
@@ -2502,28 +2900,18 @@ p_technoFuelCons(KTBL_size,KTBL_distance,"FH+Bonus+BA","spot27m",FHBonus) = p_te
 p_technoOtherCosts(KTBL_size,KTBL_distance,"FH+Bonus+BA","spot27m",FHBonus) = p_technoOtherCosts(KTBL_size,KTBL_distance,"FH","spot27m","foliarHerb");
 p_technoMaintenance(KTBL_size,KTBL_distance,"FH+Bonus+BA","spot27m",FHBonus) = p_technoMaintenance(KTBL_size,KTBL_distance,"FH","spot27m","foliarHerb");
 
-p_technoTimeReq(KTBL_size,KTBL_distance,"FH+Bonus+BA","spot27m",notFHBonus) = p_technoTimeReq(KTBL_size,KTBL_distance,"FH","spot27m","soilHerb");
-p_technoFuelCons(KTBL_size,KTBL_distance,"FH+Bonus+BA","spot27m",notFHBonus) = p_technoFuelCons(KTBL_size,KTBL_distance,"FH","spot27m","soilHerb");
-p_technoOtherCosts(KTBL_size,KTBL_distance,"FH+Bonus+BA","spot27m",notFHBonus) = p_technoOtherCosts(KTBL_size,KTBL_distance,"FH","spot27m","soilHerb");
-p_technoMaintenance(KTBL_size,KTBL_distance,"FH+Bonus+BA","spot27m",notFHBonus) = p_technoMaintenance(KTBL_size,KTBL_distance,"FH","spot27m","soilHerb");
+p_technoTimeReq(KTBL_size,KTBL_distance,"FH+Bonus+BA","spot27m",notFHBonus) = p_technoTimeReq(KTBL_size,KTBL_distance,"FH+BA","spot27m","soilHerb");
+p_technoFuelCons(KTBL_size,KTBL_distance,"FH+Bonus+BA","spot27m",notFHBonus) = p_technoFuelCons(KTBL_size,KTBL_distance,"FH+BA","spot27m","soilHerb");
+p_technoOtherCosts(KTBL_size,KTBL_distance,"FH+Bonus+BA","spot27m",notFHBonus) = p_technoOtherCosts(KTBL_size,KTBL_distance,"FH+BA","spot27m","soilHerb");
+p_technoMaintenance(KTBL_size,KTBL_distance,"FH+Bonus+BA","spot27m",notFHBonus) = p_technoMaintenance(KTBL_size,KTBL_distance,"FH+BA","spot27m","soilHerb");
 
 
 
 *reason for the formula is, that the data for other costs is drawn from KTBL makost (17.05.2024)
-*and it is assumed here that costs for maintenance and the other costs are proportionally higher according to the value of the technology
+*and it is assumed here that costs for maintenance are twice as high as for BA technology
 p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType) = 
-    p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType)
-    * (p_technoValue("spot27m") / 54300)
+    p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType) * 2
 ;
-
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) =
-    p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType)
-    * (p_technoValue("spot6m") / p_technoValue("BA_45kW"))
-;
-
-p_technoTimeReq(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) = p_technoTimeReq(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) * 2;
-p_technoFuelCons(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) = p_technoFuelCons(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) * 2;
-
 *
 * --- Parameter definition to ensure that technologies are selected which are linked to the
 *   scenario chosen
@@ -3115,13 +3503,13 @@ $offtext
 *Bodenherbizid 1
 'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH".set.BASprayer."soilHerb"."OKT2" 1
 *Blattherbizid 1 & Wachstumsregler 1
-'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH"."spot27m"."soilHerb"."APR1" 0.5
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH"."spot27m"."foliarHerb"."APR1" 0.5
 'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH"."spot27m"."growthReg"."APR1" 0.5
 *Wachstumsregler 2 & Insektizid 1
 'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH".set.BASprayer."growthReg"."APR2" 0.5
 'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH".set.BASprayer."insect"."APR2" 0.5
 *Blattherbizid 2
-'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH"."spot27m"."soilHerb"."MAI1" 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH"."spot27m"."foliarHerb"."MAI1" 1
 *Fungizid 1
 'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
 
@@ -3332,12 +3720,14 @@ $offtext
 *Blattherbizid 1
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MRZ2" 1
 *Blattherbizid 2 & Wachstumsregler 1
-'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR1" 1
 *Insektizid 1 & Fungizid 1
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."insect"."APR2" 0.5
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."fung"."APR2" 0.5
 *Blattherbizid 3 & Wachstumsregler 2
-'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MAI1" 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MAI1" 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."growthReg"."MAI1" 1
 *Fungizid 2
 'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
 
@@ -3353,7 +3743,8 @@ $offtext
 *Bodenherbizid 1
 'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus".set.BASprayer."soilHerb"."OKT2" 1
 *Blattherbizid 1 & Wachstumsregler 1
-'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR1" 1
 *Wachstumsregler 2 & Fungizid 1
 'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR2" 0.5
 'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."fung"."APR2" 0.5
@@ -3374,7 +3765,8 @@ $offtext
 *Bodenherbizid 1
 'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus".set.BASprayer."soilHerb"."OKT2" 1
 *Blattherbizid 1 & Wachstumsregler 1
-'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 2
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR1" 1
 *Wachstumsregler 2 & Insektizid 1
 'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR2" 0.5
 'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."insect"."APR2" 0.5
@@ -3444,22 +3836,834 @@ p_datePestOpTechnoLWK_(LWK_crops,LWK_yield,technology,"FH+Bonus+BA",scenSprayer,
     = p_datePestOpTechnoLWK_(LWK_crops,LWK_yield,technology,"FH+BA",scenSprayer,pestType,halfMonth) 
 ;
 
+
+
+*
+* --- Number of passages is calculated differently for time requirements, fuel consumption and repair costs of SST_27m
+* because if S-S and BA of pesticides is performed simultaneously, the time requirements and fuel consumption of the BA application 
+* are assumed, while for repair costs, the costs for BA and S-S application are 
+parameter p_datePestOpTimeFuelLWK(LWK_crops,LWK_yield,technology,scenario,scenSprayer,pestType,halfMonth) /
+*
+* -------------------- Scenario FH for SPOT 27m
+*
+*Blattherbizid 1 & Bodenherbizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH"."spot27m"."soilHerb"."OKT2" 1
+*Blattherbizid 2
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1 & Insektizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH".set.BASprayer."growthReg"."APR2" 0.5
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH".set.BASprayer."insect"."APR2" 0.5
+*Fungizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."foliarHerb"."MRZ2" 1
+*Blattherbizid 2 & Wachstumsregler 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."growthReg"."APR1" 1
+*Insektizid 1 & Fungizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."insect"."APR2" 0.5
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."fung"."APR2" 0.5
+*Blattherbizid 3 & Wachstumsregler 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."growthReg"."MAI1" 1
+*Fungizid 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH".set.BASprayer."growthReg"."APR2" 1
+*Fungizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."growthReg"."APR1" 1
+*Wachstumsregler 2 & Fungizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."growthReg"."APR2" 0.5
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."fung"."APR2" 0.5
+*Blattherbizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizd 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH".set.BASprayer."growthReg"."APR2" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH"."spot27m"."growthReg"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH".set.BASprayer."growthReg"."APR2" 0.5
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH".set.BASprayer."insect"."APR2" 0.5
+*Blattherbizid 2
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."soilHerb"."AUG2" 1
+*Wachstumsregler 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."growthReg"."OKT2" 1
+*Blattherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."growthReg"."APR2" 0.5
+'Raps'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."insect"."APR2" 0.5
+*Insektizid 2
+'Raps'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."insect"."MAI1" 1
+
+*Blattherbizid 1 und Bodenherbizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."soilHerb"."MAI1" 1
+*Fungizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."MAI2" 1
+*Fungizid 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
+*Fungizid 3 & Insektizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."JUN2" 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."insect"."JUN2" 1
+*Fungizid 4
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."JUL1" 1
+*Fungizid 5 & 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."JUL2" 2
+*Fungizid 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."AUG1" 1
+*Fungizid 7
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."AUG2" 1
+*Krautabtötung 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."dessic"."SEP1" 1
+*Krautabtötung 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."dessic"."SEP2" 1
+
+*Blattherbizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."MRZ2" 1
+*Blattherbizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."APR2" 1
+*Insektizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."insect"."MAI1" 1
+*Blattherbizid 3
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."MAI2" 1
+*Fungizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."JUL2" 1
+*Fungizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."AUG1" 1
+
+*Blattherbizid 1
+'Mais'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."APR2" 1
+*Blattherbizid 2
+'Mais'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."MAI1" 1
+
+'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."AUG1" 0.5
+
+
+
+*
+* -------------------- Scenario FH+BA for SPOT 27m
+*
+*Blattherbizid 1 & Bodenherbizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."soilHerb"."OKT2" 1
+*Blattherbizid 2
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1 & Insektizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."growthReg"."APR2" 0.5
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."insect"."APR2" 0.5
+*Fungizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."soilHerb"."OKT2" 1
+*Blattherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."foliarHerb"."MRZ2" 1
+*Blattherbizid 2 & Wachstumsregler 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."growthReg"."APR1" 1
+*Insektizid 1 & Fungizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."insect"."APR2" 0.5
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."fung"."APR2" 0.5
+*Blattherbizid 3 & Wachstumsregler 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."growthReg"."MAI1" 1
+*Fungizid 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."soilHerb"."OKT2" 1
+*Blattherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."growthReg"."APR2" 1
+*Fungizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."soilHerb"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."growthReg"."APR1" 1
+*Wachstumsregler 2 & Fungizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."growthReg"."APR2" 0.5
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."fung"."APR2" 0.5
+*Blattherbizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+BA"."spot27m"."soilHerb"."OKT2" 1
+*Blattherbizd 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+BA"."spot27m"."growthReg"."APR2" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+BA"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."soilHerb"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."growthReg"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."growthReg"."APR2" 0.5
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."insect"."APR2" 0.5
+*Blattherbizid 2
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."soilHerb"."AUG2" 1
+*Wachstumsregler 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."growthReg"."OKT2" 1
+*Blattherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."growthReg"."APR2" 0.5
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."insect"."APR2" 0.5
+*Insektizid 2
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."insect"."MAI1" 1
+
+*Blattherbizid 1 und Bodenherbizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."soilHerb"."MAI1" 1
+*Fungizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."MAI2" 1
+*Fungizid 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."JUN1" 1
+*Fungizid 3 & Insektizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."JUN2" 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."insect"."JUN2" 1
+*Fungizid 4
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."JUL1" 1
+*Fungizid 5 & 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."JUL2" 2
+*Fungizid 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."AUG1" 1
+*Fungizid 7
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."AUG2" 1
+*Krautabtötung 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."dessic"."SEP1" 1
+*Krautabtötung 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."dessic"."SEP2" 1
+
+*Blattherbizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."MRZ2" 1
+*Blattherbizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR2" 1
+*Insektizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."insect"."MAI1" 1
+*Blattherbizid 3
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."MAI2" 1
+*Fungizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."JUL2" 1
+*Fungizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."AUG1" 1
+
+*Blattherbizid 1
+'Mais'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR2" 1
+*Blattherbizid 2
+'Mais'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."MAI1" 1
+
+'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."AUG1" 0.5
+
+
+
+*
+* -------------------- Scenario FH+Bonus for SPOT 27m
+*
+*Blattherbizid 1 & Bodenherbizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."soilHerb"."OKT2" 1
+*Blattherbizid 2
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1 & Insektizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR2" 0.5
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."insect"."APR2" 0.5
+*Fungizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MRZ2" 1
+*Blattherbizid 2 & Wachstumsregler 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR1" 1
+*Insektizid 1 & Fungizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."insect"."APR2" 0.5
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."fung"."APR2" 0.5
+*Blattherbizid 3 & Wachstumsregler 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MAI1" 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."growthReg"."MAI1" 1
+*Fungizid 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+Bonus".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR2" 1
+*Fungizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR1" 1
+*Wachstumsregler 2 & Fungizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR2" 0.5
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."fung"."APR2" 0.5
+*Blattherbizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+Bonus".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizd 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR2" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR2" 0.5
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."insect"."APR2" 0.5
+*Blattherbizid 2
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+Bonus".set.BASprayer."soilHerb"."AUG2" 1
+*Wachstumsregler 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."growthReg"."OKT2" 1
+*Blattherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR2" 0.5
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."insect"."APR2" 0.5
+*Insektizid 2
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."insect"."MAI1" 1
+
+*Blattherbizid 1 und Bodenherbizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."soilHerb"."MAI1" 1
+*Fungizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."MAI2" 1
+*Fungizid 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
+*Fungizid 3 & Insektizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN2" 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."insect"."JUN2" 1
+*Fungizid 4
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."JUL1" 1
+*Fungizid 5 & 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."JUL2" 2
+*Fungizid 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."AUG1" 1
+*Fungizid 7
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."AUG2" 1
+*Krautabtötung 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus".set.BASprayer."dessic"."SEP1" 1
+*Krautabtötung 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus".set.BASprayer."dessic"."SEP2" 1
+
+*Blattherbizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MRZ2" 1
+*Blattherbizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR2" 1
+*Insektizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."insect"."MAI1" 1
+*Blattherbizid 3
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MAI2" 1
+*Fungizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."JUL2" 1
+*Fungizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."AUG1" 1
+
+*Blattherbizid 1
+'Mais'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR2" 1
+*Blattherbizid 2
+'Mais'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MAI1" 1
+
+'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."AUG1" 0.5
+/;
+
+p_datePestOpTimeFuelLWK(LWK_crops,LWK_yield,"spot27m","FH+Bonus+BA",scenSprayer,pestType,halfMonth) 
+    = p_datePestOpTimeFuelLWK(LWK_crops,LWK_yield,"spot27m","FH+BA",scenSprayer,pestType,halfMonth) 
+;
+
+p_datePestOpTimeFuelLWK(LWK_crops,LWK_yield,technology,scenario,scenSprayer,pestType,halfMonth) 
+    $ (not(sameas(technology,"spot27m"))) 
+    = p_datePestOpTechnoLWK_(LWK_crops,LWK_yield,technology,scenario,scenSprayer,pestType,halfMonth);
+
+
+
+
+*
+* --- Number of passages for repair costs of SST27m, which are assumed to be equal to repair costs for S-S applications for simultaneous BA & S-S treatments
+*
+parameter p_datePestOpRepairLWK(LWK_crops,LWK_yield,technology,scenario,scenSprayer,pestType,halfMonth) /
+*
+* -------------------- Scenario FH for SPOT 27m
+*
+*Blattherbizid 1 & Bodenherbizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH"."spot27m"."foliarHerb"."OKT2" 1
+*Blattherbizid 2
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1 & Insektizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH".set.BASprayer."growthReg"."APR2" 0.5
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH".set.BASprayer."insect"."APR2" 0.5
+*Fungizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."foliarHerb"."OKT2" 1
+*Blattherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."foliarHerb"."MRZ2" 1
+*Blattherbizid 2 & Wachstumsregler 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."foliarHerb"."APR1" 1
+*Insektizid 1 & Fungizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."insect"."APR2" 0.5
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."fung"."APR2" 0.5
+*Blattherbizid 3 & Wachstumsregler 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH".set.BASprayer."growthReg"."APR2" 1
+*Fungizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 2 & Fungizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."growthReg"."APR2" 0.5
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."fung"."APR2" 0.5
+*Blattherbizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizd 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH".set.BASprayer."growthReg"."APR2" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH".set.BASprayer."growthReg"."APR2" 0.5
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH".set.BASprayer."insect"."APR2" 0.5
+*Blattherbizid 2
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."soilHerb"."AUG2" 1
+*Wachstumsregler 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."growthReg"."OKT2" 1
+*Blattherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."growthReg"."APR2" 0.5
+'Raps'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."insect"."APR2" 0.5
+*Insektizid 2
+'Raps'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."insect"."MAI1" 1
+
+*Blattherbizid 1 und Bodenherbizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."MAI2" 1
+*Fungizid 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."JUN1" 1
+*Fungizid 3 & Insektizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."JUN2" 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."insect"."JUN2" 1
+*Fungizid 4
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."JUL1" 1
+*Fungizid 5 & 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."JUL2" 2
+*Fungizid 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."AUG1" 1
+*Fungizid 7
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."AUG2" 1
+*Krautabtötung 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."dessic"."SEP1" 1
+*Krautabtötung 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."dessic"."SEP2" 1
+
+*Blattherbizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."MRZ2" 1
+*Blattherbizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."APR2" 1
+*Insektizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."insect"."MAI1" 1
+*Blattherbizid 3
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."MAI2" 1
+*Fungizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."JUL2" 1
+*Fungizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH".set.BASprayer."fung"."AUG1" 1
+
+*Blattherbizid 1
+'Mais'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."APR2" 1
+*Blattherbizid 2
+'Mais'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."MAI1" 1
+
+'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen'."spot27m"."FH"."spot27m"."foliarHerb"."AUG1" 0.5
+
+
+
+*
+* -------------------- Scenario FH+BA for SPOT 27m
+*
+*Blattherbizid 1 & Bodenherbizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."foliarHerb"."OKT2" 1
+*Blattherbizid 2
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1 & Insektizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."growthReg"."APR2" 0.5
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."insect"."APR2" 0.5
+*Fungizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."soilHerb"."OKT2" 1
+*Blattherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."foliarHerb"."MRZ2" 1
+*Blattherbizid 2 & Wachstumsregler 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR1" 1
+*Insektizid 1 & Fungizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."insect"."APR2" 0.5
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."fung"."APR2" 0.5
+*Blattherbizid 3 & Wachstumsregler 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."soilHerb"."OKT2" 1
+*Blattherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."growthReg"."APR2" 1
+*Fungizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+BA"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."soilHerb"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 2 & Fungizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."growthReg"."APR2" 0.5
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."fung"."APR2" 0.5
+*Blattherbizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+BA"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+BA"."spot27m"."soilHerb"."OKT2" 1
+*Blattherbizd 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+BA"."spot27m"."growthReg"."APR2" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+BA"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."soilHerb"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."growthReg"."APR2" 0.5
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."insect"."APR2" 0.5
+*Blattherbizid 2
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+BA"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."soilHerb"."AUG2" 1
+*Wachstumsregler 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."growthReg"."OKT2" 1
+*Blattherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."growthReg"."APR2" 0.5
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."insect"."APR2" 0.5
+*Insektizid 2
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."insect"."MAI1" 1
+
+*Blattherbizid 1 und Bodenherbizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."MAI2" 1
+*Fungizid 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."JUN1" 1
+*Fungizid 3 & Insektizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."JUN2" 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."insect"."JUN2" 1
+*Fungizid 4
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."JUL1" 1
+*Fungizid 5 & 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."JUL2" 2
+*Fungizid 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."AUG1" 1
+*Fungizid 7
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."AUG2" 1
+*Krautabtötung 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."dessic"."SEP1" 1
+*Krautabtötung 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."dessic"."SEP2" 1
+
+*Blattherbizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."MRZ2" 1
+*Blattherbizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR2" 1
+*Insektizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."insect"."MAI1" 1
+*Blattherbizid 3
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."MAI2" 1
+*Fungizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."JUL2" 1
+*Fungizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."fung"."AUG1" 1
+
+*Blattherbizid 1
+'Mais'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."APR2" 1
+*Blattherbizid 2
+'Mais'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."MAI1" 1
+
+'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen'."spot27m"."FH+BA"."spot27m"."foliarHerb"."AUG1" 0.5
+
+
+
+*
+* -------------------- Scenario FH+Bonus for SPOT 27m
+*
+*Blattherbizid 1 & Bodenherbizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."OKT2" 1
+*Blattherbizid 2
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1 & Insektizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR2" 0.5
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."insect"."APR2" 0.5
+*Fungizid 1
+'Winterweizen'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MRZ2" 1
+*Blattherbizid 2 & Wachstumsregler 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR1" 1
+*Insektizid 1 & Fungizid 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."insect"."APR2" 0.5
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."fung"."APR2" 0.5
+*Blattherbizid 3 & Wachstumsregler 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MAI1" 1
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."growthReg"."MAI1" 1
+*Fungizid 2
+'Winterweizen'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+Bonus".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR2" 1
+*Fungizid 1
+'Wintergerste'.'< 70 dt/ha'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR1" 1
+*Wachstumsregler 2 & Fungizid 1
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR2" 0.5
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."fung"."APR2" 0.5
+*Blattherbizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 2
+'Wintergerste'.'> 70 dt/ha Windhalmstandort'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+Bonus".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizd 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR2" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'< 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus".set.BASprayer."soilHerb"."OKT2" 1
+*Blattherbizid 1 & Wachstumsregler 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR2" 0.5
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."insect"."APR2" 0.5
+*Blattherbizid 2
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MAI1" 1
+*Fungizid 1
+'Winterroggen & Triticale'.'> 60 dt/ha'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
+
+*Bodenherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+Bonus".set.BASprayer."soilHerb"."AUG2" 1
+*Wachstumsregler 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."growthReg"."OKT2" 1
+*Blattherbizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR1" 1
+*Wachstumsregler 2 & Insektizid 1
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."growthReg"."APR2" 0.5
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."insect"."APR2" 0.5
+*Insektizid 2
+'Raps'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."insect"."MAI1" 1
+
+*Blattherbizid 1 und Bodenherbizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarlHerb"."MAI1" 1
+*Fungizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."MAI2" 1
+*Fungizid 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN1" 1
+*Fungizid 3 & Insektizid 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."JUN2" 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."insect"."JUN2" 1
+*Fungizid 4
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."JUL1" 1
+*Fungizid 5 & 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."JUL2" 2
+*Fungizid 6
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."AUG1" 1
+*Fungizid 7
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."AUG2" 1
+*Krautabtötung 1
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus".set.BASprayer."dessic"."SEP1" 1
+*Krautabtötung 2
+'Speise & Industriekartoffeln'.'alle Ertragsklassen'."spot27m"."FH+Bonus".set.BASprayer."dessic"."SEP2" 1
+
+*Blattherbizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MRZ2" 1
+*Blattherbizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR2" 1
+*Insektizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."insect"."MAI1" 1
+*Blattherbizid 3
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MAI2" 1
+*Fungizid 1
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."JUL2" 1
+*Fungizid 2
+'Zuckerrüben'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."fung"."AUG1" 1
+
+*Blattherbizid 1
+'Mais'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."APR2" 1
+*Blattherbizid 2
+'Mais'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."MAI1" 1
+
+'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen'."spot27m"."FH+Bonus"."spot27m"."foliarHerb"."AUG1" 0.5
+/;
+
+p_datePestOpRepairLWK(LWK_crops,LWK_yield,"spot27m","FH+Bonus+BA",scenSprayer,pestType,halfMonth) 
+    = p_datePestOpRepairLWK(LWK_crops,LWK_yield,"spot27m","FH+BA",scenSprayer,pestType,halfMonth) 
+;
+
+p_datePestOpRepairLWK(LWK_crops,LWK_yield,technology,scenario,scenSprayer,pestType,halfMonth) 
+    $ (not(sameas(technology,"spot27m"))) 
+    = p_datePestOpTechnoLWK_(LWK_crops,LWK_yield,technology,scenario,scenSprayer,pestType,halfMonth);
+
+
+
+
+*
+* --- Number of sprayer passages assigned for field working day restriction of sprayers
+*
 parameter p_datePestOpTechno(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth);
 
 p_datePestOpTechno(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth) =
     sum((LWK_crops,LWK_yield),
-    p_datePestOpTechnoLWK_(LWK_crops,LWK_yield,technology,scenario,scenSprayer,pestType,halfMonth)
+    p_datePestOpTimeFuelLWK(LWK_crops,LWK_yield,technology,scenario,scenSprayer,pestType,halfMonth)
     * p_lwkCrops_lwkYield_ktblYield(LWK_crops,LWK_yield,KTBL_yield)
     * p_ktblCrops_lwkCrops(KTBL_crops,LWK_crops)
     )
 ;
 
-parameter p_numberSprayPassesScenarios(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType);
 
-p_numberSprayPassesScenarios(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType) =
-    sum(halfMonth, p_datePestOpTechno(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth))
+*
+* --- Number of sprayer Passages assigned for labour requirements, fuel consumption and repair costs 
+*
+parameters
+    p_numberSprayPasScenRepair(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType)
+    p_numberSprayPasScenTimeFuel(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType)
 ;
 
-*option p_numberSprayPassesScenarios:1:4:1 display p_numberSprayPassesScenarios;
+p_numberSprayPasScenRepair(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType) =
+    sum((LWK_crops,LWK_yield,halfMonth),
+    p_datePestOpRepairLWK(LWK_crops,LWK_yield,technology,scenario,scenSprayer,pestType,halfMonth) 
+    * p_lwkCrops_lwkYield_ktblYield(LWK_crops,LWK_yield,KTBL_yield)
+    * p_ktblCrops_lwkCrops(KTBL_crops,LWK_crops)
+    )
+;
 
-*display p_numberSprayPassesScenarios;
+p_numberSprayPasScenTimeFuel(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType) 
+    = sum(halfMonth, 
+        p_datePestOpTechno(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth))
+;
+
+option 
+    p_datePestOpTechno:1:6:1
+    p_numberSprayPasScenRepair:1:5:1
+    p_numberSprayPasScenTimeFuel:1:5:1
+;
+
+display p_datePestOpTechno, p_numberSprayPasScenRepair, p_numberSprayPasScenTimeFuel;

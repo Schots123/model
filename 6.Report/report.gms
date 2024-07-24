@@ -106,9 +106,9 @@ summary("fuelCostsSprayer",%1,%2) =
         v_binPlotTechno.l(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer,years)
             * p_plotData(curPlots,"size") * farmSizeVar
             * sum(pestType,
-              p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
+              p_numberSprayPasScenTimeFuel(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType)
               * p_technoFuelCons(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
-              * fuelConsVar(scenSprayer)
+              * fuelConsVar(technology,scenario,scenSprayer,pestType)
             )
             * newFuelPrice
   ) 
@@ -127,7 +127,7 @@ summary("repCostsSprayer",%1,%2) =
   v_binPlotTechno.l(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer,years)
             * p_plotData(curPlots,"size") * farmSizeVar
             * sum(pestType,
-              p_numberSprayPassesScenarios(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
+              p_numberSprayPasScenRepair(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType)
               * p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
               * repairCostsVar(scenSprayer)
             )
@@ -143,17 +143,17 @@ summary("labCostsSprayer",%1,%2) =
 
 summary("deprecSprayer",%1,%2) = 
     sum((years,scenSprayer),
-    v_deprecSprayer.l(scenSprayer,years))/card(years)
+    v_deprecSprayer.l(scenSprayer,years)) / card(years)
 ;
 
 summary("interestSprayer",%1,%2) = 
     sum((years,scenSprayer),
-    v_interestSprayer.l(scenSprayer,years))/card(years)
+    v_interestSprayer.l(scenSprayer,years)) / card(years)
 ;
 
 summary("otherCostsSprayer",%1,%2) = 
     sum((years,scenSprayer),
-    v_otherCostsSprayer.l(scenSprayer,years))/card(years)
+    v_otherCostsSprayer.l(scenSprayer,years)) / card(years)
 ;
 
 summary("varCostsSprayer",%1,%2) =  

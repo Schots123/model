@@ -168,6 +168,7 @@ e_profit(years)..
     )
 *direct costs for plant protection products
     - v_dcPesti(years)
+    - v_dcPesti(years) * (3/12) * 0.03
 *variable and fix costs for pesticide application operations 
     - sum(scenSprayer, v_varCostsSprayer(scenSprayer,years))
     - sum(scenSprayer, v_fixCostsSprayer(scenSprayer,years))
@@ -251,7 +252,7 @@ if (card(curPlots)<30,
   elseif card(curPlots)<50, 
     option optCR=0.005;
   else 
-    option optCR=0.02;
+    option optCR=0.01;
 );
 *option optCR specifies a relative termination tolerance for use in solving MIP problems 
 *solver stops when proportional difference between solution found and best theoretical objective function
@@ -268,7 +269,7 @@ execseed = gmillisec(jnow);
 p_technology_scenario("BA","Base") = 1;
 p_scenario_scenSprayer("Base",BASprayer) = 1;
 p_technology_scenario_scenSprayer("BA","Base",BASprayer) = 1;
-
+$ontext
 loop(farmSizeSteps,
 *1.step: reestablish parameters to base level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
@@ -296,10 +297,10 @@ loop(farmSizeSteps,
 *4.step: solve model and initiate post model calculations
 solve SprayerAdoption using MIP maximizing v_obje;
   $$batinclude '6.Report/report.gms' farmSizeSteps "'Base'" 
-  $$batinclude '6.Report/report_vali.gms'
+*  $$batinclude '6.Report/report_vali.gms'
 );
 
-$ontext
+
 *reestablish data to base level for initiation of next loop
 farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
@@ -582,19 +583,12 @@ p_technology_scenario_scenSprayer("spot27m","FH+Bonus+BA","spot27m") = 0;
 $offtext
 
 
-
 *
 * --- Solves for sensitivity analysis
 *
-$ontext
+
 *Adjustment of solver tolerance becuase of high amount of solves required for sensitivity analysis
-if (card(curPlots)<30,
-    option optCR=0.01;
-  elseif card(curPlots)<50, 
-    option optCR=0.01;
-  else 
-    option optCR=0.01;
-);
+option optCR=0.01;
 
 *
 * -- SST value variation
@@ -611,18 +605,16 @@ p_technology_scenario_scenSprayer("spot6m","FH",spot6m_BASprayer) = 1;
 p_technology_scenario_scenSprayer("spot6m","FH+BA","spot6m") = 1;
 
 loop(sensiAnSteps,
-*1.step: reestablish parameters to base level for next loop step
+*1.step: reestablish parameters to initial level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
-  p_technoValue(scenSprayer) = p_saveTechnoValue(scenSprayer);
-  p_technoRemValue(scenSprayer) = p_technoValue(scenSprayer) * 0.2;
-  p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
-    = p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType);
+  technoValueVar(scenSprayer) = 1;
 *2.step: change level of parameter to desired level in loop step 
   farmSizeRandom = uniform(50,400);
   farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
 
-  technoValueRandom = uniform(50,150);
+  technoValueRandom = uniform(50,200);
+  technoValueVar(spotSprayer) = (technoValueRandom / 100);
 *3.step: parameter reformulations required because of parameter variations in loop
   p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
   p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -642,15 +634,6 @@ loop(sensiAnSteps,
   curMechan("200") $ (p_totLand lt 135 OR p_totLand ge 250) = no;
   curMechan("230") $ (p_totLand ge 250) = yes;
   curMechan("230") $ (p_totLand lt 250) = no;
-
-  p_technoValue(spotSprayer) = p_technoValue(spotSprayer) * (technoValueRandom / 100);
-  p_technoRemValue(scenSprayer) = p_technoValue(scenSprayer) * 0.2;
-  p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType) = 
-    p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType)
-    * (p_technoValue("spot27m") / 54300);
-  p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) =
-    p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType)
-    * (p_technoValue("spot6m") / p_technoValue("BA_45kW"));
 *4.step: solve model and initiate post model calculations
   solve SprayerAdoption using MIP maximizing v_obje;
   $$batinclude '6.Report/report_SenAn.gms' sensiAnSteps "'ValueVar'" "'Base|FH'"
@@ -674,18 +657,16 @@ p_technology_scenario_scenSprayer("spot6m","FH+Bonus",spot6m_BASprayer) = 1;
 p_technology_scenario_scenSprayer("spot6m","FH+Bonus+BA","spot6m") = 1;
 
 loop(sensiAnSteps,
-*1.step: reestablish parameters to base level for next loop step
+*1.step: reestablish parameters to initial level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
-  p_technoValue(scenSprayer) = p_saveTechnoValue(scenSprayer);
-  p_technoRemValue(scenSprayer) = p_technoValue(scenSprayer) * 0.2;
-  p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
-    = p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType);
+  technoValueVar(scenSprayer) = 1;
 *2.step: change level of parameter to desired level in loop step 
   farmSizeRandom = uniform(50,400);
   farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
 
-  technoValueRandom = uniform(50,150);
+  technoValueRandom = uniform(50,200);
+  technoValueVar(spotSprayer) = (technoValueRandom / 100);
 *3.step: parameter reformulations required because of parameter variations in loop
   p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
   p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -705,21 +686,12 @@ loop(sensiAnSteps,
   curMechan("200") $ (p_totLand lt 135 OR p_totLand ge 250) = no;
   curMechan("230") $ (p_totLand ge 250) = yes;
   curMechan("230") $ (p_totLand lt 250) = no;
-
-  p_technoValue(spotSprayer) = p_technoValue(spotSprayer) * (technoValueRandom / 100);
-  p_technoRemValue(scenSprayer) = p_technoValue(scenSprayer) * 0.2;
-  p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType) = 
-    p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType)
-      * (p_technoValue("spot27m") / 54300);
-  p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) =
-    p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType)
-      * (p_technoValue("spot6m") / p_technoValue("BA_45kW"));
 *4.step: solve model and initiate post model calculations  
   solve SprayerAdoption using MIP maximizing v_obje;
   $$batinclude '6.Report/report_SenAn.gms' sensiAnSteps "'ValueVar'" "'Base|FHBonus'"
 );
 
-*reestablish data to base level for initiation of next loop
+*reestablish data to initial level for initiation of next loop
 farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
 p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -740,10 +712,7 @@ curMechan("200") $ (p_totLand lt 135 OR p_totLand ge 250) = no;
 curMechan("230") $ (p_totLand ge 250) = yes;
 curMechan("230") $ (p_totLand lt 250) = no;
 
-p_technoValue(scenSprayer) = p_saveTechnoValue(scenSprayer);
-p_technoRemValue(scenSprayer) = p_technoValue(scenSprayer) * 0.2;
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
-  = p_iniTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType);
+technoValueVar(scenSprayer) = 1;
 technoValueRandom = 0;
 
 p_technology_scenario(SST,scenarioFHBonus) = 0;
@@ -772,16 +741,16 @@ p_technology_scenario_scenSprayer("spot6m","FH",spot6m_BASprayer) = 1;
 p_technology_scenario_scenSprayer("spot6m","FH+BA","spot6m") = 1;
 
 loop(sensiAnSteps,
-*1.step: reestablish parameters to base level for next loop step
+*1.step: reestablish parameters to initial level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
-  algorithmCostsPerHa(scenSprayer) = 0;
+  p_algorithmCostsPerHa(technology,scenario,scenSprayer,pestType) = 0;
 *2.step: change level of parameter to desired level in loop step 
   farmSizeRandom = uniform(50,400);
   farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
 
   algoCostsPerHaRandom = uniform(0,10);
-  algorithmCostsPerHa(spotSprayer) = algoCostsPerHaRandom;
+  p_algorithmCostsPerHa(SST,scenarioFH,spotSprayer,FH) = algoCostsPerHaRandom;
 *3.step: parameter reformulations required because of parameter variations in loop
   p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
   p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -823,16 +792,16 @@ p_technology_scenario_scenSprayer("spot6m","FH+Bonus",spot6m_BASprayer) = 1;
 p_technology_scenario_scenSprayer("spot6m","FH+Bonus+BA","spot6m") = 1;
 
 loop(sensiAnSteps,
-*1.step: reestablish parameters to base level for next loop step
+*1.step: reestablish parameters to initial level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
-  algorithmCostsPerHa(scenSprayer) = 0;
+  p_algorithmCostsPerHa(technology,scenario,scenSprayer,pestType) = 0;
 *2.step: change level of parameter to desired level in loop step 
   farmSizeRandom = uniform(50,400);
   farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
 
   algoCostsPerHaRandom = uniform(0,10);
-  algorithmCostsPerHa(spotSprayer) = algoCostsPerHaRandom;
+  p_algorithmCostsPerHa(SST,scenarioFHBonus,spotSprayer,FHBonus) = algoCostsPerHaRandom;
 *3.step: parameter reformulations required because of parameter variations in loop
   p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
   p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -857,7 +826,7 @@ loop(sensiAnSteps,
   $$batinclude '6.Report/report_SenAn.gms' sensiAnSteps "'100%AlgoVar'" "'Base|FHBonus'"
 );
 
-*reestablish data to base level for initiation of next loop
+*reestablish data to initial level for initiation of next loop
 farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
 p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -879,7 +848,7 @@ curMechan("230") $ (p_totLand ge 250) = yes;
 curMechan("230") $ (p_totLand lt 250) = no;
 
 algoCostsPerHaRandom = 0;
-algorithmCostsPerHa(scenSprayer) = 0;
+p_algorithmCostsPerHa(technology,scenario,scenSprayer,pestType) = 0;
 
 p_technology_scenario(SST,scenarioFHBonus) = 0;
 p_scenario_scenSprayer("FH+Bonus",scenSprayer) = 0;
@@ -903,29 +872,19 @@ p_technology_scenario_scenSprayer("spot6m","FH",spot6m_BASprayer) = 1;
 p_technology_scenario_scenSprayer("spot6m","FH+BA","spot6m") = 1;
 
 * setting SST investment costs at 50 % of initial value
-p_technoValue(spotSprayer) = p_technoValue(spotSprayer) * (50 / 100);
-p_technoRemValue(scenSprayer) = p_technoValue(scenSprayer) * 0.2;
-
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) =
-  p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType);
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType) = 
-  p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType)
-  * (p_technoValue("spot27m") / 54300);
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) =
-  p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType)
-  * (p_technoValue("spot6m") / p_technoValue("BA_45kW"));
+technoValueVar(spotSprayer) = (50 / 100);
 
 loop(sensiAnSteps,
-*1.step: reestablish parameters to base level for next loop step
+*1.step: reestablish parameters to initial level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
-  algorithmCostsPerHa(scenSprayer) = 0;
+  p_algorithmCostsPerHa(technology,scenario,scenSprayer,pestType) = 0;
 *2.step: change level of parameter to desired level in loop step 
   farmSizeRandom = uniform(50,400);
   farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
 
   algoCostsPerHaRandom = uniform(0,10);
-  algorithmCostsPerHa(spotSprayer) = algoCostsPerHaRandom;
+  p_algorithmCostsPerHa(SST,scenarioFH,spotSprayer,FH) = algoCostsPerHaRandom;
 *3.step: parameter reformulations required because of parameter variations in loop
   p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
   p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -967,16 +926,16 @@ p_technology_scenario_scenSprayer("spot6m","FH+Bonus",spot6m_BASprayer) = 1;
 p_technology_scenario_scenSprayer("spot6m","FH+Bonus+BA","spot6m") = 1;
 
 loop(sensiAnSteps,
-*1.step: reestablish parameters to base level for next loop step
+*1.step: reestablish parameters to initial level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
-  algorithmCostsPerHa(scenSprayer) = 0;
+  p_algorithmCostsPerHa(technology,scenario,scenSprayer,pestType) = 0;
 *2.step: change level of parameter to desired level in loop step 
   farmSizeRandom = uniform(50,400);
   farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
 
   algoCostsPerHaRandom = uniform(0,10);
-  algorithmCostsPerHa(spotSprayer) = algoCostsPerHaRandom;
+  p_algorithmCostsPerHa(SST,scenarioFHBonus,spotSprayer,FHBonus) = algoCostsPerHaRandom;
 *3.step: parameter reformulations required because of parameter variations in loop
   p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
   p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -1001,7 +960,7 @@ loop(sensiAnSteps,
   $$batinclude '6.Report/report_SenAn.gms' sensiAnSteps "'50%AlgoVar'" "'Base|FHBonus'"
 );
 
-*reestablish data to base level for initiation of next loop
+*reestablish data to initial level for initiation of next loop
 farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
 p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -1022,162 +981,10 @@ curMechan("200") $ (p_totLand lt 135 OR p_totLand ge 250) = no;
 curMechan("230") $ (p_totLand ge 250) = yes;
 curMechan("230") $ (p_totLand lt 250) = no;
 
-p_technoValue(scenSprayer) = p_saveTechnoValue(scenSprayer);
-p_technoRemValue(scenSprayer) = p_technoValue(scenSprayer) * 0.2;
-technoValueRandom = 0;
+technoValueVar(scenSprayer) = 1;
 
 algoCostsPerHaRandom = 0;
-algorithmCostsPerHa(scenSprayer) = 0;
-
-p_technology_scenario(SST,scenarioFHBonus) = 0;
-p_scenario_scenSprayer("FH+Bonus",scenSprayer) = 0;
-p_scenario_scenSprayer("FH+Bonus+BA",spotSprayer) = 0;
-p_technology_scenario_scenSprayer("spot27m","FH+Bonus",spot27m_BASprayer) = 0;
-p_technology_scenario_scenSprayer("spot27m","FH+Bonus+BA","spot27m") = 0;
-p_technology_scenario_scenSprayer("spot6m","FH+Bonus",spot6m_BASprayer) = 0;
-p_technology_scenario_scenSprayer("spot6m","FH+Bonus+BA","spot6m") = 0;
-
-
-$ontext
-*
-* - 3.Case: 150 % investment costs, algorithm costs between 0 & 10 €/ha
-*
-p_technology_scenario(SST,scenarioFH) = 1;
-p_scenario_scenSprayer("FH",scenSprayer) = 1;
-p_scenario_scenSprayer("FH+BA",spotSprayer) = 1;
-p_technology_scenario_scenSprayer("spot27m","FH",spot27m_BASprayer) = 1;
-p_technology_scenario_scenSprayer("spot27m","FH+BA","spot27m") = 1;
-p_technology_scenario_scenSprayer("spot6m","FH",spot6m_BASprayer) = 1;
-p_technology_scenario_scenSprayer("spot6m","FH+BA","spot6m") = 1;
-
-* setting SST investment costs at 150 % of initial value
-p_technoValue(spotSprayer) = p_technoValue(spotSprayer) * (150 / 100);
-p_technoRemValue(scenSprayer) = p_technoValue(scenSprayer) * 0.2;
-
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) =
-  p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType);
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType) = 
-  p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType)
-  * (p_technoValue("spot27m") / 54300);
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) =
-  p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType)
-  * (p_technoValue("spot6m") / p_technoValue("BA_45kW"));
-
-loop(sensiAnSteps,
-*1.step: reestablish parameters to base level for next loop step
-  farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
-
-  algorithmCostsPerHa(scenSprayer) = 0;
-*2.step: change level of parameter to desired level in loop step 
-  farmSizeRandom = uniform(50,400);
-  farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
-
-  algoCostsPerHaRandom = uniform(0,10);
-  algorithmCostsPerHa(spotSprayer) = algoCostsPerHaRandom;
-*3.step: parameter reformulations required because of parameter variations in loop
-  p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
-  p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
-  p_totGreenLand = p_totLand - p_totArabLand;
-  p_shareGreenLand = p_totGreenLand / p_totLand;
-  curMechan("45") $ (p_totLand lt 30) = yes;
-  curMechan("45") $ (p_totLand ge 30) = no;
-  curMechan("67") $ (p_totLand ge 30 AND p_totLand lt 45) = yes;
-  curMechan("67") $ (p_totLand lt 30 OR p_totLand ge 45) = no;
-  curMechan("83") $ (p_totLand ge 45 AND p_totLand lt 65) = yes;
-  curMechan("83") $ (p_totLand lt 45 OR p_totLand ge 65) = no;
-  curMechan("102") $ (p_totLand ge 65 AND p_totLand lt 90) = yes;
-  curMechan("102") $ (p_totLand lt 65 OR p_totLand ge 90) = no;
-  curMechan("120") $ (p_totLand ge 90 AND p_totLand lt 135) = yes;
-  curMechan("120") $ (p_totLand lt 90 OR p_totLand ge 135) = no;
-  curMechan("200") $ (p_totLand ge 135 AND p_totLand lt 250) = yes;
-  curMechan("200") $ (p_totLand lt 135 OR p_totLand ge 250) = no;
-  curMechan("230") $ (p_totLand ge 250) = yes;
-  curMechan("230") $ (p_totLand lt 250) = no;
-*4.step: solve model and initiate post model calculations
-  solve SprayerAdoption using MIP maximizing v_obje;
-  $$batinclude '6.Report/report_SenAn.gms' sensiAnSteps "'150%AlgoVar'" "'Base|FH'"
-);
-
-p_technology_scenario(SST,scenarioFH) = 0;
-p_scenario_scenSprayer("FH",scenSprayer) = 0;
-p_scenario_scenSprayer("FH+BA",spotSprayer) = 0;
-p_technology_scenario_scenSprayer("spot27m","FH",spot27m_BASprayer) = 0;
-p_technology_scenario_scenSprayer("spot27m","FH+BA","spot27m") = 0;
-p_technology_scenario_scenSprayer("spot6m","FH",spot6m_BASprayer) = 0;
-p_technology_scenario_scenSprayer("spot6m","FH+BA","spot6m") = 0;
-
-p_technology_scenario(SST,scenarioFHBonus) = 1;
-p_scenario_scenSprayer("FH+Bonus",scenSprayer) = 1;
-p_scenario_scenSprayer("FH+Bonus+BA",spotSprayer) = 1;
-p_technology_scenario_scenSprayer("spot27m","FH+Bonus",spot27m_BASprayer) = 1;
-p_technology_scenario_scenSprayer("spot27m","FH+Bonus+BA","spot27m") = 1;
-p_technology_scenario_scenSprayer("spot6m","FH+Bonus",spot6m_BASprayer) = 1;
-p_technology_scenario_scenSprayer("spot6m","FH+Bonus+BA","spot6m") = 1;
-
-loop(sensiAnSteps,
-*1.step: reestablish parameters to base level for next loop step
-  farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
-
-  algorithmCostsPerHa(scenSprayer) = 0;
-*2.step: change level of parameter to desired level in loop step 
-  farmSizeRandom = uniform(50,400);
-  farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
-
-  algoCostsPerHaRandom = uniform(0,10);
-  algorithmCostsPerHa(spotSprayer) = algoCostsPerHaRandom;
-*3.step: parameter reformulations required because of parameter variations in loop
-  p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
-  p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
-  p_totGreenLand = p_totLand - p_totArabLand;
-  p_shareGreenLand = p_totGreenLand / p_totLand;
-  curMechan("45") $ (p_totLand lt 30) = yes;
-  curMechan("45") $ (p_totLand ge 30) = no;
-  curMechan("67") $ (p_totLand ge 30 AND p_totLand lt 45) = yes;
-  curMechan("67") $ (p_totLand lt 30 OR p_totLand ge 45) = no;
-  curMechan("83") $ (p_totLand ge 45 AND p_totLand lt 65) = yes;
-  curMechan("83") $ (p_totLand lt 45 OR p_totLand ge 65) = no;
-  curMechan("102") $ (p_totLand ge 65 AND p_totLand lt 90) = yes;
-  curMechan("102") $ (p_totLand lt 65 OR p_totLand ge 90) = no;
-  curMechan("120") $ (p_totLand ge 90 AND p_totLand lt 135) = yes;
-  curMechan("120") $ (p_totLand lt 90 OR p_totLand ge 135) = no;
-  curMechan("200") $ (p_totLand ge 135 AND p_totLand lt 250) = yes;
-  curMechan("200") $ (p_totLand lt 135 OR p_totLand ge 250) = no;
-  curMechan("230") $ (p_totLand ge 250) = yes;
-  curMechan("230") $ (p_totLand lt 250) = no;
-*4.step: solve model and initiate post model calculations  
-  solve SprayerAdoption using MIP maximizing v_obje;
-  $$batinclude '6.Report/report_SenAn.gms' sensiAnSteps "'150%AlgoVar'" "'Base|FHBonus'"
-);
-
-*reestablish data to base level for initiation of next loop
-farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
-p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
-p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
-p_totGreenLand = p_totLand - p_totArabLand;
-p_shareGreenLand = p_totGreenLand / p_totLand;
-curMechan("45") $ (p_totLand lt 30) = yes;
-curMechan("45") $ (p_totLand ge 30) = no;
-curMechan("67") $ (p_totLand ge 30 AND p_totLand lt 45) = yes;
-curMechan("67") $ (p_totLand lt 30 OR p_totLand ge 45) = no;
-curMechan("83") $ (p_totLand ge 45 AND p_totLand lt 65) = yes;
-curMechan("83") $ (p_totLand lt 45 OR p_totLand ge 65) = no;
-curMechan("102") $ (p_totLand ge 65 AND p_totLand lt 90) = yes;
-curMechan("102") $ (p_totLand lt 65 OR p_totLand ge 90) = no;
-curMechan("120") $ (p_totLand ge 90 AND p_totLand lt 135) = yes;
-curMechan("120") $ (p_totLand lt 90 OR p_totLand ge 135) = no;
-curMechan("200") $ (p_totLand ge 135 AND p_totLand lt 250) = yes;
-curMechan("200") $ (p_totLand lt 135 OR p_totLand ge 250) = no;
-curMechan("230") $ (p_totLand ge 250) = yes;
-curMechan("230") $ (p_totLand lt 250) = no;
-
-p_technoValue(scenSprayer) = p_saveTechnoValue(scenSprayer);
-p_technoRemValue(scenSprayer) = p_technoValue(scenSprayer) * 0.2;
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) =
-  p_iniTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType);
-technoValueRandom = 0;
-
-algoCostsPerHaRandom = 0;
-algorithmCostsPerHa(scenSprayer) = 0;
+p_algorithmCostsPerHa(technology,scenario,scenSprayer,pestType) = 0;
 
 p_technology_scenario(SST,scenarioFHBonus) = 0;
 p_scenario_scenSprayer("FH+Bonus",scenSprayer) = 0;
@@ -1201,7 +1008,7 @@ p_technology_scenario_scenSprayer("spot6m","FH",spot6m_BASprayer) = 1;
 p_technology_scenario_scenSprayer("spot6m","FH+BA","spot6m") = 1;
 
 loop(sensiAnSteps,
-*1.step: reestablish parameters to base level for next loop step
+*1.step: reestablish parameters to initial level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
   p_annualFeeSST(scenSprayer) = 0;
@@ -1252,7 +1059,7 @@ p_technology_scenario_scenSprayer("spot6m","FH+Bonus",spot6m_BASprayer) = 1;
 p_technology_scenario_scenSprayer("spot6m","FH+Bonus+BA","spot6m") = 1;
 
 loop(sensiAnSteps,
-*1.step: reestablish parameters to base level for next loop step
+*1.step: reestablish parameters to initial level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
   p_annualFeeSST(scenSprayer) = 0;
@@ -1286,7 +1093,7 @@ loop(sensiAnSteps,
   $$batinclude '6.Report/report_SenAn.gms' sensiAnSteps "'100%AnFeeVar'" "'Base|FHBonus'"
 );
 
-*reestablish data to base level for initiation of next loop
+*reestablish data to initial level for initiation of next loop
 farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
 p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -1332,20 +1139,10 @@ p_technology_scenario_scenSprayer("spot6m","FH",spot6m_BASprayer) = 1;
 p_technology_scenario_scenSprayer("spot6m","FH+BA","spot6m") = 1;
 
 * setting SST investment costs at 50 % of initial value
-p_technoValue(spotSprayer) = p_technoValue(spotSprayer) * (50 / 100);
-p_technoRemValue(scenSprayer) = p_technoValue(scenSprayer) * 0.2;
-
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) = 
-  p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType);
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType) = 
-  p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType)
-  * (p_technoValue("spot27m") / 54300);
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) =
-  p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType)
-  * (p_technoValue("spot6m") / p_technoValue("BA_45kW"));
+technoValueVar(spotSprayer) = (50 / 100);
 
 loop(sensiAnSteps,
-*1.step: reestablish parameters to base level for next loop step
+*1.step: reestablish parameters to initial level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
   p_annualFeeSST(scenSprayer) = 0;
@@ -1396,7 +1193,7 @@ p_technology_scenario_scenSprayer("spot6m","FH+Bonus",spot6m_BASprayer) = 1;
 p_technology_scenario_scenSprayer("spot6m","FH+Bonus+BA","spot6m") = 1;
 
 loop(sensiAnSteps,
-*1.step: reestablish parameters to base level for next loop step
+*1.step: reestablish parameters to initial level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
   p_annualFeeSST(scenSprayer) = 0;
@@ -1430,7 +1227,7 @@ loop(sensiAnSteps,
   $$batinclude '6.Report/report_SenAn.gms' sensiAnSteps "'50%AnFeeVar'" "'Base|FHBonus'"
 );
 
-*reestablish data to base level for initiation of next loop
+*reestablish data to initial level for initiation of next loop
 farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
 p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -1451,161 +1248,7 @@ curMechan("200") $ (p_totLand lt 135 OR p_totLand ge 250) = no;
 curMechan("230") $ (p_totLand ge 250) = yes;
 curMechan("230") $ (p_totLand lt 250) = no;
 
-p_technoValue(scenSprayer) = p_saveTechnoValue(scenSprayer);
-p_technoRemValue(scenSprayer) = p_technoValue(scenSprayer) * 0.2;
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
-  = p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType);
-technoValueRandom = 0;
-
-annualFeeRandom = 0;
-p_annualFeeSST(scenSprayer) = 0;
-
-p_technology_scenario(SST,scenarioFHBonus) = 0;
-p_scenario_scenSprayer("FH+Bonus",scenSprayer) = 0;
-p_scenario_scenSprayer("FH+Bonus+BA",spotSprayer) = 0;
-p_technology_scenario_scenSprayer("spot27m","FH+Bonus",spot27m_BASprayer) = 0;
-p_technology_scenario_scenSprayer("spot27m","FH+Bonus+BA","spot27m") = 0;
-p_technology_scenario_scenSprayer("spot6m","FH+Bonus",spot6m_BASprayer) = 0;
-p_technology_scenario_scenSprayer("spot6m","FH+Bonus+BA","spot6m") = 0;
-
-
-$ontext
-*
-* - 3.Case: 150 % investment costs, annual costs between 0 & 10.000 €/ha
-*
-p_technology_scenario(SST,scenarioFH) = 1;
-p_scenario_scenSprayer("FH",scenSprayer) = 1;
-p_scenario_scenSprayer("FH+BA",spotSprayer) = 1;
-p_technology_scenario_scenSprayer("spot27m","FH",spot27m_BASprayer) = 1;
-p_technology_scenario_scenSprayer("spot27m","FH+BA","spot27m") = 1;
-p_technology_scenario_scenSprayer("spot6m","FH",spot6m_BASprayer) = 1;
-p_technology_scenario_scenSprayer("spot6m","FH+BA","spot6m") = 1;
-
-* setting SST investment costs at 150 % of initial value
-p_technoValue(spotSprayer) = p_technoValue(spotSprayer) * (150 / 100);
-p_technoRemValue(scenSprayer) = p_technoValue(scenSprayer) * 0.2;
-
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) = 
-  p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType);
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType) = 
-  p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType)
-  * (p_technoValue("spot27m") / 54300);
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) =
-  p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType)
-  * (p_technoValue("spot6m") / p_technoValue("BA_45kW"));
-
-loop(sensiAnSteps,
-*1.step: reestablish parameters to base level for next loop step
-  farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
-
-  p_annualFeeSST(scenSprayer) = 0;
-*2.step: change level of parameter to desired level in loop step 
-  farmSizeRandom = uniform(50,400);
-  farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
-
-  annualFeeRandom = uniform(0,15000);
-  p_annualFeeSST(spotSprayer) = annualFeeRandom;
-*3.step: parameter reformulations required because of parameter variations in loop
-  p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
-  p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
-  p_totGreenLand = p_totLand - p_totArabLand;
-  p_shareGreenLand = p_totGreenLand / p_totLand;
-  curMechan("45") $ (p_totLand lt 30) = yes;
-  curMechan("45") $ (p_totLand ge 30) = no;
-  curMechan("67") $ (p_totLand ge 30 AND p_totLand lt 45) = yes;
-  curMechan("67") $ (p_totLand lt 30 OR p_totLand ge 45) = no;
-  curMechan("83") $ (p_totLand ge 45 AND p_totLand lt 65) = yes;
-  curMechan("83") $ (p_totLand lt 45 OR p_totLand ge 65) = no;
-  curMechan("102") $ (p_totLand ge 65 AND p_totLand lt 90) = yes;
-  curMechan("102") $ (p_totLand lt 65 OR p_totLand ge 90) = no;
-  curMechan("120") $ (p_totLand ge 90 AND p_totLand lt 135) = yes;
-  curMechan("120") $ (p_totLand lt 90 OR p_totLand ge 135) = no;
-  curMechan("200") $ (p_totLand ge 135 AND p_totLand lt 250) = yes;
-  curMechan("200") $ (p_totLand lt 135 OR p_totLand ge 250) = no;
-  curMechan("230") $ (p_totLand ge 250) = yes;
-  curMechan("230") $ (p_totLand lt 250) = no;
-*4.step: solve model and initiate post model calculations
-  solve SprayerAdoption using MIP maximizing v_obje;
-  $$batinclude '6.Report/report_SenAn.gms' sensiAnSteps "'150%AnFeeVar'" "'Base|FH'"
-);
-
-p_technology_scenario(SST,scenarioFH) = 0;
-p_scenario_scenSprayer("FH",scenSprayer) = 0;
-p_scenario_scenSprayer("FH+BA",spotSprayer) = 0;
-p_technology_scenario_scenSprayer("spot27m","FH",spot27m_BASprayer) = 0;
-p_technology_scenario_scenSprayer("spot27m","FH+BA","spot27m") = 0;
-p_technology_scenario_scenSprayer("spot6m","FH",spot6m_BASprayer) = 0;
-p_technology_scenario_scenSprayer("spot6m","FH+BA","spot6m") = 0;
-
-p_technology_scenario(SST,scenarioFHBonus) = 1;
-p_scenario_scenSprayer("FH+Bonus",scenSprayer) = 1;
-p_scenario_scenSprayer("FH+Bonus+BA",spotSprayer) = 1;
-p_technology_scenario_scenSprayer("spot27m","FH+Bonus",spot27m_BASprayer) = 1;
-p_technology_scenario_scenSprayer("spot27m","FH+Bonus+BA","spot27m") = 1;
-p_technology_scenario_scenSprayer("spot6m","FH+Bonus",spot6m_BASprayer) = 1;
-p_technology_scenario_scenSprayer("spot6m","FH+Bonus+BA","spot6m") = 1;
-
-loop(sensiAnSteps,
-*1.step: reestablish parameters to base level for next loop step
-  farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
-
-  p_annualFeeSST(scenSprayer) = 0;
-*2.step: change level of parameter to desired level in loop step 
-  farmSizeRandom = uniform(50,400);
-  farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
-
-  annualFeeRandom = uniform(0,15000);
-  p_annualFeeSST(spotSprayer) = annualFeeRandom;
-*3.step: parameter reformulations required because of parameter variations in loop
-  p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
-  p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
-  p_totGreenLand = p_totLand - p_totArabLand;
-  p_shareGreenLand = p_totGreenLand / p_totLand;
-  curMechan("45") $ (p_totLand lt 30) = yes;
-  curMechan("45") $ (p_totLand ge 30) = no;
-  curMechan("67") $ (p_totLand ge 30 AND p_totLand lt 45) = yes;
-  curMechan("67") $ (p_totLand lt 30 OR p_totLand ge 45) = no;
-  curMechan("83") $ (p_totLand ge 45 AND p_totLand lt 65) = yes;
-  curMechan("83") $ (p_totLand lt 45 OR p_totLand ge 65) = no;
-  curMechan("102") $ (p_totLand ge 65 AND p_totLand lt 90) = yes;
-  curMechan("102") $ (p_totLand lt 65 OR p_totLand ge 90) = no;
-  curMechan("120") $ (p_totLand ge 90 AND p_totLand lt 135) = yes;
-  curMechan("120") $ (p_totLand lt 90 OR p_totLand ge 135) = no;
-  curMechan("200") $ (p_totLand ge 135 AND p_totLand lt 250) = yes;
-  curMechan("200") $ (p_totLand lt 135 OR p_totLand ge 250) = no;
-  curMechan("230") $ (p_totLand ge 250) = yes;
-  curMechan("230") $ (p_totLand lt 250) = no;
-*4.step: solve model and initiate post model calculations  
-  solve SprayerAdoption using MIP maximizing v_obje;
-  $$batinclude '6.Report/report_SenAn.gms' sensiAnSteps "'150%AnFeeVar'" "'Base|FHBonus'"
-);
-
-*reestablish data to base level for initiation of next loop
-farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
-p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
-p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
-p_totGreenLand = p_totLand - p_totArabLand;
-p_shareGreenLand = p_totGreenLand / p_totLand;
-curMechan("45") $ (p_totLand lt 30) = yes;
-curMechan("45") $ (p_totLand ge 30) = no;
-curMechan("67") $ (p_totLand ge 30 AND p_totLand lt 45) = yes;
-curMechan("67") $ (p_totLand lt 30 OR p_totLand ge 45) = no;
-curMechan("83") $ (p_totLand ge 45 AND p_totLand lt 65) = yes;
-curMechan("83") $ (p_totLand lt 45 OR p_totLand ge 65) = no;
-curMechan("102") $ (p_totLand ge 65 AND p_totLand lt 90) = yes;
-curMechan("102") $ (p_totLand lt 65 OR p_totLand ge 90) = no;
-curMechan("120") $ (p_totLand ge 90 AND p_totLand lt 135) = yes;
-curMechan("120") $ (p_totLand lt 90 OR p_totLand ge 135) = no;
-curMechan("200") $ (p_totLand ge 135 AND p_totLand lt 250) = yes;
-curMechan("200") $ (p_totLand lt 135 OR p_totLand ge 250) = no;
-curMechan("230") $ (p_totLand ge 250) = yes;
-curMechan("230") $ (p_totLand lt 250) = no;
-
-p_technoValue(scenSprayer) = p_saveTechnoValue(scenSprayer);
-p_technoRemValue(scenSprayer) = p_technoValue(scenSprayer) * 0.2;
-p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
-  = p_iniTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType);
-technoValueRandom = 0;
+technoValueVar(scenSprayer) = 1;
 
 annualFeeRandom = 0;
 p_annualFeeSST(scenSprayer) = 0;
@@ -1635,6 +1278,7 @@ loop(sensiAnSteps,
 *1.step: reestablish parameters to base level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
+  p_technoPestEff(curCrops,technology,scenario,pestType) = 0;
   p_technoPestEff(curCrops,technology,scenario,pestType) = p_savePestEff(curCrops,technology,scenario,pestType);
 *2.step: change level of parameter to desired level in loop step 
   farmSizeRandom = uniform(50,400);
@@ -1687,6 +1331,7 @@ loop(sensiAnSteps,
 *1.step: reestablish parameters to base level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
+  p_technoPestEff(curCrops,technology,scenario,pestType) = 0;
   p_technoPestEff(curCrops,technology,scenario,pestType) = p_savePestEff(curCrops,technology,scenario,pestType);
 *2.step: change level of parameter to desired level in loop step 
   farmSizeRandom = uniform(50,400);
@@ -1741,6 +1386,7 @@ curMechan("200") $ (p_totLand lt 135 OR p_totLand ge 250) = no;
 curMechan("230") $ (p_totLand ge 250) = yes;
 curMechan("230") $ (p_totLand lt 250) = no;
 
+p_technoPestEff(curCrops,technology,scenario,pestType) = 0;
 p_technoPestEff(curCrops,technology,scenario,pestType) = p_savePestEff(curCrops,technology,scenario,pestType);
 technoPestEffRandom = 0;
 
@@ -1753,7 +1399,7 @@ p_technology_scenario_scenSprayer("spot6m","FH+Bonus",spot6m_BASprayer) = 0;
 p_technology_scenario_scenSprayer("spot6m","FH+Bonus+BA","spot6m") = 0;
 
 
-$ontext
+
 *
 * -- SST time requirement variation
 *
@@ -1770,12 +1416,13 @@ loop(sensiAnSteps,
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
   technoTimeRandom = 1;
+  timeReqVar(technology,scenario,scenSprayer,pestType) = 1;
 *2.step: change level of parameter to desired level in loop step 
   farmSizeRandom = uniform(50,400);
   farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
 
-  technoTimeRandom = uniform(50,150);
-  timeReqVar(spotSprayer) = (technoTimeRandom/100);
+  technoTimeRandom = uniform(50,200);
+  timeReqVar(SST,scenarioFH,spotSprayer,FH) = (technoTimeRandom/100);
 *3.step: parameter reformulations required because of parameter variations in loop
   p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
   p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -1820,13 +1467,14 @@ loop(sensiAnSteps,
 *1.step: reestablish parameters to base level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
-  timeReqVar(scenSprayer) = 1;
+  technoTimeRandom = 1;
+  timeReqVar(technology,scenario,scenSprayer,pestType) = 1;
 *2.step: change level of parameter to desired level in loop step 
   farmSizeRandom = uniform(50,400);
   farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
 
-  technoTimeRandom = uniform(50,150);
-  timeReqVar(spotSprayer) = (technoTimeRandom/100);
+  technoTimeRandom = uniform(50,200);
+  timeReqVar(SST,scenarioFHBonus,spotSprayer,FHBonus) = (technoTimeRandom/100);
 *3.step: parameter reformulations required because of parameter variations in loop
   p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
   p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -1872,7 +1520,7 @@ curMechan("200") $ (p_totLand lt 135 OR p_totLand ge 250) = no;
 curMechan("230") $ (p_totLand ge 250) = yes;
 curMechan("230") $ (p_totLand lt 250) = no;
 
-timeReqVar(scenSprayer) = 1;
+timeReqVar(technology,scenario,scenSprayer,pestType) = 1;
 technoTimeRandom = 0;
 
 p_technology_scenario(SST,scenarioFHBonus) = 0;
@@ -1900,13 +1548,13 @@ loop(sensiAnSteps,
 *1.step: reestablish parameters to base level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
-  fuelConsVar(scenSprayer) = 1;
+  fuelConsVar(technology,scenario,scenSprayer,pestType) = 1;
 *2.step: change level of parameter to desired level in loop step 
   farmSizeRandom = uniform(50,400);
   farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
 
-  technoFuelRandom = uniform(50,150);
-  fuelConsVar(spotSprayer) = (technoFuelRandom/100);
+  technoFuelRandom = uniform(50,200);
+  fuelConsVar(SST,scenarioFH,spotSprayer,FH) = (technoFuelRandom/100);
 *3.step: parameter reformulations required because of parameter variations in loop
   p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
   p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -1951,13 +1599,13 @@ loop(sensiAnSteps,
 *1.step: reestablish parameters to base level for next loop step
   farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
 
-  fuelConsVar(scenSprayer) = 1;
+  fuelConsVar(technology,scenario,scenSprayer,pestType) = 1;
 *2.step: change level of parameter to desired level in loop step 
   farmSizeRandom = uniform(50,400);
   farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
 
-  technoFuelRandom = uniform(50,150);
-  fuelConsVar(spotSprayer) = (technoFuelRandom/100);
+  technoFuelRandom = uniform(50,200);
+  fuelConsVar(SST,scenarioFHBonus,spotSprayer,FHBonus) = (technoFuelRandom/100);
 *3.step: parameter reformulations required because of parameter variations in loop
   p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
   p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
@@ -2003,7 +1651,7 @@ curMechan("200") $ (p_totLand lt 135 OR p_totLand ge 250) = no;
 curMechan("230") $ (p_totLand ge 250) = yes;
 curMechan("230") $ (p_totLand lt 250) = no;
 
-fuelConsVar(scenSprayer) = 1;
+fuelConsVar(technology,scenario,scenSprayer,pestType) = 1;
 technoFuelRandom = 0;
 
 p_technology_scenario(SST,scenarioFHBonus) = 0;
@@ -2036,7 +1684,7 @@ loop(sensiAnSteps,
   farmSizeRandom = uniform(50,400);
   farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
 
-  technoRepRandom = uniform(50,150);
+  technoRepRandom = uniform(50,200);
   repairCostsVar(spotSprayer) = (technoRepRandom/100);
 *3.step: parameter reformulations required because of parameter variations in loop
   p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
@@ -2087,7 +1735,7 @@ loop(sensiAnSteps,
   farmSizeRandom = uniform(50,400);
   farmSizeVar = farmSizeRandom / sum(curPlots, p_plotData(curPlots,"size"));
 
-  technoRepRandom = uniform(50,150);
+  technoRepRandom = uniform(50,200);
   repairCostsVar(spotSprayer) = (technoRepRandom/100);
 *3.step: parameter reformulations required because of parameter variations in loop
   p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
@@ -2144,15 +1792,15 @@ p_technology_scenario_scenSprayer("spot27m","FH+Bonus",spot27m_BASprayer) = 0;
 p_technology_scenario_scenSprayer("spot27m","FH+Bonus+BA","spot27m") = 0;
 p_technology_scenario_scenSprayer("spot6m","FH+Bonus",spot6m_BASprayer) = 0;
 p_technology_scenario_scenSprayer("spot6m","FH+Bonus+BA","spot6m") = 0;
-$offtext
+
 option 
 *  summary:2:2:1
   summarysenAn:2:1:3
 *  summaryVali:2:3:1
 ;
 
-display 
+*display 
 *  summary
-  summarySenAn
+*  summarySenAn
 *  summaryVali
-;
+*;
