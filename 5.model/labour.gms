@@ -1,15 +1,15 @@
 
 
 positive variables
-  v_labReq(scenSprayer,years)
+  v_labReq(scenSprayer)
 ;
 
 equations
-  e_labReq(scenSprayer,years)
+  e_labReqSprayer(scenSprayer)
 ;
 
-e_labReq(scenSprayer,years)..
-  v_labReq(scenSprayer,years) =E=
+e_labReqSprayer(scenSprayer)..
+  v_labReq(scenSprayer) =E=
   sum((curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario)
     $ (
       curPlots_ktblSize(curPlots,KTBL_size) 
@@ -18,10 +18,11 @@ e_labReq(scenSprayer,years)..
       AND ktblCrops_KtblYield(curCrops,KTBL_yield)
       AND p_technology_scenario_scenSprayer(technology,scenario,scenSprayer)
     ), 
-    v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer,years)
+    v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer)
       * p_plotData(curPlots,"size") * farmSizeVar
       * sum(pestType,
-        p_numberSprayPasScenTimeFuel(KTBL_crops,KTBL_yield,technology,scenario,scenSprayer,pestType)
+        p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
+        * passageVar(technology)
         * p_technoTimeReq(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
         * timeReqVar(technology,scenario,scenSprayer,pestType)
       )

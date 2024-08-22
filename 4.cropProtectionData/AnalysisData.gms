@@ -2,7 +2,7 @@
 * --- Parameter assignment for technology comparison
 *
 set farmSizeSteps /
-sizeStep1*sizeStep175
+sizeStep0*sizeStep175
 /;
 
 parameter p_farmSizeFactor(farmSizeSteps);
@@ -10,10 +10,171 @@ p_farmSizeFactor(farmSizeSteps) = 50 + (ord(farmSizeSteps) -1) * 2;
 
 
 *
-* --- set introduction for loop in sensitivity analysis
+* --- set introduction for loop(s) in sensitivity analysis
 *
-set sensiAnSteps / senStep1*senStep50 /;
+set sensiAnSteps / senStep0*senStep700 /;
 
+set farmSizeStep3D /farmsizeStep0*farmSizeStep35/;
+set valueStep3D /valueStep1*valueStep5/;
+set pestCostStep3D /pestCostStep1*pestCostStep7/;
+set algoCostStep3D /algoCostStep1*algoCostStep7/;
+set annFeeStep3D /annFeeStep1*annFeeStep7/;
+
+
+parameter p_farmSizeStep(farmSizeStep3D);
+p_farmSizeStep(farmSizeStep3D) = 50 + (ord(farmSizeStep3D) -1) * 10;
+
+parameter p_valueStep(valueStep3D) /
+    valueStep1 50
+    valueStep2 75
+    valueStep3 100
+    valueStep4 125
+    valueStep5 150
+/;
+
+parameter p_pestCostStep(pestCostStep3D) /
+    pestCostStep1 100
+    pestCostStep2 150
+    pestCostStep3 200
+    pestCostStep4 250
+    pestCostStep5 300
+    pestCostStep6 350
+    pestCostStep7 400
+/;
+
+parameter p_algoCostStep(algoCostStep3D) /
+    algoCostStep1 0
+    algoCostStep2 2
+    algoCostStep3 4
+    algoCostStep4 6
+    algoCostStep5 8
+    algoCostStep6 10
+    algoCostStep7 12
+/;
+
+parameter p_annFeeStep(annFeeStep3D) /
+    annFeeStep1 0
+    annFeeStep2 2500
+    annFeeStep3 5000
+    annFeeStep4 7500
+    annFeeStep5 10000
+    annFeeStep6 12500
+    annFeeStep7 15000
+/;
+
+set loopComb3DpestCost(valueStep3D,pestCostStep3D,farmSizeStep3D) /
+    "valueStep1"."pestCostStep1".set.farmSizeStep3D YES
+    "valueStep1"."pestCostStep2".set.farmSizeStep3D YES
+    "valueStep1"."pestCostStep3".set.farmSizeStep3D YES
+    "valueStep1"."pestCostStep4".set.farmSizeStep3D YES
+    "valueStep1"."pestCostStep5".set.farmSizeStep3D YES
+    "valueStep1"."pestCostStep6".set.farmSizeStep3D YES
+    "valueStep1"."pestCostStep7".set.farmSizeStep3D YES
+    "valueStep2"."pestCostStep1".set.farmSizeStep3D YES
+    "valueStep2"."pestCostStep2".set.farmSizeStep3D YES
+    "valueStep2"."pestCostStep3".set.farmSizeStep3D YES
+    "valueStep2"."pestCostStep4".set.farmSizeStep3D YES
+    "valueStep2"."pestCostStep5".set.farmSizeStep3D YES
+    "valueStep2"."pestCostStep6".set.farmSizeStep3D YES
+    "valueStep2"."pestCostStep7".set.farmSizeStep3D YES
+    "valueStep3"."pestCostStep1".set.farmSizeStep3D YES
+    "valueStep3"."pestCostStep2".set.farmSizeStep3D YES
+    "valueStep3"."pestCostStep3".set.farmSizeStep3D YES
+    "valueStep3"."pestCostStep4".set.farmSizeStep3D YES
+    "valueStep3"."pestCostStep5".set.farmSizeStep3D YES
+    "valueStep3"."pestCostStep6".set.farmSizeStep3D YES
+    "valueStep3"."pestCostStep7".set.farmSizeStep3D YES
+    "valueStep4"."pestCostStep1".set.farmSizeStep3D YES
+    "valueStep4"."pestCostStep2".set.farmSizeStep3D YES
+    "valueStep4"."pestCostStep3".set.farmSizeStep3D YES
+    "valueStep4"."pestCostStep4".set.farmSizeStep3D YES
+    "valueStep4"."pestCostStep5".set.farmSizeStep3D YES
+    "valueStep4"."pestCostStep6".set.farmSizeStep3D YES
+    "valueStep4"."pestCostStep7".set.farmSizeStep3D YES
+    "valueStep5"."pestCostStep1".set.farmSizeStep3D YES
+    "valueStep5"."pestCostStep2".set.farmSizeStep3D YES
+    "valueStep5"."pestCostStep3".set.farmSizeStep3D YES
+    "valueStep5"."pestCostStep4".set.farmSizeStep3D YES
+    "valueStep5"."pestCostStep5".set.farmSizeStep3D YES
+    "valueStep5"."pestCostStep6".set.farmSizeStep3D YES
+    "valueStep5"."pestCostStep7".set.farmSizeStep3D YES
+/;
+
+set loopComb3DannFee(valueStep3D,annFeeStep3D,farmSizeStep3D) /
+    "valueStep1"."annFeeStep1".set.farmSizeStep3D YES
+    "valueStep1"."annFeeStep2".set.farmSizeStep3D YES
+    "valueStep1"."annFeeStep3".set.farmSizeStep3D YES
+    "valueStep1"."annFeeStep4".set.farmSizeStep3D YES
+    "valueStep1"."annFeeStep5".set.farmSizeStep3D YES
+    "valueStep1"."annFeeStep6".set.farmSizeStep3D YES
+    "valueStep1"."annFeeStep7".set.farmSizeStep3D YES
+    "valueStep2"."annFeeStep1".set.farmSizeStep3D YES
+    "valueStep2"."annFeeStep2".set.farmSizeStep3D YES
+    "valueStep2"."annFeeStep3".set.farmSizeStep3D YES
+    "valueStep2"."annFeeStep4".set.farmSizeStep3D YES
+    "valueStep2"."annFeeStep5".set.farmSizeStep3D YES
+    "valueStep2"."annFeeStep6".set.farmSizeStep3D YES
+    "valueStep2"."annFeeStep7".set.farmSizeStep3D YES
+    "valueStep3"."annFeeStep1".set.farmSizeStep3D YES
+    "valueStep3"."annFeeStep2".set.farmSizeStep3D YES
+    "valueStep3"."annFeeStep3".set.farmSizeStep3D YES
+    "valueStep3"."annFeeStep4".set.farmSizeStep3D YES
+    "valueStep3"."annFeeStep5".set.farmSizeStep3D YES
+    "valueStep3"."annFeeStep6".set.farmSizeStep3D YES
+    "valueStep3"."annFeeStep7".set.farmSizeStep3D YES
+    "valueStep4"."annFeeStep1".set.farmSizeStep3D YES
+    "valueStep4"."annFeeStep2".set.farmSizeStep3D YES
+    "valueStep4"."annFeeStep3".set.farmSizeStep3D YES
+    "valueStep4"."annFeeStep4".set.farmSizeStep3D YES
+    "valueStep4"."annFeeStep5".set.farmSizeStep3D YES
+    "valueStep4"."annFeeStep6".set.farmSizeStep3D YES
+    "valueStep4"."annFeeStep7".set.farmSizeStep3D YES
+    "valueStep5"."annFeeStep1".set.farmSizeStep3D YES
+    "valueStep5"."annFeeStep2".set.farmSizeStep3D YES
+    "valueStep5"."annFeeStep3".set.farmSizeStep3D YES
+    "valueStep5"."annFeeStep4".set.farmSizeStep3D YES
+    "valueStep5"."annFeeStep5".set.farmSizeStep3D YES
+    "valueStep5"."annFeeStep6".set.farmSizeStep3D YES
+    "valueStep5"."annFeeStep7".set.farmSizeStep3D YES
+/;
+
+set loopComb3DalgoCost(valueStep3D,algoCostStep3D,farmSizeStep3D) /
+    "valueStep1"."algoCostStep1".set.farmSizeStep3D YES
+    "valueStep1"."algoCostStep2".set.farmSizeStep3D YES
+    "valueStep1"."algoCostStep3".set.farmSizeStep3D YES
+    "valueStep1"."algoCostStep4".set.farmSizeStep3D YES
+    "valueStep1"."algoCostStep5".set.farmSizeStep3D YES
+    "valueStep1"."algoCostStep6".set.farmSizeStep3D YES
+    "valueStep1"."algoCostStep7".set.farmSizeStep3D YES
+    "valueStep2"."algoCostStep1".set.farmSizeStep3D YES
+    "valueStep2"."algoCostStep2".set.farmSizeStep3D YES
+    "valueStep2"."algoCostStep3".set.farmSizeStep3D YES
+    "valueStep2"."algoCostStep4".set.farmSizeStep3D YES
+    "valueStep2"."algoCostStep5".set.farmSizeStep3D YES
+    "valueStep2"."algoCostStep6".set.farmSizeStep3D YES
+    "valueStep2"."algoCostStep7".set.farmSizeStep3D YES
+    "valueStep3"."algoCostStep1".set.farmSizeStep3D YES
+    "valueStep3"."algoCostStep2".set.farmSizeStep3D YES
+    "valueStep3"."algoCostStep3".set.farmSizeStep3D YES
+    "valueStep3"."algoCostStep4".set.farmSizeStep3D YES
+    "valueStep3"."algoCostStep5".set.farmSizeStep3D YES
+    "valueStep3"."algoCostStep6".set.farmSizeStep3D YES
+    "valueStep3"."algoCostStep7".set.farmSizeStep3D YES
+    "valueStep4"."algoCostStep1".set.farmSizeStep3D YES
+    "valueStep4"."algoCostStep2".set.farmSizeStep3D YES
+    "valueStep4"."algoCostStep3".set.farmSizeStep3D YES
+    "valueStep4"."algoCostStep4".set.farmSizeStep3D YES
+    "valueStep4"."algoCostStep5".set.farmSizeStep3D YES
+    "valueStep4"."algoCostStep6".set.farmSizeStep3D YES
+    "valueStep4"."algoCostStep7".set.farmSizeStep3D YES
+    "valueStep5"."algoCostStep1".set.farmSizeStep3D YES
+    "valueStep5"."algoCostStep2".set.farmSizeStep3D YES
+    "valueStep5"."algoCostStep3".set.farmSizeStep3D YES
+    "valueStep5"."algoCostStep4".set.farmSizeStep3D YES
+    "valueStep5"."algoCostStep5".set.farmSizeStep3D YES
+    "valueStep5"."algoCostStep6".set.farmSizeStep3D YES
+    "valueStep5"."algoCostStep7".set.farmSizeStep3D YES
+/;
 
 *
 * -- scalar introduction for random parameter assignment within ranges by assuming normal distribution
@@ -26,6 +187,8 @@ scalar technoPestEffRandom pesticide saving variation parameter achieved with SS
 scalar technoTimeRandom SST time requirement variation parameter for sensitivity analysis /0/;
 scalar technoFuelRandom SST fuel consumption variation parameter for sensitivity analysis /0/;
 scalar technoRepRandom time requirement variation parameter for sensitivity analysis /0/;
+scalar pestPriceRandom pesticide price variation parameter for sensitivity analysis /0/;
+scalar passageRandom Number of passages variation parameter for sensitivity analysis /0/;
 
 *
 * -- Farm size variation
@@ -33,43 +196,6 @@ scalar technoRepRandom time requirement variation parameter for sensitivity anal
 parameter farmSizeVar placeholder for farm size variation;
 
 farmSizeVar = 50 / sum(curPlots, p_plotData(curPlots,"size"));
-
-$ontext
-*
-* -- SST investment cost parameter variation
-*
-parameter 
-    p_saveTechnoValue(scenSprayer) parameter to reset investment costs for SST
-;
-
-technoValueVar(scenSprayer) = 1;
-p_saveTechnoValue("spot6m") = 130000;
-p_saveTechnoValue("spot27m") = 207000;
-p_saveTechnoValue("BA_45kW") = 15000;
-p_saveTechnoValue("BA_67kW") = 22700;
-p_saveTechnoValue("BA_83kW") = 30300;
-p_saveTechnoValue("BA_102kW") = 36600;
-p_saveTechnoValue("BA_120kW") = 51100;
-p_saveTechnoValue("BA_200kW") = 58100;
-p_saveTechnoValue("BA_230kW") = 71100;
-
-parameter 
-    p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) resetting maintenance adjustment according to technology value
-    p_iniTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) maintenance costs as defined in initial parameter assignment
-;
-
-p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType)
- = p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) / 2;
-
-p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType)
- = p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType) / 2;
-
-p_saveTechnoMaintenance(KTBL_size,KTBL_distance,scenario,BASprayer,pestType)
- = p_technoMaintenance(KTBL_size,KTBL_distance,scenario,BASprayer,pestType);
-
-p_iniTechnoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType)
- = p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType);
-$offtext
 
 
 *
@@ -81,7 +207,7 @@ p_savePestEff(KTBL_crops,technology,scenario,pestType) = p_technoPestEff(KTBL_cr
 
 
 *
-* -- SST parameter variation placeholders for SST acquisition costs, time requirements, fuel consumption and repair costs
+* -- SST parameter variation placeholders for SST acquisition costs, time requirements, fuel consumption, repair costs and the price for pesticides
 *
 parameter technoValueVar(scenSprayer) placeholder for SST acquisition cost variations;
 technoValueVar(scenSprayer) = 1;
@@ -94,3 +220,9 @@ fuelConsVar(technology,scenario,scenSprayer,pestType) = 1;
 
 parameter repairCostsVar(scenSprayer) placeholder for SST repair costs variations;
 repairCostsVar(scenSprayer) = 1;
+
+parameter pestPriceVar placeholder for pesticide price variations;
+pestPriceVar = 1;
+
+parameter passageVar(technology,scenario) placeholder for sprayer passage variation of SST scenarios;
+passageVar(technology,scenario) = 1;

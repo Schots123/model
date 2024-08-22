@@ -7,7 +7,7 @@ landUsedAvg,
 'Zuckerrueben',
 'Winterraps',
 'Mais', 
-BA,
+baseline,
 BA_45kW, 
 BA_67kW, 
 BA_83kW, 
@@ -17,6 +17,7 @@ BA_200kW,
 BA_230kW,
 spot6m,
 spot27m,
+farmProfNoPest
 avgAnnFarmProf,
 diCostsPesti, 
 fuelCostsSprayer, 
@@ -36,11 +37,13 @@ modelVali,
 '%repCosts'
 '%algCosts'
 '%anFee'
+'%pestCosts'
+'%numPassages'
 /;
 
 
 set measures /
-  amount, capUtiliz, repurchDur, avgAnnProf, dcPesti, fuelCosts, repCosts, labourCosts, deprecSprayer, interestSprayer, otherCostsSprayer, varCostsPesti, fixCostsPesti,
+  amount, capUtiliz, repurchDur, avgAnnProf, dcPesti, fuelCosts, repCosts, labourCosts, deprecSprayer, interestSprayer, otherCostsSprayer, varMachCostsSprayer, fixCostsTractor,
   MRZ1, MRZ2, APR1, APR2, MAI1, MAI2, JUN1, JUN2, JUL1, JUL2, AUG1, AUG2, SEP1, SEP2, OKT1, OKT2, NOV1, NOV2 
 /;
 
@@ -116,6 +119,35 @@ set KTBL_yield /
 'niedrig, mittlerer Boden'
 'niedrig, leichter Boden'
 'sehr niedrig, leichter Boden'
+/;
+
+set KTBL_yieldLev /
+'hoch'
+'mittel'
+'niedrig'
+'sehr niedrig'
+/;
+
+set KTBL_yieldGroup(KTBL_yield,KTBL_yieldLev) /
+'hoch, mittlerer Boden'.'hoch' YES
+'hoch, leichter Boden'.'hoch' YES
+'mittel, schwerer Boden'.'mittel' YES
+'mittel, mittlerer Boden'.'mittel' YES
+'mittel, leichter Boden'.'mittel' YES
+'niedrig, mittlerer Boden'.'niedrig' YES
+'niedrig, leichter Boden'.'niedrig' YES
+'sehr niedrig, leichter Boden'.'sehr niedrig' YES
+/;
+
+parameter p_yieldGroup(KTBL_yield,KTBL_yieldLev) /
+'hoch, mittlerer Boden'.'hoch' 1
+'hoch, leichter Boden'.'hoch' 1
+'mittel, schwerer Boden'.'mittel' 1
+'mittel, mittlerer Boden'.'mittel' 1
+'mittel, leichter Boden'.'mittel' 1
+'niedrig, mittlerer Boden'.'niedrig' 1
+'niedrig, leichter Boden'.'niedrig' 1
+'sehr niedrig, leichter Boden'.'sehr niedrig' 1
 /;
 
 set ktblCrops_KtblYield(KTBL_crops,KTBL_yield) /
@@ -495,39 +527,6 @@ acronyms
     lehmigerSand, lehmigerSchluff, sandigerLehm, schluffigerLehm,
     sandigerSchluff, Sand, starkSandigerLehm;
   
-
-$ontext
-set months /Jan,Feb,Mrz,Apr,Mai,Jun,Jul,Aug,Sep,Okt,Nov,Dez/;
-set halfMonths /Jan1,Jan2,Feb1,Feb2,Mrz1,Mrz2,Apr1,Apr2,Mai1,Mai2,Jun1,Jun2,Jul1,Jul2,Aug1,Aug2,Sep1,Sep2,Okt1,Okt2,Nov1,Nov2,Dez1,Dez2/;
-
-set months_halfMonths(months,halfMonths) /
-  Jan.Jan1 yes
-  Jan.Jan2 yes
-  Feb.Feb1 yes
-  Feb.Feb2 yes
-  Mrz.Mrz1 yes
-  Mrz.Mrz2 yes
-  Apr.Apr1 yes
-  Apr.Apr2 yes
-  Mai.Mai1 yes
-  Mai.Mai2 yes
-  Jun.Jun1 yes
-  Jun.Jun2 yes
-  Jul.Jul1 yes
-  Jul.Jul2 yes
-  Aug.Aug1 yes
-  Aug.Aug2 yes
-  Sep.Sep1 yes
-  Sep.Sep2 yes
-  Okt.Okt1 yes
-  Okt.Okt2 yes
-  Nov.Nov1 yes
-  Nov.Nov2 yes
-  Dez.Dez1 yes
-  Dez.Dez2 yes
-/;
-$offtext
-
 scalar ktblFuelPrice /0.8/;
 
 set fertType fertilizer applied for crop fertilization in KTBL data /

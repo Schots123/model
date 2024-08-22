@@ -98,6 +98,8 @@ set notFH(pestType) /soilHerb, fung, insect, growthReg, dessic/;
 set FHBonus(pestType) /foliarHerb, fung, insect, growthReg/;
 set notFHBonus(pestType) /soilHerb, dessic/;
 
+set addSavings(pestType) / fung, insect, growthReg /;
+
 set herbProduct /
 'Herold SC'
 'Gamit 36 AMT'

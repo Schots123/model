@@ -1,8 +1,6 @@
+summarySenAn3D("landAv",%1,%2,%3,%4) = p_totLand;
 
-
-summarySenAn("landAv",%1,%2,%3) = p_totLand;
-
-summarySenAn("landUsedAvg",%1,%2,%3) = 
+summarySenAn3D("landUsedAvg",%1,%2,%3,%4) = 
     sum((curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
   $ (
     curPlots_ktblSize(curPlots,KTBL_size) 
@@ -16,7 +14,7 @@ summarySenAn("landUsedAvg",%1,%2,%3) =
   )
 ;
 
-summarySenAn(curCropGroups,%1,%2,%3) = 
+summarySenAn3D(curCropGroups,%1,%2,%3,%4) = 
     sum((curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance)
   $ (
     curPlots_ktblSize(curPlots,KTBL_size) 
@@ -31,16 +29,16 @@ summarySenAn(curCropGroups,%1,%2,%3) =
 *
 * --- sprayer utilization parameter calculations
 *
-summarySenAn(scenSprayer,%1,%2,%3) = v_numberSprayer.l(scenSprayer);
+summarySenAn3D(scenSprayer,%1,%2,%3,%4) = v_numberSprayer.l(scenSprayer);
 
 $ontext
-summarySenAn(scenSprayer,"repurchDur",%1,%2,%3) $ (v_numberSprayer.l(scenSprayer) ge 1) 
+summarySenAn3D(scenSprayer,"repurchDur",%1,%2,%3,%4) $ (v_numberSprayer.l(scenSprayer) ge 1) 
   = v_numberSprayer.l(scenSprayer)
   * (p_technoValue(scenSprayer) - p_technoRemValue(scenSprayer)) 
   / sum(years, v_deprecSprayer.l(scenSprayer)) 
 ;
 
-summarySenAn(scenSprayer,"capUtiliz",%1,%2,%3) 
+summarySenAn3D(scenSprayer,"capUtiliz",%1,%2,%3,%4) 
   = sum((curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario)
     $ (
         curPlots_ktblSize(curPlots,KTBL_size) 
@@ -59,26 +57,22 @@ summarySenAn(scenSprayer,"capUtiliz",%1,%2,%3)
 $offtext
 
 *following parameters calculated only for SST investment costs sensitivity analysis
-summarySenAn('%SSTvalue',%1,%2,%3) $ (technoValueRandom ne 0) = technoValueRandom;
-summarySenAn('%algCosts',%1,%2,%3) $ (algoCostsPerHaRandom ne 0) = algoCostsPerHaRandom;
-summarySenAn('%anFee',%1,%2,%3) $ (annualFeeRandom ne 0) = annualFeeRandom;
-summarySenAn('%pestiSav',%1,%2,%3) $ (technoPestEffRandom ne 0) = technoPestEffRandom;
-summarySenAn('%timeReq',%1,%2,%3) $ (technoTimeRandom ne 0) = technoTimeRandom;
-summarySenAn('%fuelCons',%1,%2,%3) $ (technoFuelRandom ne 0) = technoFuelRandom;
-summarySenAn('%repCosts',%1,%2,%3) $ (technoRepRandom ne 0) = technoRepRandom;
-summarySenAn('%pestCosts',%1,%2,%3) $ (pestPriceRandom ne 0) = pestPriceRandom;
-summarySenAn('%numPassages',%1,%2,%3) $ (passageRandom ne 0) = passageRandom;
+summarySenAn3D('%SSTvalue',%1,%2,%3,%4) = technoValueRandom;
+summarySenAn3D('%algCosts',%1,%2,%3,%4) $ (p_report_valueAlgoFee > 0) = algoCostsPerHaRandom;
+summarySenAn3D('%anFee',%1,%2,%3,%4) $ (p_report_valueAnnualFee > 0) = annualFeeRandom;
+summarySenAn3D('%pestCosts',%1,%2,%3,%4) $ (p_report_valuePestPrice > 0) = pestPriceRandom;
+
 
 
 
 *
 * --- Farm performance parameter calculations
 *
-summarySenAn("avgAnnFarmProf",%1,%2,%3) = v_Profit.l;
+summarySenAn3D("avgAnnFarmProf",%1,%2,%3,%4) = v_Profit.l;
 
-summarySenAn("diCostsPesti",%1,%2,%3) = v_dcPesti.l + v_dcPesti.l * 0.03 * (3/12);
+summarySenAn3D("diCostsPesti",%1,%2,%3,%4) = v_dcPesti.l + v_dcPesti.l * 0.03 * (3/12);
 
-summarySenAn("fuelCostsSprayer",%1,%2,%3) = 
+summarySenAn3D("fuelCostsSprayer",%1,%2,%3,%4) = 
   sum((curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer)
     $ (
         curPlots_ktblSize(curPlots,KTBL_size) 
@@ -98,7 +92,7 @@ summarySenAn("fuelCostsSprayer",%1,%2,%3) =
   ) 
 ;
 
-summarySenAn("repCostsSprayer",%1,%2,%3) = 
+summarySenAn3D("repCostsSprayer",%1,%2,%3,%4) = 
   sum((curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer)
     $ (
         curPlots_ktblSize(curPlots,KTBL_size) 
@@ -117,32 +111,32 @@ summarySenAn("repCostsSprayer",%1,%2,%3) =
   )
 ;
 
-summarySenAn("labCostsSprayer",%1,%2,%3) = 
+summarySenAn3D("labCostsSprayer",%1,%2,%3,%4) = 
     sum(scenSprayer, v_labReq.l(scenSprayer)) 
     * labPrice
 ;
 
-summarySenAn("deprecSprayer",%1,%2,%3) = 
+summarySenAn3D("deprecSprayer",%1,%2,%3,%4) = 
     sum(scenSprayer,
     v_deprecSprayer.l(scenSprayer))
 ;
 
-summarySenAn("interestSprayer",%1,%2,%3) = 
+summarySenAn3D("interestSprayer",%1,%2,%3,%4) = 
     sum(scenSprayer,
     v_interestSprayer.l(scenSprayer))
 ;
 
-summarySenAn("otherCostsSprayer",%1,%2,%3) = 
+summarySenAn3D("otherCostsSprayer",%1,%2,%3,%4) = 
     sum(scenSprayer,
     v_otherCostsSprayer.l(scenSprayer))
 ;
 
-summarySenAn("varCostsSprayer",%1,%2,%3) =  
+summarySenAn3D("varCostsSprayer",%1,%2,%3,%4) =  
     sum(scenSprayer, 
     v_varCostsSprayer.l(scenSprayer))
 ;
 
-summarySenAn("fixCostsSprayer",%1,%2,%3) = 
+summarySenAn3D("fixCostsSprayer",%1,%2,%3,%4) = 
     sum(scenSprayer, 
     v_fixCostsSprayer.l(scenSprayer))
 ;

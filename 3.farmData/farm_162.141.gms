@@ -1,6 +1,6 @@
 set plotAttr /size, distance, soilQual, soilType/;
 
-set cropAttr /maxShare, minShare/;
+set cropAttr /maxShare, minShare, maxShareYieldLev/;
 
 set curCrops(KTBL_crops) /
 'Zuckerrueben' 
@@ -33,167 +33,127 @@ set curRowCrops(curCrops) /
 parameter p_cropData(curCropGroups,cropAttr)  /
 'Winterweizen'.maxShare 50
 'Wintergerste'.maxShare 50
-'Zuckerrueben'.maxShare 50
+'Zuckerrueben'.maxShare 33.33
+'Winterweizen'.maxShareYieldLev 70
+'Zuckerrueben'.maxShareYieldLev 40
 /;
 
 
 set curPlots /
-'4161733'
-'3882193'
-'4365192'
-'4186235'
-'4365187'
-*'4001270'
-*'4140543'
-*'4140502'
-'4186237'
-'4365190'
-'4162098'
-'4324482'
-'4186206'
-'4427550'
-'4186204'
-'4163825'
-'4186230'
-'3882187'
-'3733275'
-'4402735'
-'3773497'
-'4107825'
-'3911318'
-'3911321'
-'4162092'
-'4317191'
-'4402704'
-'4444559'
+'3938079'
+'4120598'
+'4122536'
+'3773688'
+'3714896'
+'4078851'
+'3773687'
+'3722458'
+'3722443'
+'3881944'
+'3722470'
+'4064196'
+'3873432'
+'3849210'
+'3816283'
+'4163451'
+'4361887'
+'4122540'
+'4442580'
+'3821255'
+'3773701'
 /;
 
 set plots_permPast(curPlots) /
 /;
-$ontext
-set plots_permPast(curPlots) /
-'4001270'
-'4140543'
-'4140502'
-/;
-$offtext
 
 parameter p_plotData(curPlots,plotAttr) /
-'4161733'.size 5.80
-'3882193'.size 3.12
-'4365192'.size 0.11
-'4186235'.size 5.00
-'4365187'.size 1.83
-*'4001270'.size 1.70
-*'4140543'.size 0.79
-*'4140502'.size 0.35
-'4186237'.size 3.27
-'4365190'.size 0.14
-'4162098'.size 1.68
-'4324482'.size 2.23
-'4186206'.size 1.79
-'4427550'.size 2.04
-'4186204'.size 5.83
-'4163825'.size 2.02
-'4186230'.size 6.23
-'3882187'.size 1.62
-'3733275'.size 3.48
-'4402735'.size 2.49
-'3773497'.size 5.23
-'4107825'.size 1.64
-'3911318'.size 1.88
-'3911321'.size 1.80
-'4162092'.size 2.98
-'4317191'.size 4.37
-'4402704'.size 0.44
-'4444559'.size 0.10
+'3938079'.size 3.55 
+'4120598'.size 10.58
+'4122536'.size 0.76
+'3773688'.size 4.94
+'3714896'.size 1.38
+'4078851'.size 1.70
+'3773687'.size 3.70
+'3722458'.size 0.50
+'3722443'.size 1.32
+'3881944'.size 1.71
+'3722470'.size 2.64
+'4064196'.size 1.11
+'3873432'.size 10.03
+'3849210'.size 0.95
+'3816283'.size 0.98 
+'4163451'.size 7.95
+'4361887'.size 1.80
+'4122540'.size 6.51
+'4442580'.size 1.57
+'3821255'.size 0.49
+'3773701'.size 0.09
 
-'4161733'.distance 0.28
-'3882193'.distance 0.18
-'4365192'.distance 0.06
-'4186235'.distance 0.13
-'4365187'.distance 0.14
-*'4001270'.distance 6.94
-*'4140543'.distance 10.75
-*'4140502'.distance 11.36
-'4186237'.distance 0.37
-'4365190'.distance 0.03
-'4162098'.distance 0.90
-'4324482'.distance 1.15
-'4186206'.distance 0.68
-'4427550'.distance 0.84
-'4186204'.distance 0.79
-'4163825'.distance 1.08
-'4186230'.distance 0.35
-'3882187'.distance 0.95
-'3733275'.distance 0.56
-'4402735'.distance 0.99
-'3773497'.distance 1.40
-'4107825'.distance 0.24
-'3911318'.distance 0.40
-'3911321'.distance 0.80
-'4162092'.distance 1.52
-'4317191'.distance 2.10
-'4402704'.distance 1.06
-'4444559'.distance 0.07
+'3938079'.distance 0.32
+'4120598'.distance 0.15
+'4122536'.distance 0.09
+'3773688'.distance 0.55
+'3714896'.distance 0.10
+'4078851'.distance 1.14
+'3773687'.distance 0.70
+'3722458'.distance 1.32
+'3722443'.distance 0.14
+'3881944'.distance 0.17
+'3722470'.distance 2.56
+'4064196'.distance 1.67
+'3873432'.distance 1.02
+'3849210'.distance 1.16
+'3816283'.distance 0.88
+'4163451'.distance 1.27
+'4361887'.distance 0.86
+'4122540'.distance 2.65
+'4442580'.distance 6.88
+'3821255'.distance 3.74
+'3773701'.distance 1.21
 
-'4161733'.soilQual 65
-'3882193'.soilQual 65
-'4365192'.soilQual 50
-'4186235'.soilQual 65
-'4365187'.soilQual 50
-*'4001270'.soilQual 40
-*'4140543'.soilQual 40
-*'4140502'.soilQual 45
-'4186237'.soilQual 50
-'4365190'.soilQual 50
-'4162098'.soilQual 50
-'4324482'.soilQual 50
-'4186206'.soilQual 50
-'4427550'.soilQual 50
-'4186204'.soilQual 50
-'4163825'.soilQual 50
-'4186230'.soilQual 50
-'3882187'.soilQual 50
-'3733275'.soilQual 50
-'4402735'.soilQual 50
-'3773497'.soilQual 67.5
-'4107825'.soilQual 65
-'3911318'.soilQual 65
-'3911321'.soilQual 65
-'4162092'.soilQual 80
-'4317191'.soilQual 80
-'4402704'.soilQual 67.5
-'4444559'.soilQual 50
+'3938079'.soilQual 80
+'4120598'.soilQual 80
+'4122536'.soilQual 80
+'3773688'.soilQual 80
+'3714896'.soilQual 80
+'4078851'.soilQual 80
+'3773687'.soilQual 80
+'3722458'.soilQual 80
+'3722443'.soilQual 80
+'3881944'.soilQual 80
+'3722470'.soilQual 80
+'4064196'.soilQual 65
+'3873432'.soilQual 80
+'3849210'.soilQual 80
+'3816283'.soilQual 65
+'4163451'.soilQual 65
+'4361887'.soilQual 65
+'4122540'.soilQual 80
+'4442580'.soilQual 80
+'3821255'.soilQual 50
+'3773701'.soilQual 80
 
-'4161733'.soilType schluffigerLehm
-'3882193'.soilType schluffigerLehm
-'4365192'.soilType schluffigerLehm
-'4186235'.soilType schluffigerLehm
-'4365187'.soilType schluffigerLehm
-*'4001270'.soilType schluffigerLehm
-*'4140543'.soilType schluffigerLehm
-*'4140502'.soilType schluffigerLehm
-'4186237'.soilType schluffigerLehm
-'4365190'.soilType schluffigerLehm
-'4162098'.soilType schluffigerLehm
-'4324482'.soilType schluffigerLehm
-'4186206'.soilType schluffigerLehm
-'4427550'.soilType schluffigerLehm
-'4186204'.soilType schluffigerLehm
-'4163825'.soilType schluffigerLehm
-'4186230'.soilType schluffigerLehm
-'3882187'.soilType schluffigerLehm
-'3733275'.soilType schluffigerLehm
-'4402735'.soilType schluffigerLehm
-'3773497'.soilType schluffigerLehm
-'4107825'.soilType schluffigerLehm
-'3911318'.soilType schluffigerLehm
-'3911321'.soilType schluffigerLehm
-'4162092'.soilType schluffigerLehm
-'4317191'.soilType schluffigerLehm
-'4402704'.soilType schluffigerLehm
-'4444559'.soilType schluffigerLehm
+'3938079'.soilType lehmigerSchluff
+'4120598'.soilType lehmigerSchluff
+'4122536'.soilType lehmigerSchluff
+'3773688'.soilType lehmigerSchluff
+'3714896'.soilType lehmigerSchluff
+'4078851'.soilType schluffigerLehm
+'3773687'.soilType lehmigerSchluff
+'3722458'.soilType schluffigerLehm
+'3722443'.soilType lehmigerSchluff
+'3881944'.soilType lehmigerSchluff
+'3722470'.soilType schluffigerLehm
+'4064196'.soilType schluffigerLehm
+'3873432'.soilType schluffigerLehm
+'3849210'.soilType schluffigerLehm
+'3816283'.soilType schluffigerLehm
+'4163451'.soilType schluffigerLehm
+'4361887'.soilType schluffigerLehm
+'4122540'.soilType schluffigerLehm
+'4442580'.soilType lehmigerSchluff
+'3821255'.soilType schluffigerLehm
+'3773701'.soilType schluffigerLehm
 /;
 
 set animalBranch / milkCows, fattPigs /;
