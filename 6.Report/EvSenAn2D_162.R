@@ -512,7 +512,7 @@ PsenAn_162_PestEff1 <- senAn_162_PestEff1 %>%
                     shape = BA_Sprayer_Num), show.legend = FALSE)+
     labs(x = "Farm size (ha)",
          y = "Pesticide savings SSPAs (%-points)")+
-    ggtitle(label = "Root crop farm")+
+    ggtitle(label = "Sugar beet farm")+
     theme(plot.title = element_text(face = "bold", size = 8, colour ="#CC3300"))+
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
@@ -526,8 +526,8 @@ PsenAn_162_PestEff1 <- senAn_162_PestEff1 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(-20,20,10), limits = c(-20,20), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(-20,20,2), limits = c(-20,20), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(50,400,10), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -542,7 +542,7 @@ PsenAn_162_PestEff1 <- senAn_162_PestEff1 %>%
         axis.ticks.length = unit(0.15, "cm")
     )
 PsenAn_162_PestEff1
-
+dev.off()
 PsenAn_162_PestEff2 <- senAn_162_PestEff2 %>%
     ggplot(aes(x = landAv,
                y = PestEff,
@@ -551,7 +551,7 @@ PsenAn_162_PestEff2 <- senAn_162_PestEff2 %>%
                     shape = BA_Sprayer_Num), show.legend = TRUE)+
     labs(x = "Farm size (ha)",
          y = "Pesticide savings SSPAs (%-points)")+
-    ggtitle(label = "Root crop farm")+
+    ggtitle(label = "Sugar beet farm")+
     theme(plot.title = element_text(face = "bold", size = 8, colour ="#CC3300"))+
     scale_colour_manual(name = "Technology\nadoption:\nScenario 2",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
@@ -565,8 +565,8 @@ PsenAn_162_PestEff2 <- senAn_162_PestEff2 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(-20,20,10), limits = c(-20,20), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(-20,20,2), limits = c(-20,20), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(50,400,10), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -586,7 +586,7 @@ PsenAn_162_PestEff2 <- senAn_162_PestEff2 %>%
     guides(colour = guide_legend(override.aes = list(size=1.5))) +
     guides(size = "none", shape = "none")
 PsenAn_162_PestEff2
-dev.off()
+
 ###################Time Requirements
 PsenAn_162_time1 <- senAn_162_time1 %>%
     ggplot(aes(x = landAv,
@@ -596,7 +596,7 @@ PsenAn_162_time1 <- senAn_162_time1 %>%
                     shape = BA_Sprayer_Num), show.legend = FALSE)+
     labs(x = "Farm size (ha)",
          y = "Labor input SSPAs (%)")+
-    ggtitle(label = "Root crop farm")+
+    ggtitle(label = "Sugar beet farm")+
     theme(plot.title = element_text(face = "bold", size = 8, colour ="#CC3300"))+
     scale_colour_manual(name = "Technology\nadoption:\nScenario 1",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
@@ -610,8 +610,8 @@ PsenAn_162_time1 <- senAn_162_time1 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(50,400,10), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -626,7 +626,7 @@ PsenAn_162_time1 <- senAn_162_time1 %>%
         axis.ticks.length = unit(0.15, "cm")
     )
 PsenAn_162_time1
-
+dev.off()
 PsenAn_162_time2 <- senAn_162_time2 %>%
     ggplot(aes(x = landAv,
                y = timeReq,
@@ -635,7 +635,7 @@ PsenAn_162_time2 <- senAn_162_time2 %>%
                     shape = BA_Sprayer_Num), show.legend = FALSE)+
     labs(x = "Farm size (ha)",
          y = "Labor input SSPAs (%)")+
-    ggtitle(label = "Root crop farm")+
+    ggtitle(label = "Sugar beet farm")+
     theme(plot.title = element_text(face = "bold", size = 8, colour ="#CC3300"))+
     scale_colour_manual(name = "Technology adoption in scenario 2",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
@@ -649,8 +649,8 @@ PsenAn_162_time2 <- senAn_162_time2 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(50,400,10), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -665,6 +665,7 @@ PsenAn_162_time2 <- senAn_162_time2 %>%
         axis.ticks.length = unit(0.15, "cm")
     )
 PsenAn_162_time2
+dev.off()
 
 
 ###################Fuel Consumption
@@ -676,7 +677,7 @@ PsenAn_162_fuel1 <- senAn_162_fuel1 %>%
                     shape = BA_Sprayer_Num), show.legend = TRUE)+
     labs(x = "Farm size (ha)",
          y = "Fuel input SSPAs (%)")+
-    ggtitle(label = "Root crop farm")+
+    ggtitle(label = "Sugar beet farm")+
     theme(plot.title = element_text(face = "bold", size = 8, colour ="#CC3300"))+
     scale_colour_manual(name = "Technology\nadoption:\nScenario 1",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
@@ -712,7 +713,6 @@ PsenAn_162_fuel1 <- senAn_162_fuel1 %>%
     guides(shape = "none", size ="none")
 PsenAn_162_fuel1
 
-
 PsenAn_162_fuel2 <- senAn_162_fuel2 %>%
     ggplot(aes(x = landAv,
                y = fuelCons,
@@ -721,7 +721,7 @@ PsenAn_162_fuel2 <- senAn_162_fuel2 %>%
                     shape = BA_Sprayer_Num), show.legend = TRUE)+
     labs(x = "Farm size (ha)",
          y = "Fuel input SSPAs (%)")+
-    ggtitle(label = "Root crop farm")+
+    ggtitle(label = "Sugar beet farm")+
     theme(plot.title = element_text(face = "bold", size = 8, colour ="#CC3300"))+
     scale_colour_manual(name = "Technology\nadoption:\nScenario 2",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
@@ -757,7 +757,9 @@ PsenAn_162_fuel2 <- senAn_162_fuel2 %>%
     guides(colour = guide_legend(order = 1)) +
     guides(size = "none")
 PsenAn_162_fuel2
-?guide_legend
+
+
+
 ###################Repair
 PsenAn_162_repair1 <- senAn_162_repair1 %>%
     ggplot(aes(x = landAv,
@@ -767,7 +769,7 @@ PsenAn_162_repair1 <- senAn_162_repair1 %>%
                     shape = BA_Sprayer_Num), show.legend = TRUE)+
     labs(x = "Farm size (ha)",
          y = "SST repair costs (%)")+
-    ggtitle(label = "Root crop farm")+
+    ggtitle(label = "Sugar beet farm")+
     theme(plot.title = element_text(face = "bold", size = 8, colour ="#CC3300"))+
     scale_colour_manual(name = "Technology\nadoption:\nScenario 1",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
@@ -781,8 +783,8 @@ PsenAn_162_repair1 <- senAn_162_repair1 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(50,400,50), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -802,7 +804,7 @@ PsenAn_162_repair1 <- senAn_162_repair1 %>%
     guides(colour = guide_legend(override.aes = list(size=1.5))) +
     guides(shape = "none", size ="none")
 PsenAn_162_repair1
-dev.off()
+
 
 PsenAn_162_repair2 <- senAn_162_repair2 %>%
     ggplot(aes(x = landAv,
@@ -812,7 +814,7 @@ PsenAn_162_repair2 <- senAn_162_repair2 %>%
                     shape = BA_Sprayer_Num), show.legend = TRUE)+
     labs(x = "Farm size (ha)",
          y = "SST repair costs (%)")+
-    ggtitle(label = "Root crop farm")+
+    ggtitle(label = "Sugar beet farm")+
     theme(plot.title = element_text(face = "bold", size = 8, colour ="#CC3300"))+
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
@@ -826,8 +828,8 @@ PsenAn_162_repair2 <- senAn_162_repair2 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(50,400,50), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -847,7 +849,7 @@ PsenAn_162_repair2 <- senAn_162_repair2 %>%
     guides(shape = guide_legend(override.aes = list(size=1.5))) +
     guides(size = "none", color = "none")
 PsenAn_162_repair2
-dev.off()
+
 ###################Number Passages
 PsenAn_162_numPassag1 <- senAn_162_numPassag1 %>%
     ggplot(aes(x = landAv,
@@ -856,8 +858,8 @@ PsenAn_162_numPassag1 <- senAn_162_numPassag1 %>%
     geom_point(aes(size = numberSST,
                     shape = BA_Sprayer_Num), show.legend = FALSE)+
     labs(x = "Farm size (ha)",
-         y = "Passages SSPA scenarios (%)")+
-    ggtitle(label = "Root crop farm")+
+         y = "Passages SSPAs (%)")+
+    ggtitle(label = "Sugar beet farm")+
     theme(plot.title = element_text(face = "bold", size = 8, colour ="#CC3300"))+
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
@@ -871,8 +873,8 @@ PsenAn_162_numPassag1 <- senAn_162_numPassag1 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(50,400,10), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -895,8 +897,8 @@ PsenAn_162_numPassag2 <- senAn_162_numPassag2 %>%
     geom_point(aes(size = numberSST,
                     shape = BA_Sprayer_Num), show.legend = FALSE)+
     labs(x = "Farm size (ha)",
-         y = "Passages SSPA scenarios (%)")+
-    ggtitle(label = "Root crop farm")+
+         y = "Passages SSPAs (%)")+
+    ggtitle(label = "Sugar beet farm")+
     theme(plot.title = element_text(face = "bold", size = 8, colour ="#CC3300"))+
     scale_colour_manual(name = "Technology",
                         breaks = c("BA Sprayer", "SST6m", "SST27m"),
@@ -910,8 +912,8 @@ PsenAn_162_numPassag2 <- senAn_162_numPassag2 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(50,400,10), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -926,6 +928,7 @@ PsenAn_162_numPassag2 <- senAn_162_numPassag2 %>%
         axis.ticks.length = unit(0.15, "cm")
     )
 PsenAn_162_numPassag2
+dev.off()
 
 rm(PsenAn_162_fuel1)
 rm(PsenAn_162_fuel2)

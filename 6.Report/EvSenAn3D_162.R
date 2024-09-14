@@ -299,49 +299,49 @@ senAn_162_teValueAlgoCosts <- senAn_162_teValueAlgoCosts %>%
 
 
 #######Only for table creation!!!
-#senAn_162_teValueAnnFee$landUsedAvg <- NULL
-#senAn_162_teValueAnnFee$Winterweizen <- NULL
-#senAn_162_teValueAnnFee$Wintergerste <- NULL
-#senAn_162_teValueAnnFee$Zuckerrueben <- NULL
-#senAn_162_teValueAnnFee$BA_Sprayer <- NULL
-#senAn_162_teValueAnnFee$avgAnProf <- NULL
-#senAn_162_teValueAnnFee$diCostsPesti <- NULL
-#senAn_162_teValueAnnFee$fuelCostsSprayer <- NULL
-#senAn_162_teValueAnnFee$repCostsSprayer <- NULL
-#senAn_162_teValueAnnFee$labCostsSprayer <- NULL
-#senAn_162_teValueAnnFee$deprecSprayer <- NULL
-#senAn_162_teValueAnnFee$varCostsSprayer <- NULL
-#senAn_162_teValueAnnFee$fixCostsSprayer <- NULL
-#senAn_162_teValueAnnFee$algCosts <- NULL
-#view(senAn_162_teValueAnnFee)
+senAn_162_teValueAnnFee$landUsedAvg <- NULL
+senAn_162_teValueAnnFee$Winterweizen <- NULL
+senAn_162_teValueAnnFee$Wintergerste <- NULL
+senAn_162_teValueAnnFee$Zuckerrueben <- NULL
+senAn_162_teValueAnnFee$BA_Sprayer <- NULL
+senAn_162_teValueAnnFee$avgAnProf <- NULL
+senAn_162_teValueAnnFee$diCostsPesti <- NULL
+senAn_162_teValueAnnFee$fuelCostsSprayer <- NULL
+senAn_162_teValueAnnFee$repCostsSprayer <- NULL
+senAn_162_teValueAnnFee$labCostsSprayer <- NULL
+senAn_162_teValueAnnFee$deprecSprayer <- NULL
+senAn_162_teValueAnnFee$varCostsSprayer <- NULL
+senAn_162_teValueAnnFee$fixCostsSprayer <- NULL
+senAn_162_teValueAnnFee$algCosts <- NULL
 
-#senAn_162_teValueAlgoCosts$landUsedAvg <- NULL
-#senAn_162_teValueAlgoCosts$Winterweizen <- NULL
-#senAn_162_teValueAlgoCosts$Wintergerste <- NULL
-#senAn_162_teValueAlgoCosts$Zuckerrueben <- NULL
-#senAn_162_teValueAlgoCosts$BA_Sprayer <- NULL
-#senAn_162_teValueAlgoCosts$avgAnProf <- NULL
-#senAn_162_teValueAlgoCosts$diCostsPesti <- NULL
-#senAn_162_teValueAlgoCosts$fuelCostsSprayer <- NULL
-#senAn_162_teValueAlgoCosts$repCostsSprayer <- NULL
-#senAn_162_teValueAlgoCosts$labCostsSprayer <- NULL
-#senAn_162_teValueAlgoCosts$deprecSprayer <- NULL
-#senAn_162_teValueAlgoCosts$varCostsSprayer <- NULL
-#senAn_162_teValueAlgoCosts$fixCostsSprayer <- NULL
-#senAn_162_teValueAlgoCosts$annFee <- NULL
-#view(senAn_162_teValueAlgoCosts)
 
-#senAn_162_teValuePestPrice$BA_Sprayer <- NULL
-#senAn_162_teValuePestPrice$avgAnProf <- NULL
-#senAn_162_teValuePestPrice$diCostsPesti <- NULL
-#senAn_162_teValuePestPrice$fuelCostsSprayer <- NULL
-#senAn_162_teValuePestPrice$repCostsSprayer <- NULL
-#senAn_162_teValuePestPrice$labCostsSprayer <- NULL
-#senAn_162_teValuePestPrice$deprecSprayer <- NULL
-#senAn_162_teValuePestPrice$varCostsSprayer <- NULL
-#senAn_162_teValuePestPrice$fixCostsSprayer <- NULL
-#senAn_162_teValuePestPrice$annFee <- NULL
-#senAn_162_teValuePestPrice$algCosts <- NULL
+senAn_162_teValueAlgoCosts$landUsedAvg <- NULL
+senAn_162_teValueAlgoCosts$Winterweizen <- NULL
+senAn_162_teValueAlgoCosts$Wintergerste <- NULL
+senAn_162_teValueAlgoCosts$Zuckerrueben <- NULL
+senAn_162_teValueAlgoCosts$BA_Sprayer <- NULL
+senAn_162_teValueAlgoCosts$avgAnProf <- NULL
+senAn_162_teValueAlgoCosts$diCostsPesti <- NULL
+senAn_162_teValueAlgoCosts$fuelCostsSprayer <- NULL
+senAn_162_teValueAlgoCosts$repCostsSprayer <- NULL
+senAn_162_teValueAlgoCosts$labCostsSprayer <- NULL
+senAn_162_teValueAlgoCosts$deprecSprayer <- NULL
+senAn_162_teValueAlgoCosts$varCostsSprayer <- NULL
+senAn_162_teValueAlgoCosts$fixCostsSprayer <- NULL
+senAn_162_teValueAlgoCosts$annFee <- NULL
+
+
+senAn_162_teValuePestPrice$BA_Sprayer <- NULL
+senAn_162_teValuePestPrice$avgAnProf <- NULL
+senAn_162_teValuePestPrice$diCostsPesti <- NULL
+senAn_162_teValuePestPrice$fuelCostsSprayer <- NULL
+senAn_162_teValuePestPrice$repCostsSprayer <- NULL
+senAn_162_teValuePestPrice$labCostsSprayer <- NULL
+senAn_162_teValuePestPrice$deprecSprayer <- NULL
+senAn_162_teValuePestPrice$varCostsSprayer <- NULL
+senAn_162_teValuePestPrice$fixCostsSprayer <- NULL
+senAn_162_teValuePestPrice$annFee <- NULL
+senAn_162_teValuePestPrice$algCosts <- NULL
 
 
 #Create subsets for each scenario and remove dataset including both subsets
@@ -356,7 +356,10 @@ rm(senAn_162_teValueAnnFee)
 senAn_162_teValueAlgoCosts1 <- subset(senAn_162_teValueAlgoCosts, uni_5 == "Base|FH")
 senAn_162_teValueAlgoCosts2 <- subset(senAn_162_teValueAlgoCosts, uni_5 == "Base|FHBonus")
 rm(senAn_162_teValueAlgoCosts)
-view(senAn_162_teValuePestPrice1)
+
+view(senAn_162_teValueAlgoCosts1)
+view(senAn_162_teValueAlgoCosts2)
+
 ###################
 #DATA VISUALIZATION
 ###################
@@ -388,7 +391,7 @@ rm(shapes2)
 rm(colors1)
 rm(colors2)
 
-view(senAn_162_teValuePestPrice1)
+
 ###Visualization
 layout(matrix(c(1,2,3,4,5,6), nrow = 2, ncol = 3))
 PsenAn_162_teValuePestPrice1 <- scatterplot3d(senAn_162_teValuePestPrice1$SSTValue, senAn_162_teValuePestPrice1$pestPrice,

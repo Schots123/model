@@ -83,8 +83,8 @@ summarySenAn3D("fuelCostsSprayer",%1,%2,%3,%4) =
     ), 
         v_binPlotTechno.l(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer)
             * p_plotData(curPlots,"size") * farmSizeVar
-            * sum(pestType,
-              p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
+            * sum((pestType,halfMonth),
+              p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)
               * p_technoFuelCons(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
               * fuelConsVar(technology,scenario,scenSprayer,pestType)
             )
@@ -103,8 +103,8 @@ summarySenAn3D("repCostsSprayer",%1,%2,%3,%4) =
     ), 
   v_binPlotTechno.l(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer)
             * p_plotData(curPlots,"size") * farmSizeVar
-            * sum(pestType,
-              p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
+            * sum((pestType,halfMonth),
+              p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)
               * p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
               * repairCostsVar(scenSprayer)
             )

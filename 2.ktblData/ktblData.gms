@@ -1,7 +1,6 @@
 *
-*  --- Here, the data retrieved from KTBL is manipulated to obtain a farm profit parameter which does depend on the level of manure applied as 
-*        a substitute for mineral fertilizer
-
+* --- Aufbereitung KTBL Daten
+*
 scalar newFuelPrice price for fuel in euro per liter /1.15/;
 scalar labPrice price for labour in euro per hour /21/;
 

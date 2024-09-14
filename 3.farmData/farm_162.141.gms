@@ -15,9 +15,9 @@ set curCropGroups(allItems) /
 'Zuckerrueben'
 /;
 
-set cropsBreak2(curCropGroups) /
-'Zuckerrueben'
-/;
+*set cropsBreak2(curCropGroups) /
+*'Zuckerrueben'
+*/;
 
 set curCrops_curCropGroups(curCropGroups,curCrops) /
 'Winterweizen'.'Winterweizen - Backweizen' YES

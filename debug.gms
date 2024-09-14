@@ -30,8 +30,8 @@ $include '3.farmData/farm_%farmNumber%.gms'
 $include '4.cropProtectionData/technologyData.gms'
 $include '5.model/fruchtfolge.gms'
 
-Execute_Unload '6.Report/gdxFiles/ResultsSenAn3D_%farmNumber%.gdx' 
+*Execute_Unload '6.Report/gdxFiles/ResultsSenAn_%farmNumber%.gdx' 
 *summary
-*summarySenAn
-summarySenAn3D
-;
+*summarySenAn2D
+*summarySenAn3D
+*;

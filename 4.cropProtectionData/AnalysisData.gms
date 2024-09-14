@@ -12,7 +12,7 @@ p_farmSizeFactor(farmSizeSteps) = 50 + (ord(farmSizeSteps) -1) * 2;
 *
 * --- set introduction for loop(s) in sensitivity analysis
 *
-set sensiAnSteps / senStep0*senStep700 /;
+set sensiAnSteps / senStep0*senStep1000 /;
 
 set farmSizeStep3D /farmsizeStep0*farmSizeStep35/;
 set valueStep3D /valueStep1*valueStep5/;
@@ -207,7 +207,7 @@ p_savePestEff(KTBL_crops,technology,scenario,pestType) = p_technoPestEff(KTBL_cr
 
 
 *
-* -- SST parameter variation placeholders for SST acquisition costs, time requirements, fuel consumption, repair costs and the price for pesticides
+* -- SST parameter variation placeholders for SST acquisition costs, time requirements, fuel consumption, repair costs and pesticide costs
 *
 parameter technoValueVar(scenSprayer) placeholder for SST acquisition cost variations;
 technoValueVar(scenSprayer) = 1;
@@ -224,5 +224,5 @@ repairCostsVar(scenSprayer) = 1;
 parameter pestPriceVar placeholder for pesticide price variations;
 pestPriceVar = 1;
 
-parameter passageVar(technology,scenario) placeholder for sprayer passage variation of SST scenarios;
-passageVar(technology,scenario) = 1;
+parameter passageVar(technology,scenario,pestType) placeholder for sprayer passage variation of SST scenarios;
+passageVar(technology,scenario,pestType) = 1;

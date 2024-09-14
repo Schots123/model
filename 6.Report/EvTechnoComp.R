@@ -207,7 +207,6 @@ technoComp_farm162 <- technoComp_farm162 %>%
     mutate(avgAnnFarmProf = avgAnnFarmProf / 1000)
 
 
-
 #############
 #Farm 151.142
 #############
@@ -354,8 +353,7 @@ technoComp_farm151 <- technoComp_farm151 %>%
 technoComp_farm151 <- technoComp_farm151 %>%
     mutate(avgAnnFarmProf = avgAnnFarmProf / 1000)
 
-view(technoComp_farm162)
-view(technoComp_farm151)
+
 ###################
 #DATA VISUALIZATION
 ###################
@@ -369,7 +367,7 @@ PteComp162 <- technoComp_farm162 %>%
     geom_point(aes(alpha = SST,
                     shape = BA_Sprayer_Num), size = 0.5)+
 #rename graph labels 
-    labs(x = "Farm size (in ha)",
+    labs(x = "Farm size (ha)",
          y = "(in 1,000€)")+
 #Formatting of graph
 #Formatting of graph tite
@@ -379,7 +377,7 @@ PteComp162 <- technoComp_farm162 %>%
             plot.subtitle = element_text(face ="bold", size =12, colour ="#CC3300")
     )+
 #Formatting of legend
-    scale_shape_manual(name = "BA Sprayer used",
+    scale_shape_manual(name = "BA Sprayer",
                             breaks = c("", "1"),
                             labels = c("No", "Yes"),
                             values=c(1,19))+
@@ -426,7 +424,7 @@ PteComp151 <- technoComp_farm151 %>%
             plot.subtitle = element_text(face ="bold", size =12, colour = "#CC9900"),
             plot.title = element_text(size = 0)
     )+
-    scale_shape_manual(name = "BA Sprayer used",
+    scale_shape_manual(name = "BA Sprayer",
                             breaks = c("", "1"),
                             labels = c("No", "Yes"),
                             values=c(1,19))+
@@ -456,7 +454,6 @@ PteComp151 <- technoComp_farm151 %>%
 PteComp151
 ggsave("teComp151.png")
 
-view(technoComp_farm162)
 ###########################################
 #Plots for average annual net profit per ha
 ###########################################
@@ -474,23 +471,23 @@ PteComp162Ha <- technoComp_farm162 %>%
     geom_point(aes(size = SST,
                     shape = BA_Sprayer_Num))+
 #rename graph labels 
-    labs(x = "Farm size (in ha)",
+    labs(x = "Farm size (ha)",
          y = "Farm profit per ha (€)")+
 #Formatting of graph
 #Formatting of graph tite
-    ggtitle(label ="", subtitle = "Root crop farm")+
+    ggtitle(label ="", subtitle = "Sugar beet farm")+
     theme(
             plot.title = element_text(face ="bold", size =12, hjust=0.5),
             plot.subtitle = element_text(face ="bold", size =12, colour ="#CC3300")
     )+
 #Formatting of legend
-    scale_shape_manual(name = "BA Sprayer used",
+    scale_shape_manual(name = "BA Sprayer",
                             breaks = c("", "1"),
                             labels = c("No", "Yes"),
                             values=c(1,19))+
-    scale_colour_manual(name = "Scenario &\nTechnology",
+    scale_colour_manual(name = "Scenario &\ntechnology",
                             breaks = c("Base", "SST6m_FH", "SST27m_FH", "SST6m_FHBonus", "SST27m_FHBonus"),
-                            labels = c("Base", "Scenario 1: SST6m", "Scenario 1: SST27m", "Scenario 2: SST6m", "Scenario 2: SST27m"),
+                            labels = c("Baseline", "Scenario 1: SST6m", "Scenario 1: SST27m", "Scenario 2: SST6m", "Scenario 2: SST27m"),
                             values = c("#333333", "#006600", "#33FF00", "#000099", "#0099FF"))+
     scale_size_manual(name = "Number of SSTs used",
                             breaks = c("", "1", "2"),
@@ -515,7 +512,7 @@ PteComp162Ha
 dev.off()
 ggsave("teCompHa162.png")
 ?scale_x_continuous
-view(technoComp_farm151)
+view(technoComp_farm162)
 
 PteComp151Ha <- technoComp_farm151 %>%
     ggplot(aes(x = landAv,
@@ -523,19 +520,19 @@ PteComp151Ha <- technoComp_farm151 %>%
            colour = Scenario))+ 
     geom_point(aes(size = SST,
                     shape = BA_Sprayer_Num), show.legend = FALSE)+
-    labs(x = "Farm size (in ha)",
+    labs(x = "Farm size (ha)",
          y = "Farm profit per ha (€)")+
     ggtitle(label ="", subtitle = "Cereal farm")+
     theme(
             plot.subtitle = element_text(face ="bold", size =12, colour ="#CC9900"),
     )+
-    scale_shape_manual(name = "BA Sprayer used",
+    scale_shape_manual(name = "BA Sprayer",
                             breaks = c("", "1"),
                             labels = c("No", "Yes"),
                             values=c(1,19))+
-    scale_colour_manual(name = "Scenario &\nTechnology",
+    scale_colour_manual(name = "Scenario &\ntechnology",
                             breaks = c("Base", "SST6m_FH", "SST27m_FH", "SST6m_FHBonus", "SST27m_FHBonus"),
-                            labels = c("Base", "Scenario 1: SST6m", "Scenario 1: SST27m", "Scenario 2: SST6m", "Scenario 2: SST27m"),
+                            labels = c("Baseline", "Scenario 1: SST6m", "Scenario 1: SST27m", "Scenario 2: SST6m", "Scenario 2: SST27m"),
                             values = c("#333333", "#006600", "#33FF00", "#000099", "#0099FF"))+
     scale_size_manual(name = "Number of SSTs used",
                             breaks = c("", "1", "2"),

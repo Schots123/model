@@ -28,7 +28,6 @@ e_maxShares(curCropGroups) $ p_cropData(curCropGroups,"maxShare")..
 
 *
 * --- Reduce overspecialization of most profitable crops on plots with high yields to better reflect average year of farm
-* and saving potential of spraying sequence which depends on yield for some crops
 *
 parameter p_plotYieldGroup(KTBL_yieldLev);
 p_plotYieldGroup(KTBL_yieldLev) = 
@@ -65,9 +64,6 @@ e_maxSharesFavLoc(curCropGroups,KTBL_yieldLev) $ p_cropData(curCropGroups,"maxSh
 ;
 
 
-
-
-
 *
 *  --- ensure that one element in each set of v_binCropPlot is chosen for each plot by the model and not more
 *
@@ -84,8 +80,6 @@ e_oneCropPlot(curPlots)..
   + v_devOneCrop(curPlots)
   =L= 1
 ;
-
-
 
 $ontext
 *

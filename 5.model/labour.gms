@@ -20,9 +20,9 @@ e_labReqSprayer(scenSprayer)..
     ), 
     v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer)
       * p_plotData(curPlots,"size") * farmSizeVar
-      * sum(pestType,
-        p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
-        * passageVar(technology)
+      * sum((pestType,halfMonth),
+        p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)
+        * passageVar(technology,scenario,pestType)
         * p_technoTimeReq(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
         * timeReqVar(technology,scenario,scenSprayer,pestType)
       )

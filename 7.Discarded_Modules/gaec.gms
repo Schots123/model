@@ -1,4 +1,5 @@
 
+$ontext
 Binary variable 
   v_binRepCropPlot_1(curPlots,mainCropGroup,years) each plot on which crops are grown in two consecutive years 
   v_binRepCropPlot(curPlots,mainCropGroup,years) each plot on which crops are grown in three consecutive years 
@@ -39,7 +40,7 @@ e_gaec6(years)..
 * if summer grains should become possible to be grown, it would be necessary to add a conditional based on the next period       
   )
   =G= 0.8*p_totArabLand - v_devGaec6(years); 
-$offtext
+
 
 *
 * --- gaec 7 
@@ -69,7 +70,7 @@ e_preCropSeq_1(curPlots,mainCropGroup,years)
 $ontext
   the left hand side of the equation equals 2 if the same crop was grown on the same plot in 2 consecutive years
   the right hand side can become either 1 or 2 and could be 2 without further conditions 
-$offtext
+
 
 *only on max 66 % of the arable land it is allowed to grow the same crop in two consecutive years 
 e_gaec7_1(mainCropGroup,years)
@@ -92,17 +93,7 @@ e_gaec7_1(mainCropGroup,years)
   v_binCropPlot(curPlots,curCrops,KTBL_system,KTBL_size,KTBL_yield,curMechan,KTBL_distance,years)
   * p_plotData(curPlots,"size") * farmSizeVar) * 0.66
 ;
-$ontext
-  the left hand side can't take lower values than the actual amount of hectare on which one crop was grown in 2 consective years 
-  (but might even become higher than the available arable land of the farm because of the way e_preCropSeq_1 is formulated -> useless without proper restriction of value)
-  The left hand side of the equation requires that the result on the left hand side of the equation for each crop is less than 66 % of the overall amount of the crop planted in the respective year
-  -> the model will set the values for v_binRepcropPlot_1(curPlots,curCrops,years) equal 0 first which don't label the same crop decision on a plot in two consecutive years, because they dont negatively 
-  influence the optimal solution of the model (not restricting)
-  -> in the event that the farm always decides for the same crop on plots in consecutive years, this value adjustment of v_binRepcropPlot_1(curPlots,curCrops,years) without an impact on the optimal solution
-  will take as long as the right hand side of the equation equals the overall amount of hectare on which the respective crop is grown
-  -> since in this case the right hand side of the equation is only 2/3 of that value, the model would have to reduce the number of same crop decisions in two consecutive years accordingly, influencing the
-  optimal solution
-$offtext
+
 
 
 

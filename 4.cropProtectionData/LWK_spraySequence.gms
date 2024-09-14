@@ -1,3 +1,7 @@
+*
+* -- Dateneinspeisung PSM-Aufwand von den Spritzfolgen der Landwirtschaftskammer Niedersachsen aus Richtwerte Deckungsbeiträge 2023
+*
+
 set LWK_crops /
 'Winterweizen'
 'Wintergerste'
@@ -90,14 +94,15 @@ parameter p_lwkCrops_lwkYield_ktblYield(LWK_crops,LWK_yield,KTBL_yield) /
 'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen'.'niedrig, leichter Boden' 1
 /;
 
-set pestType /soilHerb,foliarHerb,fung,insect,growthReg,dessic/;
+set pestType /soilHerb,foliarHerb,fung,insect,growthReg,dessic,dualSpraying/;
 
 set FH(pestType) /foliarHerb/;
-set notFH(pestType) /soilHerb, fung, insect, growthReg, dessic/;
+set FHPassages(pestType) /foliarHerb,dualSpraying/;
+set notFH(pestType) /soilHerb,fung,insect,growthReg,dessic,dualSpraying/;
 
-set FHBonus(pestType) /foliarHerb, fung, insect, growthReg/;
-set notFHBonus(pestType) /soilHerb, dessic/;
-
+set FHBonus(pestType) /foliarHerb,fung,insect,growthReg/;
+set FHBonusPassages(pestType) /foliarHerb,fung,insect,growthReg,dualSpraying/;
+set notFHBonus(pestType) /soilHerb,dessic,dualSpraying/;
 set addSavings(pestType) / fung, insect, growthReg /;
 
 set herbProduct /

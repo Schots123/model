@@ -299,54 +299,51 @@ senAn_151_teValueAlgoCosts <- senAn_151_teValueAlgoCosts %>%
 
 
 #Only for table creation!!!
-#senAn_151_teValueAnnFee$landUsedAvg <- NULL
-#senAn_151_teValueAnnFee$Winterweizen <- NULL
-#senAn_151_teValueAnnFee$Wintergerste <- NULL
-#senAn_151_teValueAnnFee$Winterraps <- NULL
-#senAn_151_teValueAnnFee$BA_Sprayer <- NULL
-#senAn_151_teValueAnnFee$avgAnProf <- NULL
-#senAn_151_teValueAnnFee$diCostsPesti <- NULL
-#senAn_151_teValueAnnFee$fuelCostsSprayer <- NULL
-#senAn_151_teValueAnnFee$repCostsSprayer <- NULL
-#senAn_151_teValueAnnFee$labCostsSprayer <- NULL
-#senAn_151_teValueAnnFee$deprecSprayer <- NULL
-#senAn_151_teValueAnnFee$varCostsSprayer <- NULL
-#senAn_151_teValueAnnFee$fixCostsSprayer <- NULL
-#senAn_151_teValueAnnFee$algCosts <- NULL
-#view(senAn_151_teValueAnnFee)
+senAn_151_teValueAnnFee$landUsedAvg <- NULL
+senAn_151_teValueAnnFee$Winterweizen <- NULL
+senAn_151_teValueAnnFee$Wintergerste <- NULL
+senAn_151_teValueAnnFee$Winterraps <- NULL
+senAn_151_teValueAnnFee$BA_Sprayer <- NULL
+senAn_151_teValueAnnFee$avgAnProf <- NULL
+senAn_151_teValueAnnFee$diCostsPesti <- NULL
+senAn_151_teValueAnnFee$fuelCostsSprayer <- NULL
+senAn_151_teValueAnnFee$repCostsSprayer <- NULL
+senAn_151_teValueAnnFee$labCostsSprayer <- NULL
+senAn_151_teValueAnnFee$deprecSprayer <- NULL
+senAn_151_teValueAnnFee$varCostsSprayer <- NULL
+senAn_151_teValueAnnFee$fixCostsSprayer <- NULL
+senAn_151_teValueAnnFee$algCosts <- NULL
 
+senAn_151_teValueAlgoCosts$landUsedAvg <- NULL
+senAn_151_teValueAlgoCosts$Winterweizen <- NULL
+senAn_151_teValueAlgoCosts$Wintergerste <- NULL
+senAn_151_teValueAlgoCosts$Winterraps <- NULL
+senAn_151_teValueAlgoCosts$BA_Sprayer <- NULL
+senAn_151_teValueAlgoCosts$avgAnProf <- NULL
+senAn_151_teValueAlgoCosts$diCostsPesti <- NULL
+senAn_151_teValueAlgoCosts$fuelCostsSprayer <- NULL
+senAn_151_teValueAlgoCosts$repCostsSprayer <- NULL
+senAn_151_teValueAlgoCosts$labCostsSprayer <- NULL
+senAn_151_teValueAlgoCosts$deprecSprayer <- NULL
+senAn_151_teValueAlgoCosts$varCostsSprayer <- NULL
+senAn_151_teValueAlgoCosts$fixCostsSprayer <- NULL
+senAn_151_teValueAlgoCosts$annFee <- NULL
+senAn_151_teValueAlgoCosts$pestPrice <- NULL
 
-#senAn_151_teValueAlgoCosts$landUsedAvg <- NULL
-#senAn_151_teValueAlgoCosts$Winterweizen <- NULL
-#senAn_151_teValueAlgoCosts$Wintergerste <- NULL
-#senAn_151_teValueAlgoCosts$Winterraps <- NULL
-#senAn_151_teValueAlgoCosts$BA_Sprayer <- NULL
-#senAn_151_teValueAlgoCosts$avgAnProf <- NULL
-#senAn_151_teValueAlgoCosts$diCostsPesti <- NULL
-#senAn_151_teValueAlgoCosts$fuelCostsSprayer <- NULL
-#senAn_151_teValueAlgoCosts$repCostsSprayer <- NULL
-#senAn_151_teValueAlgoCosts$labCostsSprayer <- NULL
-#senAn_151_teValueAlgoCosts$deprecSprayer <- NULL
-#senAn_151_teValueAlgoCosts$varCostsSprayer <- NULL
-#senAn_151_teValueAlgoCosts$fixCostsSprayer <- NULL
-#senAn_151_teValueAlgoCosts$annFee <- NULL
-#view(senAn_151_teValueAlgoCosts)
-
-#senAn_151_teValuePestPrice$Winterweizen <- NULL
-#senAn_151_teValuePestPrice$Wintergerste <- NULL
-#senAn_151_teValuePestPrice$Winterraps <- NULL
-#senAn_151_teValuePestPrice$BA_Sprayer <- NULL
-#senAn_151_teValuePestPrice$avgAnProf <- NULL
-#senAn_151_teValuePestPrice$diCostsPesti <- NULL
-#senAn_151_teValuePestPrice$fuelCostsSprayer <- NULL
-#senAn_151_teValuePestPrice$repCostsSprayer <- NULL
-#senAn_151_teValuePestPrice$labCostsSprayer <- NULL
-#senAn_151_teValuePestPrice$deprecSprayer <- NULL
-#senAn_151_teValuePestPrice$varCostsSprayer <- NULL
-#senAn_151_teValuePestPrice$fixCostsSprayer <- NULL
-#senAn_151_teValuePestPrice$algCosts <- NULL
-#senAn_151_teValuePestPrice$annFee <- NULL
-
+senAn_151_teValuePestPrice$Winterweizen <- NULL
+senAn_151_teValuePestPrice$Wintergerste <- NULL
+senAn_151_teValuePestPrice$Winterraps <- NULL
+senAn_151_teValuePestPrice$BA_Sprayer <- NULL
+senAn_151_teValuePestPrice$avgAnProf <- NULL
+senAn_151_teValuePestPrice$diCostsPesti <- NULL
+senAn_151_teValuePestPrice$fuelCostsSprayer <- NULL
+senAn_151_teValuePestPrice$repCostsSprayer <- NULL
+senAn_151_teValuePestPrice$labCostsSprayer <- NULL
+senAn_151_teValuePestPrice$deprecSprayer <- NULL
+senAn_151_teValuePestPrice$varCostsSprayer <- NULL
+senAn_151_teValuePestPrice$fixCostsSprayer <- NULL
+senAn_151_teValuePestPrice$algCosts <- NULL
+senAn_151_teValuePestPrice$annFee <- NULL
 
 
 #Create subsets for each scenario and remove dataset including both subsets

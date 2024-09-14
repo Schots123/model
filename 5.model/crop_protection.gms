@@ -1,9 +1,11 @@
+*
+* --- Pivotal module for spraying technologies
+*
 
 equation
     e_CropSprayerPlot(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance) Links crop allocation decision with sprayer decision
     e_SST_BA_AdoptionStrategy(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario) Links BA Sprayer and SST Sprayer to adoption strategy with both sprayer types 
 ;
-
 
 *
 * --- Linking binary variables for crop management decision with binary variable for technology allocation
@@ -20,7 +22,7 @@ e_cropSprayerPlot(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance)
 *following condition necessary because if additional BA sprayer is used, at least 1 passage has to be defined to ensure
 *that the model has to buy the sprayer (in e_sprayerFieldDays)
         $ (sum((pestType,halfMonth),
-            p_sprayerPassagesMonthSST27m(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)) gt 0)
+            p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)) gt 0)
     ) 
 *following part is required for scenarios, where pesticide treatments are split up between BA sprayer and SST
     - sum((technology,scenario,spotSprayer)
@@ -107,6 +109,8 @@ e_dcPestiSprayer..
     ) * pestPriceVar
 ;
 
+
+
 *
 *  --- Depreciation calculations of technologies 
 *
@@ -144,8 +148,8 @@ e_sprayerFieldDays(scenSprayer,halfMonth)..
         ),      
     v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer)
         * p_plotData(curPlots,"size") * farmSizeVar
-        * p_sprayerPassagesMonthSST27m(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)
-        * passageVar(technology)
+        * p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)
+        * passageVar(technology,scenario,pestType)
         * p_technoTimeReq(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
         * timeReqVar(technology,scenario,scenSprayer,pestType)
         
@@ -161,15 +165,14 @@ e_sprayerFieldDays(scenSprayer,halfMonth)..
         ),      
     v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer)
         * p_plotData(curPlots,"size") * farmSizeVar
-        * p_sprayerPassagesMonthSST27m(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)
-        * passageVar(technology)
+        * p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)
+        * passageVar(technology,scenario,pestType)
         * p_technoTimeReq(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
         * timeReqVar(technology,scenario,scenSprayer,pestType)
     )) / 24
 ;
 
-*SSPAs with SSTs which can only apply site-specifically with enough daylight only have half of the 
-*available field working days available for spraying for each half month
+*SSPAs with SSTs require favorable light conditions for spraying - it is assumed that SST_27m can only utilize half of the available spraying days
 e_sprayerFieldDaysHalf(scenSprayer,halfMonth) $ sprayerHalfFieldDays(scenSprayer)..
     v_numberSprayer(scenSprayer) * fieldDays(halfMonth) / 2
     =G=
@@ -184,8 +187,8 @@ e_sprayerFieldDaysHalf(scenSprayer,halfMonth) $ sprayerHalfFieldDays(scenSprayer
         ),      
     v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer)
         * p_plotData(curPlots,"size") * farmSizeVar
-        * p_sprayerPassagesMonthSST27m(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)
-        * passageVar(technology)
+        * p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)
+        * passageVar(technology,scenario,pestType)
         * p_technoTimeReq(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
         * timeReqVar(technology,scenario,scenSprayer,pestType)
     ) / 24
@@ -193,7 +196,7 @@ e_sprayerFieldDaysHalf(scenSprayer,halfMonth) $ sprayerHalfFieldDays(scenSprayer
 
 
 *
-* --- Depreciation calculations - either time or hectare based
+* --- Depreciation calculations - time based
 *
 e_deprecTimeSprayer(scenSprayer)..
     v_deprecSprayer(scenSprayer) 
@@ -204,30 +207,9 @@ e_deprecTimeSprayer(scenSprayer)..
     + p_tractorDeprec(scenSprayer) * v_labReq(scenSprayer)
 ;
 
-$ontext
-e_deprecTechnoHa(scenSprayer)..
-    v_deprecSprayer(scenSprayer) 
-    =G=
-    ((p_technoValue(scenSprayer) - p_technoRemValue(scenSprayer)) * technoValueVar(scenSprayer)) 
-    / p_technoAreaCapac(scenSprayer)
-    * sum((curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario)
-    $ (
-        curPlots_ktblSize(curPlots,KTBL_size) 
-        AND curPlots_ktblDistance(curPlots,KTBL_distance)
-        AND curPlots_ktblYield(curPlots,KTBL_yield) 
-        AND ktblCrops_KtblYield(curCrops,KTBL_yield)
-        AND p_technology_scenario_scenSprayer(technology,scenario,scenSprayer)
-    ),       
-        v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer)
-            * p_plotData(curPlots,"size") * farmSizeVar
-*            * p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
-    )
-    + p_tractorDeprec(scenSprayer) * v_labReq(scenSprayer)
-;
-$offtext
 
 *
-* --- interest for sprayers is calculated with remaining value technique (KTBL)
+* --- interest for sprayers is calculated with residual method (KTBL)
 *
 e_interestSprayer(scenSprayer)..
     v_interestSprayer(scenSprayer) 
@@ -248,7 +230,7 @@ e_otherCostsSprayer(scenSprayer)..
 ;
 
 *
-* --- Overall fixed costs for all sprayers used combined (other costs not included anymore?!)
+* --- Overall fixed costs for all sprayers used combined
 * 
 positive variables
     v_varCostsSprayer(scenSprayer)
@@ -268,8 +250,8 @@ e_fixCostsPestiSprayer(scenSprayer)..
         v_deprecSprayer(scenSprayer) 
         + v_interestSprayer(scenSprayer)
         + v_otherCostsSprayer(scenSprayer)
-        + v_numberSprayer(scenSprayer) * p_annualFeeSST(scenSprayer)
         + v_labReq(scenSprayer) * labPrice
+        + v_numberSprayer(scenSprayer) * p_annualFeeSST(scenSprayer)
 ;
 
 parameter p_algorithmCostsPerHa(technology,scenario,scenSprayer,pestType) parameter only important for sensitivity analysis where algorithm costs are considered;
@@ -287,9 +269,9 @@ e_varCostsPestiSprayer(scenSprayer)..
 *fuel costs for spraying operation
     v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer)
         * p_plotData(curPlots,"size") * farmSizeVar
-        * sum(pestType,
-            p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
-            * passageVar(technology)
+        * sum((pestType,halfMonth),
+            p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)
+            * passageVar(technology,scenario,pestType)
             * (
                 p_technoFuelCons(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
                     * newFuelPrice 
@@ -302,9 +284,9 @@ e_varCostsPestiSprayer(scenSprayer)..
 *reapir costs for spraying operation
     + v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer)
         * p_plotData(curPlots,"size") * farmSizeVar
-        * sum(pestType,
-            p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType)
-            * passageVar(technology)
+        * sum((pestType,halfMonth),
+            p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)
+            * passageVar(technology,scenario,pestType)
             * (
                 p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) 
                 + p_technoMaintenance(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType) * (3/12) * 0.03
@@ -315,10 +297,8 @@ e_varCostsPestiSprayer(scenSprayer)..
     + v_binPlotTechno(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,technology,scenario,scenSprayer)
         * p_plotData(curPlots,"size") * farmSizeVar
         * sum((pestType,halfMonth),
-*algorithm costs are determined for pesticides applied with SSPAs -> I have to use the number of passages counting the number of SSPAs for simultaneous SSPAs and BAs with
-*SST_27m
-            p_sprayerPassagesMonthSST27m(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)
-            * passageVar(technology)
+            p_sprayerPassagesMonth(curCrops,KTBL_yield,technology,scenario,scenSprayer,pestType,halfMonth)
+            * passageVar(technology,scenario,pestType)
             * p_algorithmCostsPerHa(technology,scenario,scenSprayer,pestType)
         )
     )

@@ -1,4 +1,6 @@
-
+*
+*  --- Einführung grundlegender Sets zum Arbeiten mit den KTBL Daten
+*
 set allItems /
 landAv,
 landUsedAvg,
@@ -243,8 +245,6 @@ set ktblCrops_KtblYield(KTBL_crops,KTBL_yield) /
 'Zuckerrueben'.'niedrig, mittlerer Boden' YES 
 'Zuckerrueben'.'sehr niedrig, leichter Boden' YES 
 /;
-
-
 
 
 set ktblCrops_KtblSystem_KtblYield(KTBL_crops,KTBL_system,KTBL_yield) /
