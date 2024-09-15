@@ -25,7 +25,7 @@ scalar labPrice price for labour in euro per hour /21/;
 
 $include '2.ktblData/KTBL_inputOptions+Sets.gms'
 $include '4.cropProtectionData/LWK_spraySequence.gms'
-$setglobal farmNumber 151.142
+$setglobal farmNumber 162.141
 $include '3.farmData/farm_%farmNumber%.gms'
 $include '4.cropProtectionData/technologyData.gms'
 $include '5.model/fruchtfolge.gms'

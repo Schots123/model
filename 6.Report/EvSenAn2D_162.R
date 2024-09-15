@@ -48,7 +48,6 @@ senAn_162_varCostsSprayer <- subset(senAn_farm162, allItems_1 == "varCostsSpraye
 senAn_162_fixCostsSprayer <- subset(senAn_farm162, allItems_1 == "fixCostsSprayer")
 
 #smaller subsets for assignment of values to each sensitivity analysis
-senAn_162_teValue <- subset(senAn_farm162, allItems_1 == "%SSTValue")
 senAn_162_PestEff <- subset(senAn_farm162, allItems_1 == "%pestiSav")
 senAn_162_time <- subset(senAn_farm162, allItems_1 == "%timeReq")
 senAn_162_fuel <- subset(senAn_farm162, allItems_1 == "%fuelCons")
@@ -80,7 +79,6 @@ colnames(senAn_162_deprecSprayer)[5] <- "deprecSprayer"
 colnames(senAn_162_varCostsSprayer)[5] <- "varCostsSprayer"
 colnames(senAn_162_fixCostsSprayer)[5] <- "fixCostsSprayer"
 
-colnames(senAn_162_teValue)[5] <- "SSTValue"
 colnames(senAn_162_PestEff)[5] <- "PestEff"
 colnames(senAn_162_time)[5] <- "timeReq"
 colnames(senAn_162_fuel)[5] <- "fuelCons"
@@ -112,7 +110,6 @@ senAn_162_deprecSprayer$allItems_1 <- NULL
 senAn_162_varCostsSprayer$allItems_1 <- NULL
 senAn_162_fixCostsSprayer$allItems_1 <- NULL
 
-senAn_162_teValue$allItems_1 <- NULL
 senAn_162_PestEff$allItems_1 <- NULL
 senAn_162_time$allItems_1 <- NULL
 senAn_162_fuel$allItems_1 <- NULL
@@ -121,30 +118,6 @@ senAn_162_numPassag$allItems_1 <- NULL
 
 
 #create new combined dataframes for each sensitivity analysis seperately 
-#senAn_162_teValue <- senAn_162_teValue %>%
-#    left_join(senAn_162_landAv, by =c("uni_2","uni_3","uni_4")) %>% 
-#    left_join(senAn_162_landUsed, by =c("uni_2","uni_3","uni_4")) %>% 
-#    left_join(senAn_162_WW, by =c("uni_2","uni_3","uni_4")) %>% 
-#    left_join(senAn_162_WG, by =c("uni_2","uni_3","uni_4")) %>% 
-#    left_join(senAn_162_SB, by =c("uni_2","uni_3","uni_4")) %>% 
-#    left_join(senAn_162_BA45kW, by =c("uni_2","uni_3","uni_4")) %>% 
-#    left_join(senAn_162_BA67kW, by =c("uni_2","uni_3","uni_4")) %>% 
-#    left_join(senAn_162_BA83kW, by =c("uni_2","uni_3","uni_4")) %>% 
-#    left_join(senAn_162_BA_102kW, by =c("uni_2","uni_3","uni_4")) %>% 
-#    left_join(senAn_162_BA_120kW, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_162_BA_200kW, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_162_BA_230kW, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_162_spot6m, by =c("uni_2","uni_3","uni_4")) %>% 
-#    left_join(senAn_162_spot27m, by =c("uni_2","uni_3","uni_4")) %>% 
-#    left_join(senAn_162_avgAnProf, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_162_diCostsPesti, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_162_fuelCostsSprayer, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_162_repCostsSprayer, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_162_labCostsSprayer, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_162_deprecSprayer, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_162_varCostsSprayer, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_162_fixCostsSprayer, by =c("uni_2","uni_3","uni_4"))
-
 senAn_162_PestEff <- senAn_162_PestEff %>%
     left_join(senAn_162_landAv, by =c("uni_2","uni_3","uni_4")) %>% 
     left_join(senAn_162_landUsed, by =c("uni_2","uni_3","uni_4")) %>% 
@@ -294,37 +267,6 @@ rm(senAn_162_fixCostsSprayer)
 #Column Preperation for Visualization
 #####################################
 ###################Technology Value 
-#combine all BA sprayer columns to one
-senAn_162_teValue$numberSST6m <- senAn_162_teValue$spot6m
-senAn_162_teValue$numberSST27m <- senAn_162_teValue$spot27m
-senAn_162_teValue$BA_45kWNum <- senAn_162_teValue$BA_45kW
-senAn_162_teValue$BA_67kWNum <- senAn_162_teValue$BA_67kW
-senAn_162_teValue$BA_83kWNum <- senAn_162_teValue$BA_83kW
-senAn_162_teValue$BA_102kWNum <- senAn_162_teValue$BA_102kW
-senAn_162_teValue$BA_120kWNum <- senAn_162_teValue$BA_120kW
-senAn_162_teValue$BA_200kWNum <- senAn_162_teValue$BA_200kW
-senAn_162_teValue$BA_230kWNum <- senAn_162_teValue$BA_230kW
-senAn_162_teValue[is.na(senAn_162_teValue)] <- ""
-senAn_162_teValue <- senAn_162_teValue %>%
-#rename number values to respective BA Sprayer used
-    mutate(BA_45kW = str_replace(BA_45kW,"1", "BA_45kW")) %>%
-    mutate(BA_67kW = str_replace(BA_67kW,"1", "BA_67kW")) %>%
-    mutate(BA_83kW = str_replace(BA_83kW,"1", "BA_83kW")) %>%
-    mutate(BA_102kW = str_replace(BA_102kW,"1", "BA_102kW")) %>%
-    mutate(BA_120kW = str_replace(BA_120kW,"1", "BA_120kW")) %>%
-    mutate(BA_200kW = str_replace(BA_200kW,"1", "BA_200kW")) %>%
-    mutate(BA_230kW = str_replace(BA_230kW,"1", "BA_230kW")) %>%
-#rename number values to respective SST used
-    mutate(spot6m = str_replace(spot6m,"1", "SST6m")) %>%
-    mutate(spot27m = str_replace(spot27m,"1", "SST27m")) %>%
-#combine columns of BA Sprayer and SST
-    unite(BA_Sprayer, BA_45kW, BA_67kW, BA_83kW, BA_102kW, BA_120kW, BA_200kW, BA_230kW, sep ="") %>%
-    unite(BA_Sprayer_Num, BA_45kWNum, BA_67kWNum, BA_83kWNum, BA_102kWNum, BA_120kWNum, BA_200kWNum, BA_230kWNum, sep="") %>%
-    unite(numberSST, numberSST6m, numberSST27m, sep ="") %>%
-    unite(Technology, spot6m, spot27m, sep ="")
-senAn_162_teValue$Technology[senAn_162_teValue$Technology==""]<-"BA Sprayer"
-
-
 
 ###################Pesticide Efficiency
 senAn_162_PestEff$numberSST6m <- senAn_162_PestEff$spot6m
@@ -526,8 +468,8 @@ PsenAn_162_PestEff1 <- senAn_162_PestEff1 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(-20,20,2), limits = c(-20,20), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(50,400,10), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(-20,20,10), limits = c(-20,20), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -542,7 +484,7 @@ PsenAn_162_PestEff1 <- senAn_162_PestEff1 %>%
         axis.ticks.length = unit(0.15, "cm")
     )
 PsenAn_162_PestEff1
-dev.off()
+
 PsenAn_162_PestEff2 <- senAn_162_PestEff2 %>%
     ggplot(aes(x = landAv,
                y = PestEff,
@@ -565,8 +507,8 @@ PsenAn_162_PestEff2 <- senAn_162_PestEff2 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(-20,20,2), limits = c(-20,20), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(50,400,10), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(-20,20,10), limits = c(-20,20), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -610,8 +552,8 @@ PsenAn_162_time1 <- senAn_162_time1 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(50,400,10), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -626,7 +568,7 @@ PsenAn_162_time1 <- senAn_162_time1 %>%
         axis.ticks.length = unit(0.15, "cm")
     )
 PsenAn_162_time1
-dev.off()
+
 PsenAn_162_time2 <- senAn_162_time2 %>%
     ggplot(aes(x = landAv,
                y = timeReq,
@@ -649,8 +591,8 @@ PsenAn_162_time2 <- senAn_162_time2 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(50,400,10), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -665,7 +607,6 @@ PsenAn_162_time2 <- senAn_162_time2 %>%
         axis.ticks.length = unit(0.15, "cm")
     )
 PsenAn_162_time2
-dev.off()
 
 
 ###################Fuel Consumption
@@ -783,8 +724,8 @@ PsenAn_162_repair1 <- senAn_162_repair1 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(50,400,50), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -828,8 +769,8 @@ PsenAn_162_repair2 <- senAn_162_repair2 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(50,400,50), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -873,8 +814,8 @@ PsenAn_162_numPassag1 <- senAn_162_numPassag1 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(50,400,10), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -912,8 +853,8 @@ PsenAn_162_numPassag2 <- senAn_162_numPassag2 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(50,400,10), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -928,7 +869,7 @@ PsenAn_162_numPassag2 <- senAn_162_numPassag2 %>%
         axis.ticks.length = unit(0.15, "cm")
     )
 PsenAn_162_numPassag2
-dev.off()
+
 
 rm(PsenAn_162_fuel1)
 rm(PsenAn_162_fuel2)

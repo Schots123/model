@@ -37,4 +37,3 @@ PsenAn2DApp <- (PsenAn_162_fuel1 + plot_spacer() + PsenAn_162_fuel2 + plot_space
     theme(legend.spacing.x = unit(0.2, "cm"))
 PsenAn2DApp
 ggsave("PsenAn2DApp.png")
-dev.off()

@@ -1,29 +1,28 @@
 
 library(ggpubr)
 library(scatterplot3d)
+
 #get legends for merged plot
-legend_te1 <- get_legend(PsenAn_162_time1)
-legend_te2 <- get_legend(PsenAn_162_PestEff2)
-legend_BA <- get_legend(PsenAn_162_repair2)
+#legend_te1 <- get_legend(PsenAn_162_time1)
+#legend_te2 <- get_legend(PsenAn_162_PestEff2)
+#legend_BA <- get_legend(PsenAn_162_repair2)
+#
+#legend_te22 <- get_legend(PsenAn_162_LEGEND)
+#
+#legend_te1 <- as_ggplot(legend_te1)
+#legend_te2 <- as_ggplot(legend_te2)
+#legend_BA <- as_ggplot(legend_BA)
+#
+#legend_te22 <- as_ggplot(legend_te22)
+#
+#dev.off()
+#legend_3D <- (legend_te1 + legend_te22 + legend_BA +
+#    plot_layout(ncol = 3, nrow = 1) + 
+#    plot_layout(widths=unit(c(8.5,12,1.5),"cm"), height = unit(c(1),"cm")))
+#legend_3D
+#legend_te1
 
-legend_te22 <- get_legend(PsenAn_162_LEGEND)
 
-legend_te1 <- as_ggplot(legend_te1)
-legend_te2 <- as_ggplot(legend_te2)
-legend_BA <- as_ggplot(legend_BA)
-
-legend_te22 <- as_ggplot(legend_te22)
-
-dev.off()
-legend_3D <- (legend_te1 + legend_te22 + legend_BA +
-    plot_layout(ncol = 3, nrow = 1) + 
-    plot_layout(widths=unit(c(8.5,12,1.5),"cm"), height = unit(c(1),"cm")))
-legend_3D
-legend_te1
-dev.off()
-
-
-?scatterplot3d
 ##Plot for higher pesticide costs and acquisition costs 
 layout(matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE))
 PsenAn_162_teValuePestPrice1 <- scatterplot3d(senAn_162_teValuePestPrice1$SSTValue, senAn_162_teValuePestPrice1$pestPrice, senAn_162_teValuePestPrice1$landAv,
@@ -146,10 +145,9 @@ PsenAn_151_teValuePestPrice2 <- scatterplot3d(senAn_151_teValuePestPrice2$SSTVal
     color = colors2teValuePestPrice_151,
     #grid = FALSE,
     box = FALSE)
-dev.off()
 
 
-?scatterplot3d
+
 ##Plot for fees and acquisition costs sugar beet farm
 layout(matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE))
 PsenAn_162_teValueAnnFee1 <- scatterplot3d(senAn_162_teValueAnnFee1$SSTValue, senAn_162_teValueAnnFee1$annFee, senAn_162_teValueAnnFee1$landAv,
@@ -272,12 +270,6 @@ PsenAn_162_teValueAlgoCosts2 <- scatterplot3d(senAn_162_teValueAlgoCosts2$SSTVal
     color = colors2teValueAlgoCosts_162,
     #grid = FALSE,
     box = FALSE)
-dev.off()
-
-
-
-
-
 
 
 ##Plot for fees and acquisition costs cereal farm
@@ -402,6 +394,3 @@ PsenAn_151_teValueAlgoCosts1 <- scatterplot3d(senAn_151_teValueAlgoCosts1$SSTVal
     color = colors2teValueAlgoCosts_151,
     #grid = FALSE,
     box = FALSE)
-view(senAn_151_teValueAlgoCosts1)
-?scatterplot3d
-dev.off()

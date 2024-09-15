@@ -357,102 +357,6 @@ technoComp_farm151 <- technoComp_farm151 %>%
 ###################
 #DATA VISUALIZATION
 ###################
-PteComp162 <- technoComp_farm162 %>%
-#aes tells R which variables are mapped against which visual characteristics on the canvas 
-    ggplot(aes(x = landAv,
-           y = avgAnnFarmProf,
-           colour = Scenario))+ 
-#    geom_smooth(se = F)+
-#geom_point tells R to use points as the geometry (scatter plot)
-    geom_point(aes(alpha = SST,
-                    shape = BA_Sprayer_Num), size = 0.5)+
-#rename graph labels 
-    labs(x = "Farm size (ha)",
-         y = "(in 1,000€)")+
-#Formatting of graph
-#Formatting of graph tite
-    ggtitle(label ="Farm profit", subtitle = "Root crop farm")+
-    theme(
-            plot.title = element_text(face ="bold", size =12, hjust=0.5),
-            plot.subtitle = element_text(face ="bold", size =12, colour ="#CC3300")
-    )+
-#Formatting of legend
-    scale_shape_manual(name = "BA Sprayer",
-                            breaks = c("", "1"),
-                            labels = c("No", "Yes"),
-                            values=c(1,19))+
-    scale_colour_manual(name = "Scenario & technology\nused",
-                            breaks = c("Base", "SST6m_FH", "SST27m_FH", "SST6m_FHBonus", "SST27m_FHBonus"),
-                            labels = c("Base", "Scenario 1: SST6m", "Scenario 1: SST27m", "Scenario 2: SST6m", "Scenario 2: SST27m"),
-                            values = c("#333333", "#006600", "#33FF00", "#000099", "#0099FF"))+
-    scale_alpha_manual(name = "Number of SSTs used",
-                            breaks = c("", "1", "2"),
-                            labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values = c(0.55, 0.55, 1))+           
-#formatting of grid
-    theme(
-        panel.background = element_rect(fill = "white"),
-        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
-        plot.margin = margin(t =0, r =0, b=0, l=0)
-    )+
-#formatting of axis
-    scale_y_continuous(breaks=seq(50,315,50), limits = c(0,315), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(50,400,50), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
-    theme(
-        axis.title.y = element_text(face="bold", vjust=2, size = 10), 
-        axis.title.x = element_text(face="bold", vjust=0.3, size = 10),
-        axis.text = element_text(size = 10),
-        axis.line = element_line(size = 0.3, colour ="#CC3300", linetype =1),
-        axis.ticks = element_line(size = 0.5, colour ="#CC3300"),
-        axis.ticks.length = unit(0.2, "cm")
-    )
-PteComp162
-ggsave("teComp162.png")
-
-
-
-PteComp151 <- technoComp_farm151 %>%
-    ggplot(aes(x = landAv,
-           y = avgAnnFarmProf,
-           colour = Scenario))+ 
-    geom_point(aes(alpha = SST,
-                    shape = BA_Sprayer_Num), size = 0.5)+
-    labs(x = "Farm size (in ha)",
-         y = "(in 1,000€)")+
-    ggtitle(label ="", subtitle = "Cereal farm")+
-    theme(
-            plot.subtitle = element_text(face ="bold", size =12, colour = "#CC9900"),
-            plot.title = element_text(size = 0)
-    )+
-    scale_shape_manual(name = "BA Sprayer",
-                            breaks = c("", "1"),
-                            labels = c("No", "Yes"),
-                            values=c(1,19))+
-    scale_colour_manual(name = "Scenario & technology\nused",
-                            breaks = c("Base", "SST6m_FH", "SST27m_FH", "SST6m_FHBonus", "SST27m_FHBonus"),
-                            labels = c("Base", "Scenario 1: SST6m", "Scenario 1: SST27m", "Scenario 2: SST6m", "Scenario 2: SST27m"),
-                            values = c("#333333", "#006600", "#33FF00", "#000099", "#0099FF"))+
-    scale_alpha_manual(name = "Number of SSTs used",
-                            breaks = c("", "1", "2"),
-                            labels = c("None", "1 Sprayer", "2 Sprayer"),
-                            values = c(0.55, 0.55, 1))+           
-    theme(
-        panel.background = element_rect(fill = "white"),
-        panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
-        plot.margin = margin(t =0, r =0, b=0, l=0)
-    )+
-    scale_y_continuous(breaks=seq(50,250,50), limits = c(0,250), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(50,400,50), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
-    theme(
-        axis.title.y = element_text(face="bold", vjust=2, size = 10), 
-        axis.title.x = element_text(face="bold", vjust=0.3, size = 10),
-        axis.text = element_text(size = 10),
-        axis.line = element_line(size = 0.3, colour = "#CC9900", linetype =1),
-        axis.ticks = element_line(size = 0.5, colour = "#CC9900"),
-        axis.ticks.length = unit(0.2, "cm")
-    )
-PteComp151
-ggsave("teComp151.png")
 
 ###########################################
 #Plots for average annual net profit per ha
@@ -460,7 +364,7 @@ ggsave("teComp151.png")
 #Create column for net profit per ha
 technoComp_farm162$farmProfHa <- technoComp_farm162$avgAnnFarmProf / technoComp_farm162$landAv * 1000
 technoComp_farm151$farmProfHa <- technoComp_farm151$avgAnnFarmProf / technoComp_farm151$landAv * 1000
-view(technoComp_farm162)
+
 PteComp162Ha <- technoComp_farm162 %>%
 #aes tells R which variables are mapped against which visual characteristics on the canvas 
     ggplot(aes(x = landAv,
@@ -509,10 +413,8 @@ PteComp162Ha <- technoComp_farm162 %>%
         axis.ticks.length = unit(0.2, "cm")
     )
 PteComp162Ha
-dev.off()
 ggsave("teCompHa162.png")
-?scale_x_continuous
-view(technoComp_farm162)
+
 
 PteComp151Ha <- technoComp_farm151 %>%
     ggplot(aes(x = landAv,
@@ -555,41 +457,11 @@ PteComp151Ha <- technoComp_farm151 %>%
     )
 PteComp151Ha
 ggsave("teCompHa151.png")
-view(technoComp_farm151)
 
 
-##################4 plots grid with average annual net profit and average annual net profit per ha 
+
+##################2 plots grid with average annual net profit per ha 
 library(patchwork)
-
-PteCompPlotComb <- (PteComp162 + plot_spacer() + PteComp162Ha + plot_spacer() + plot_spacer() + plot_spacer() + PteComp151 + plot_spacer() + PteComp151Ha) +
-    plot_layout(ncol = 3, nrow = 3) +
-    plot_layout(widths=unit(c(10,1,10),"cm"), height = unit(c(8,0,8),"cm")) +
-#Creation of shared legend 
-    plot_layout(guides = "collect") & 
-    theme(legend.position="bottom", legend.box = "horizontal", legend.direction = "vertical") &
-    theme(legend.title = element_text(face = "bold", size = 9, hjust=.5)) &
-    theme((legend.text = element_text(size = 9))) & 
-    #theme(legend.background = element_rect(colour =1)) &
-    guides(colour = guide_legend(order=1, override.aes = list(size=4)), alpha = guide_legend(order=2, override.aes = list(size=4)), shape = guide_legend(order=3, override.aes = list(size = 4))) &
-    theme(legend.key.size = unit(1,"line"))
-PteCompPlotComb
-ggsave("teCompProf&Ha.png")
-
-
-PteCompPlot <- (PteComp162 + plot_spacer() + PteComp151) +
-    plot_layout(ncol = 3, nrow = 1) +
-    plot_layout(widths=unit(c(10,0.1,10),"cm"), height = unit(c(14),"cm")) +
-#Creation of shared legend 
-    plot_layout(guides = "collect") & 
-    theme(legend.position="bottom", legend.box = "horizontal", legend.direction = "vertical") &
-    theme(legend.title = element_text(face = "bold", size = 9, hjust=.5)) &
-    theme((legend.text = element_text(size = 9))) & 
-    #theme(legend.background = element_rect(colour =1)) &
-    guides(colour = guide_legend(order=1, override.aes = list(size=4)), alpha = guide_legend(order=2, override.aes = list(size=4)), shape = guide_legend(order=3, override.aes = list(size = 4))) &
-    theme(legend.key.size = unit(1,"line"))
-PteCompPlot
-ggsave("teCompProf.png")
-
 
 PteCompPlotHa <- (PteComp162Ha + plot_spacer() + PteComp151Ha) +
     plot_layout(ncol = 3, nrow = 1) +
@@ -606,12 +478,9 @@ PteCompPlotHa <- (PteComp162Ha + plot_spacer() + PteComp151Ha) +
 PteCompPlotHa
 ggsave("teCompProfHa.png")
 
-
-rm(PteComp151)
 rm(PteComp151Ha)
-rm(PteComp162)
 rm(PteComp162Ha)
-rm(PteCompPlotComb)
+rm(PteCompPlotHa)
 
 rm(m162technoComp)
 rm(m151technoComp)

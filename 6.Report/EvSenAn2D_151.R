@@ -109,31 +109,6 @@ senAn_151_fuel$allItems_1 <- NULL
 senAn_151_repair$allItems_1 <- NULL
 senAn_151_numPassag$allItems_1 <- NULL
 
-#create new combined dataframes for each sensitivity analysis seperately 
-#senAn_151_teValue <- senAn_151_teValue %>%
-#     left_join(senAn_151_landAv, by =c("uni_2","uni_3","uni_4")) %>% 
-#     left_join(senAn_151_landUsed, by =c("uni_2","uni_3","uni_4")) %>% 
-#    left_join(senAn_151_WW, by =c("uni_2","uni_3","uni_4")) %>% 
-#    left_join(senAn_151_WG, by =c("uni_2","uni_3","uni_4")) %>% 
-#    left_join(senAn_151_WR, by =c("uni_2","uni_3","uni_4")) %>% 
-#     left_join(senAn_151_BA45kW, by =c("uni_2","uni_3","uni_4")) %>% 
-#     left_join(senAn_151_BA67kW, by =c("uni_2","uni_3","uni_4")) %>% 
-#     left_join(senAn_151_BA83kW, by =c("uni_2","uni_3","uni_4")) %>% 
-#     left_join(senAn_151_BA_102kW, by =c("uni_2","uni_3","uni_4")) %>% 
-#     left_join(senAn_151_BA_120kW, by =c("uni_2","uni_3","uni_4")) %>%
-#     left_join(senAn_151_BA_200kW, by =c("uni_2","uni_3","uni_4")) %>%
-#     left_join(senAn_151_BA_230kW, by =c("uni_2","uni_3","uni_4")) %>%
-#     left_join(senAn_151_spot6m, by =c("uni_2","uni_3","uni_4")) %>% 
-#     left_join(senAn_151_spot27m, by =c("uni_2","uni_3","uni_4")) %>% 
-#     left_join(senAn_151_avgAnProf, by =c("uni_2","uni_3","uni_4"))
-#    left_join(senAn_151_diCostsPesti, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_151_fuelCostsSprayer, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_151_repCostsSprayer, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_151_labCostsSprayer, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_151_deprecSprayer, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_151_varCostsSprayer, by =c("uni_2","uni_3","uni_4")) %>%
-#    left_join(senAn_151_fixCostsSprayer, by =c("uni_2","uni_3","uni_4"))
-
 senAn_151_PestEff <- senAn_151_PestEff %>%
      left_join(senAn_151_landAv, by =c("uni_2","uni_3","uni_4")) %>% 
      left_join(senAn_151_landUsed, by =c("uni_2","uni_3","uni_4")) %>% 
@@ -282,36 +257,6 @@ rm(senAn_151_fixCostsSprayer)
 #Column Preperation for Visualization
 #####################################
 ###################Technology Value 
-#combine all BA sprayer columns to one
-senAn_151_teValue$numberSST6m <- senAn_151_teValue$spot6m
-senAn_151_teValue$numberSST27m <- senAn_151_teValue$spot27m
-senAn_151_teValue$BA_45kWNum <- senAn_151_teValue$BA_45kW
-senAn_151_teValue$BA_67kWNum <- senAn_151_teValue$BA_67kW
-senAn_151_teValue$BA_83kWNum <- senAn_151_teValue$BA_83kW
-senAn_151_teValue$BA_102kWNum <- senAn_151_teValue$BA_102kW
-senAn_151_teValue$BA_120kWNum <- senAn_151_teValue$BA_120kW
-senAn_151_teValue$BA_200kWNum <- senAn_151_teValue$BA_200kW
-senAn_151_teValue$BA_230kWNum <- senAn_151_teValue$BA_230kW
-senAn_151_teValue[is.na(senAn_151_teValue)] <- ""
-senAn_151_teValue <- senAn_151_teValue %>%
-#rename number values to respective BA Sprayer used
-    mutate(BA_45kW = str_replace(BA_45kW,"1", "BA_45kW")) %>%
-    mutate(BA_67kW = str_replace(BA_67kW,"1", "BA_67kW")) %>%
-    mutate(BA_83kW = str_replace(BA_83kW,"1", "BA_83kW")) %>%
-    mutate(BA_102kW = str_replace(BA_102kW,"1", "BA_102kW")) %>%
-    mutate(BA_120kW = str_replace(BA_120kW,"1", "BA_120kW")) %>%
-    mutate(BA_200kW = str_replace(BA_200kW,"1", "BA_200kW")) %>%
-    mutate(BA_230kW = str_replace(BA_230kW,"1", "BA_230kW")) %>%
-#rename number values to respective SST used
-    mutate(spot6m = str_replace(spot6m,"1", "SST6m")) %>%
-    mutate(spot27m = str_replace(spot27m,"1", "SST27m")) %>%
-#combine columns of BA Sprayer and SST
-    unite(BA_Sprayer, BA_45kW, BA_67kW, BA_83kW, BA_102kW, BA_120kW, BA_200kW, BA_230kW, sep ="") %>%
-    unite(BA_Sprayer_Num, BA_45kWNum, BA_67kWNum, BA_83kWNum, BA_102kWNum, BA_120kWNum, BA_200kWNum, BA_230kWNum, sep="") %>%
-    unite(numberSST, numberSST6m, numberSST27m, sep ="") %>%
-    unite(Technology, spot6m, spot27m, sep ="")
-senAn_151_teValue$Technology[senAn_151_teValue$Technology==""]<-"BA Sprayer"
-
 
 ###################Pesticide Efficiency
 senAn_151_PestEff$numberSST6m <- senAn_151_PestEff$spot6m
@@ -641,8 +586,8 @@ PsenAn_151_time2 <- senAn_151_time2 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(50,400,50), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -814,8 +759,8 @@ PsenAn_151_repair2 <- senAn_151_repair2 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(50,400,10), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -899,8 +844,8 @@ PsenAn_151_numPassag2 <- senAn_151_numPassag2 %>%
                             breaks = c("", "1", "2"),
                             labels = c("None", "1 Sprayer", "2 Sprayer"),
                             values=c(1,1,2))+
-    scale_y_continuous(breaks=seq(50,200,10), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
-    scale_x_continuous(breaks=seq(50,400,10), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
+    scale_y_continuous(breaks=seq(50,200,50), limits = c(50,200), expand = expansion(mult = 0, add = 0))+
+    scale_x_continuous(breaks=seq(100,400,100), limits = c(50,400), expand = expansion(mult = 0, add = 0))+
     theme(
         panel.background = element_rect(fill = "white"),
         panel.grid.major = element_line(colour = "grey", linetype = "dashed"),
@@ -915,10 +860,7 @@ PsenAn_151_numPassag2 <- senAn_151_numPassag2 %>%
         axis.ticks.length = unit(0.15, "cm")
     )
 PsenAn_151_numPassag2
-dev.off()
 
-rm(senAn_151_teValue1)
-rm(senAn_151_teValue2)
 rm(senAn_151_PestEff1)
 rm(senAn_151_PestEff2)
 rm(senAn_151_time1)

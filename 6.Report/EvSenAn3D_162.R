@@ -163,6 +163,7 @@ rm(senAn_162_annFee)
 rm(senAn_162_algoCosts)
 rm(senAn_162_teValue)
 
+
 #####################################
 #Column Preperation for Visualization
 #####################################
@@ -210,6 +211,7 @@ senAn_162_teValuePestPrice <- senAn_162_teValuePestPrice %>%
     mutate(TechnologyNumeric = str_replace(TechnologyNumeric, "2 & 3", "4"))
 
 
+
 ###################SST Value & Annual Fee variation
 senAn_162_teValueAnnFee$numberSST6m <- senAn_162_teValueAnnFee$spot6m
 senAn_162_teValueAnnFee$numberSST27m <- senAn_162_teValueAnnFee$spot27m
@@ -252,6 +254,8 @@ senAn_162_teValueAnnFee <- senAn_162_teValueAnnFee %>%
     mutate(TechnologyNumeric = str_replace(TechnologyNumeric, "SST6m", "2")) %>%
     mutate(TechnologyNumeric = str_replace(TechnologyNumeric, "SST27m", "3")) %>%
     mutate(TechnologyNumeric = str_replace(TechnologyNumeric, "2 & 3", "4"))
+
+
 
 ###################SST Value & Algorithm costs variation
 senAn_162_teValueAlgoCosts$numberSST6m <- senAn_162_teValueAlgoCosts$spot6m
@@ -299,49 +303,49 @@ senAn_162_teValueAlgoCosts <- senAn_162_teValueAlgoCosts %>%
 
 
 #######Only for table creation!!!
-senAn_162_teValueAnnFee$landUsedAvg <- NULL
-senAn_162_teValueAnnFee$Winterweizen <- NULL
-senAn_162_teValueAnnFee$Wintergerste <- NULL
-senAn_162_teValueAnnFee$Zuckerrueben <- NULL
-senAn_162_teValueAnnFee$BA_Sprayer <- NULL
-senAn_162_teValueAnnFee$avgAnProf <- NULL
-senAn_162_teValueAnnFee$diCostsPesti <- NULL
-senAn_162_teValueAnnFee$fuelCostsSprayer <- NULL
-senAn_162_teValueAnnFee$repCostsSprayer <- NULL
-senAn_162_teValueAnnFee$labCostsSprayer <- NULL
-senAn_162_teValueAnnFee$deprecSprayer <- NULL
-senAn_162_teValueAnnFee$varCostsSprayer <- NULL
-senAn_162_teValueAnnFee$fixCostsSprayer <- NULL
-senAn_162_teValueAnnFee$algCosts <- NULL
+#senAn_162_teValueAnnFee$landUsedAvg <- NULL
+#senAn_162_teValueAnnFee$Winterweizen <- NULL
+#senAn_162_teValueAnnFee$Wintergerste <- NULL
+#senAn_162_teValueAnnFee$Zuckerrueben <- NULL
+#senAn_162_teValueAnnFee$BA_Sprayer <- NULL
+#senAn_162_teValueAnnFee$avgAnProf <- NULL
+#senAn_162_teValueAnnFee$diCostsPesti <- NULL
+#senAn_162_teValueAnnFee$fuelCostsSprayer <- NULL
+#senAn_162_teValueAnnFee$repCostsSprayer <- NULL
+#senAn_162_teValueAnnFee$labCostsSprayer <- NULL
+#senAn_162_teValueAnnFee$deprecSprayer <- NULL
+#senAn_162_teValueAnnFee$varCostsSprayer <- NULL
+#senAn_162_teValueAnnFee$fixCostsSprayer <- NULL
+#senAn_162_teValueAnnFee$algCosts <- NULL
 
 
-senAn_162_teValueAlgoCosts$landUsedAvg <- NULL
-senAn_162_teValueAlgoCosts$Winterweizen <- NULL
-senAn_162_teValueAlgoCosts$Wintergerste <- NULL
-senAn_162_teValueAlgoCosts$Zuckerrueben <- NULL
-senAn_162_teValueAlgoCosts$BA_Sprayer <- NULL
-senAn_162_teValueAlgoCosts$avgAnProf <- NULL
-senAn_162_teValueAlgoCosts$diCostsPesti <- NULL
-senAn_162_teValueAlgoCosts$fuelCostsSprayer <- NULL
-senAn_162_teValueAlgoCosts$repCostsSprayer <- NULL
-senAn_162_teValueAlgoCosts$labCostsSprayer <- NULL
-senAn_162_teValueAlgoCosts$deprecSprayer <- NULL
-senAn_162_teValueAlgoCosts$varCostsSprayer <- NULL
-senAn_162_teValueAlgoCosts$fixCostsSprayer <- NULL
-senAn_162_teValueAlgoCosts$annFee <- NULL
+#senAn_162_teValueAlgoCosts$landUsedAvg <- NULL
+#senAn_162_teValueAlgoCosts$Winterweizen <- NULL
+#senAn_162_teValueAlgoCosts$Wintergerste <- NULL
+#senAn_162_teValueAlgoCosts$Zuckerrueben <- NULL
+#senAn_162_teValueAlgoCosts$BA_Sprayer <- NULL
+#senAn_162_teValueAlgoCosts$avgAnProf <- NULL
+#senAn_162_teValueAlgoCosts$diCostsPesti <- NULL
+#senAn_162_teValueAlgoCosts$fuelCostsSprayer <- NULL
+#senAn_162_teValueAlgoCosts$repCostsSprayer <- NULL
+#senAn_162_teValueAlgoCosts$labCostsSprayer <- NULL
+#senAn_162_teValueAlgoCosts$deprecSprayer <- NULL
+#senAn_162_teValueAlgoCosts$varCostsSprayer <- NULL
+#senAn_162_teValueAlgoCosts$fixCostsSprayer <- NULL
+#senAn_162_teValueAlgoCosts$annFee <- NULL
 
 
-senAn_162_teValuePestPrice$BA_Sprayer <- NULL
-senAn_162_teValuePestPrice$avgAnProf <- NULL
-senAn_162_teValuePestPrice$diCostsPesti <- NULL
-senAn_162_teValuePestPrice$fuelCostsSprayer <- NULL
-senAn_162_teValuePestPrice$repCostsSprayer <- NULL
-senAn_162_teValuePestPrice$labCostsSprayer <- NULL
-senAn_162_teValuePestPrice$deprecSprayer <- NULL
-senAn_162_teValuePestPrice$varCostsSprayer <- NULL
-senAn_162_teValuePestPrice$fixCostsSprayer <- NULL
-senAn_162_teValuePestPrice$annFee <- NULL
-senAn_162_teValuePestPrice$algCosts <- NULL
+#senAn_162_teValuePestPrice$BA_Sprayer <- NULL
+#senAn_162_teValuePestPrice$avgAnProf <- NULL
+#senAn_162_teValuePestPrice$diCostsPesti <- NULL
+#senAn_162_teValuePestPrice$fuelCostsSprayer <- NULL
+#senAn_162_teValuePestPrice$repCostsSprayer <- NULL
+#senAn_162_teValuePestPrice$labCostsSprayer <- NULL
+#senAn_162_teValuePestPrice$deprecSprayer <- NULL
+#senAn_162_teValuePestPrice$varCostsSprayer <- NULL
+#senAn_162_teValuePestPrice$fixCostsSprayer <- NULL
+#senAn_162_teValuePestPrice$annFee <- NULL
+#senAn_162_teValuePestPrice$algCosts <- NULL
 
 
 #Create subsets for each scenario and remove dataset including both subsets
@@ -356,9 +360,6 @@ rm(senAn_162_teValueAnnFee)
 senAn_162_teValueAlgoCosts1 <- subset(senAn_162_teValueAlgoCosts, uni_5 == "Base|FH")
 senAn_162_teValueAlgoCosts2 <- subset(senAn_162_teValueAlgoCosts, uni_5 == "Base|FHBonus")
 rm(senAn_162_teValueAlgoCosts)
-
-view(senAn_162_teValueAlgoCosts1)
-view(senAn_162_teValueAlgoCosts2)
 
 ###################
 #DATA VISUALIZATION
@@ -390,158 +391,3 @@ rm(shapes1)
 rm(shapes2)
 rm(colors1)
 rm(colors2)
-
-
-###Visualization
-layout(matrix(c(1,2,3,4,5,6), nrow = 2, ncol = 3))
-PsenAn_162_teValuePestPrice1 <- scatterplot3d(senAn_162_teValuePestPrice1$SSTValue, senAn_162_teValuePestPrice1$pestPrice,
-    main = "\nRoot crop farm",
-    col.main = "#CC3300",
-    angle = 78,
-    xlab = "",
-    ylab = "Pesticide costs (%)",
-    zlab = "",
-    scale.y = 1.25,
-    axis = TRUE,
-    tick.marks = TRUE,
-    label.tick.marks = TRUE,
-    xlim = c(50,150),
-    ylim = c(100,400),
-    zlim = c(50,400),
-    lab = c(4,4),
-    lab.z = c(5),
-    cex.axis = 0.9,
-    y.axis.offset = 0.3,
-    col.axis = "#CC3300",
-    col.lab = "#000000",
-    pch = shapes1teValuePestPrice_162,
-    #type ="h",
-    color = colors1teValuePestPrice_162,
-    #grid = FALSE,
-    box = FALSE)
-PsenAn_162_teValuePestPrice2 <- scatterplot3d(senAn_162_teValuePestPrice2$SSTValue, senAn_162_teValuePestPrice2$pestPrice, senAn_162_teValuePestPrice2$landAv,
-    main = "\nRoot crop farm",
-    col.main = "#CC3300", 
-    angle = 78,
-    xlab = "",
-    ylab = "Pesticide costs (in %)",
-    zlab = "",
-    scale.y = 1.25,
-    axis = TRUE,
-    tick.marks = TRUE,
-    label.tick.marks = TRUE,
-    xlim = c(50,150),
-    ylim = c(100,400),
-    zlim = c(50,400),
-    lab = c(4,4),
-    lab.z = c(5),
-    cex.axis = 0.9,
-    y.axis.offset = 0.3,
-    col.axis = "#CC3300",
-    col.lab = "#000000",
-    pch = shapes2teValuePestPrice_162,
-    type ="h",
-    color = colors2teValuePestPrice_162,
-    #grid = FALSE,
-    box = FALSE)
-PsenAn_162_teValueAnnFee1 <- scatterplot3d(senAn_162_teValueAnnFee1$SSTValue, senAn_162_teValueAnnFee1$annFee, senAn_162_teValueAnnFee1$landAv,
-    main = "Scenario 1",
-    sub = "Scenario 1",
-    col.main = "#009933",
-    angle = 78,
-    xlab = "SST acquisition costs (%)",
-    ylab = "Annual fee (€)",
-    zlab = "Farm size (ha)",
-    scale.y = 2,
-    axis = TRUE,
-    tick.marks = TRUE,
-    label.tick.marks = TRUE,
-    xlim = c(50,150),
-    ylim = c(0,15000),
-    zlim = c(50,400),
-    lab = c(4,4),
-    lab.z = c(5),
-    cex.axis = 0.9,
-    y.axis.offset = 0.3,
-    col.axis = "#CC3300",
-    col.lab = "#000000",
-    pch = shapes1teValueAnnFee_162,
-    type ="h",
-    color = colors1teValueAnnFee_162,
-    #grid = FALSE,
-    box = FALSE)
-PsenAn_162_teValueAnnFee2 <- scatterplot3d(senAn_162_teValueAnnFee2$SSTValue, senAn_162_teValueAnnFee2$annFee, senAn_162_teValueAnnFee2$landAv,
-    main = "Scenario 2",
-    col.main = "#0099FF",
-    angle = 78,
-    xlab = "SST acquisition costs (%)",
-    ylab = "Annual fee (€)",
-    zlab = "Farm size (ha)",
-    scale.y = 2,
-    axis = TRUE,
-    tick.marks = TRUE,
-    label.tick.marks = TRUE,
-    xlim = c(50,150),
-    ylim = c(0,15000),
-    zlim = c(50,400),
-    lab = c(4,4),
-    lab.z = c(5),
-    cex.axis = 0.9,
-    y.axis.offset = 0.3,
-    col.axis = "#CC3300",
-    col.lab = "#000000",
-    pch = shapes2teValueAnnFee_162,
-    type ="h",
-    color = colors2teValueAnnFee_162,
-    #grid = FALSE,
-    box = FALSE)
-PsenAn_162_teValueAlgoCosts1 <- scatterplot3d(senAn_162_teValueAlgoCosts1$SSTValue, senAn_162_teValueAlgoCosts1$algCosts, senAn_162_teValueAlgoCosts1$landAv,
-    angle = 78,
-    xlab = "",
-    ylab = "Ha fee (€)",
-    zlab = "",
-    scale.y = 1.25,
-    axis = TRUE,
-    tick.marks = TRUE,
-    label.tick.marks = TRUE,
-    xlim = c(50,150),
-    ylim = c(0,12),
-    zlim = c(50,400),
-    lab = c(4,6),
-    lab.z = c(5),
-    cex.axis = 0.9,
-    y.axis.offset = 0.3,
-    col.axis = "#CC3300",
-    col.lab = "#000000",
-    pch = shapes1teValueAlgoCosts_162,
-    type ="h",
-    color = colors1teValueAlgoCosts_162,
-    #grid = FALSE,
-    box = FALSE)
-PsenAn_162_teValueAlgoCosts2 <- scatterplot3d(senAn_162_teValueAlgoCosts2$SSTValue, senAn_162_teValueAlgoCosts2$algCosts, senAn_162_teValueAlgoCosts2$landAv,
-    angle = 78,
-    xlab = "",
-    ylab = "Ha fee (€)",
-    zlab = "",
-    scale.y = 1.25,
-    axis = TRUE,
-    tick.marks = TRUE,
-    label.tick.marks = TRUE,
-    xlim = c(50,150),
-    ylim = c(0,12),
-    zlim = c(50,400),
-    lab = c(4,6),
-    lab.z = c(5),
-    cex.axis = 0.9,
-    y.axis.offset = 0.3,
-    col.axis = "#CC3300",
-    col.lab = "#000000",
-    pch = shapes2teValueAlgoCosts_162,
-    type ="h",
-    color = colors2teValueAlgoCosts_162,
-    #grid = FALSE,
-    box = FALSE)
-dev.off()
-
-
-view(senAn_162_teValueAlgoCosts2)

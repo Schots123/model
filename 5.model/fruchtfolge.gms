@@ -360,7 +360,7 @@ loop(farmSizeSteps,
 *4.step: solve model and initiate post model calculations
   solve SprayerAdoptionSST6m using MIP maximizing v_obje;
   $$batinclude '6.Report/report.gms' farmSizeSteps "'SST6m_FH'" 
-*  $$batinclude '6.Report/report_vali.gms'
+  $$batinclude '6.Report/report_vali.gms'
 );
 
 *reestablish data to base level for initiation of next loop
@@ -400,7 +400,7 @@ loop(farmSizeSteps,
 *4.step: solve model and initiate post model calculations
   solve SprayerAdoptionSST27m using MIP maximizing v_obje;
   $$batinclude '6.Report/report.gms' farmSizeSteps "'SST27m_FH'" 
-*  $$batinclude '6.Report/report_vali.gms'
+  $$batinclude '6.Report/report_vali.gms'
 );
 
 *reestablish data to base level for initiation of next loop
@@ -441,7 +441,7 @@ loop(farmSizeSteps,
 *4.step: solve model and initiate post model calculations
   solve SprayerAdoptionSST6m using MIP maximizing v_obje;
   $$batinclude '6.Report/report.gms' farmSizeSteps "'SST6m_FHBonus'" 
-*  $$batinclude '6.Report/report_vali.gms'
+  $$batinclude '6.Report/report_vali.gms'
 );
 
 *reestablish data to base level for initiation of next loop
@@ -482,7 +482,7 @@ loop(farmSizeSteps,
 *4.step: solve model and initiate post model calculations
   solve SprayerAdoptionSST27m using MIP maximizing v_obje;
   $$batinclude '6.Report/report.gms' farmSizeSteps "'SST27m_FHBonus'" 
-*  $$batinclude '6.Report/report_vali.gms'
+  $$batinclude '6.Report/report_vali.gms'
 );
 
 *reestablish data to base level for initiation of next loop
