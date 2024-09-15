@@ -2,7 +2,7 @@ Equations
   e_maxShares(curCropGroups)
   e_maxSharesFavLoc(curCropGroups,KTBL_yieldLev)
   e_oneCropPlot(curPlots)
-  e_cropBreak2years(curPlots,cropsBreak2,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance)
+*  e_cropBreak2years(curPlots,cropsBreak2,KTBL_size,KTBL_yield,KTBL_mechanisation,KTBL_distance)
 ;
 
 *
