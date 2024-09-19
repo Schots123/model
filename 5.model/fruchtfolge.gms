@@ -744,7 +744,7 @@ loop(sensiAnSteps,
 
   technoFuelRandom = uniform(50,200);
   fuelConsVar(SST,scenarioFH,spotSprayer,FH) = (technoFuelRandom/100);
-  fuelConsVar(SST,scenarioFH,spotSprayer,"dualSpraying") $ (technoFuelRandom gt 100)= (technoFuelRandom/100);
+  fuelConsVar(SST,scenarioFH,spotSprayer,"dualSpraying") $ (technoFuelRandom gt 100) = (technoFuelRandom/100);
 *3.step: parameter reformulations required because of parameter variations in loop
   p_totLand = sum(curPlots, p_plotData(curPlots,"size") * farmSizeVar);
   p_totArabLand = sum(curPlots $ (not plots_permPast(curPlots)), p_plotData(curPlots,"size") * farmSizeVar);
