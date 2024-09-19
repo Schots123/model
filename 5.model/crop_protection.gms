@@ -75,8 +75,8 @@ e_SST_BA_AdoptionStrategy(curPlots,curCrops,KTBL_size,KTBL_yield,KTBL_distance,t
 
 
 *
-*  --- 2. Part: Technology Integration and equations to calulate associated direct costs and variable and 
-*       fix machine costs for spot sprayers 
+*  --- 2. Part: Variable and fixed costs for the spraying operation
+*
 
 positive variable v_dcPesti;
 
@@ -112,7 +112,7 @@ e_dcPestiSprayer..
 
 
 *
-*  --- Depreciation calculations of technologies 
+*  --- Fixed sprayer costs 
 *
 positive variables
     v_deprecSprayer(scenSprayer)
@@ -254,6 +254,10 @@ e_fixCostsPestiSprayer(scenSprayer)..
         + v_numberSprayer(scenSprayer) * p_annualFeeSST(scenSprayer)
 ;
 
+
+*
+* -- Variable costs of spraying operation
+*
 parameter p_algorithmCostsPerHa(technology,scenario,scenSprayer,pestType) parameter only important for sensitivity analysis where algorithm costs are considered;
 p_algorithmCostsPerHa(technology,scenario,scenSprayer,pestType) = 0;
 

@@ -1,8 +1,7 @@
 
 *
-*  --- in this file, the data from excel which was retrieved from the sqLite database is 
-*       loaded into a .gdx file for further processing
-
+*  --- In this file, the data from the SQL database is converted into a gdx file
+*
 
 $call =gdxxrw 1.xlsx2gdx/Excel/KTBL_Revenue_gams.xlsx Output=2.ktblData/gdxFiles/KTBL_Revenue.gdx 1.xlsx2gdx/txt/revenues.txt log = 1.xlsx2gdx/log/revenues.log
 $call =gdxxrw 1.xlsx2gdx/Excel/KTBL_DirectCosts_gams.xlsx Output=2.ktblData/gdxFiles/KTBL_DirectCosts.gdx @1.xlsx2gdx/txt/directCosts.txt log = 1.xlsx2gdx/log/directCosts.log

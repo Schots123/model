@@ -1,5 +1,5 @@
 *
-* --- Parameter assignment for technology comparison
+* --- In this file, sets and parameter values for the farm size and profitability factor variations as well as for conditionals are introduced
 *
 set farmSizeSteps /
 sizeStep0*sizeStep175
@@ -207,7 +207,7 @@ p_savePestEff(KTBL_crops,technology,scenario,pestType) = p_technoPestEff(KTBL_cr
 
 
 *
-* -- SST parameter variation placeholders for SST acquisition costs, time requirements, fuel consumption, repair costs and pesticide costs
+* -- SST parameter variation placeholders for SST acquisition costs, pesticide prices, SSPA time requirements, SSPA fuel consumption, SST repair costs, SSPA savings and SSPA sprayer passages
 *
 parameter technoValueVar(scenSprayer) placeholder for SST acquisition cost variations;
 technoValueVar(scenSprayer) = 1;

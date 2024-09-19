@@ -1,5 +1,5 @@
 *
-* -- Dateneinspeisung PSM-Aufwand von den Spritzfolgen der Landwirtschaftskammer Niedersachsen aus Richtwerte Deckungsbeiträge 2023
+* -- This file contains the data of the analyzed spraying sequences
 *
 
 set LWK_crops /
@@ -36,7 +36,6 @@ parameter p_ktblCrops_lwkCrops(KTBL_crops,LWK_crops) /
 set LWK_yield /
 '< 70 dt/ha'
 '> 70 dt/ha Windhalmstandort'
-*'> 70 dt/ha Ackerfuchsschwanz, Weidelgrasstand.'
 '> 60 dt/ha'
 '< 60 dt/ha'
 'alle Ertragsklassen'
@@ -164,8 +163,6 @@ set soilHerb(herbProduct) /
 /;
 
 set foliarHerb(herbProduct) /
-*Goltix Titan und Butisan Gold wurden in Dücker et al 2022 gespottet 
-*Goltix Titan ist auch Mischherbizid mit Boden und Kontaktwirkung, ein Wirkstoff hat aber nur Bodenwirkung
 'Goltix Titan'
 'Sumimax'
 'Omnera LQM'
@@ -183,12 +180,9 @@ set foliarHerb(herbProduct) /
 'Synero 30 SL'
 'Select 240 EC'
 'Agil S'
-*wirkt über Boden und Blatt aber besonders gute Unkrauterfassung im Keimblatt- bzw. erstem Laubblattstadium der Unkräuter
 'Fuego'
 'Targa Super'
-*Sencor ist auch Bodenherbizid, ich lasse es aber mal als Kontaktherbizid durchgehen
 'Sencor'
-*Cato wird auch über Boden aufgenommen
 'Cato'
 'Belvedere Duo'
 'Metafol'
@@ -199,12 +193,10 @@ set foliarHerb(herbProduct) /
 'Hasten'
 'Lontrel 600'
 'Betasana SC'
-*Laudis hat Blattwirkung, Aspect hat Bodenwirkung
 'Laudis Aspect Pack'
 'MaisTer Power'
 'Zintan Saphir Pack'
 'Motivell forte'
-*Boden und Blattwirkung
 'Elumis'
 'Peak'
 'Harmony SX'
@@ -213,8 +205,6 @@ set foliarHerb(herbProduct) /
 /;
 
 parameter p_herbCosts(herbProduct) in € per l or kg without value added tax /
-*Costs according to myagrar.de from 15.05.2024
-*Gamit 36 AMT, Starane XL, focus ultra, belkar, dash from Avagrar
 'Herold SC' 57.12
 'Gamit 36 AMT' 80.4
 'Bandur' 20.81
@@ -297,7 +287,7 @@ parameter p_sprayAmountHerbLWK(LWK_crops,LWK_yield,herbProduct) in l or kg per h
 /;
 
 parameter p_sprayInputCostsNotHerbLWK(LWK_crops,LWK_yield,pestType) /
-*calculated out value added tax
+*prices exclude VAT
 'Winterweizen'.'< 70 dt/ha'.fung 66.33
 'Winterweizen'.'< 70 dt/ha'.insect 7.71
 'Winterweizen'.'< 70 dt/ha'.growthReg 11.77
@@ -347,7 +337,6 @@ p_sprayInputCosts(KTBL_crops,KTBL_yield,"foliarHerb") =
     * p_lwkCrops_lwkYield_ktblYield(LWK_crops,LWK_yield,KTBL_yield)
     * p_ktblCrops_lwkCrops(KTBL_crops,LWK_crops))
 ;
-*option p_sprayInputCosts:1:2:1 display p_sprayInputCosts;
 
 set halfMonth(measures) /
     MRZ1
@@ -370,8 +359,7 @@ set halfMonth(measures) /
     NOV2
 /;
 
-*available field days for field operations including crop protection, mechanical weed control, mineral fertilizer application, seedbed preperation...
-*according to Betriebsplanung Landwirtschaft 2018/2019 for climate region 6 including regions of NRW such as Kleve, Borken and Coesfeld for low soil resistance
+
 parameter fieldDays(halfMonth) /
     MRZ1 1
     MRZ2 4

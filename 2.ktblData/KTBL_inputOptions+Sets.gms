@@ -1,5 +1,5 @@
 *
-*  --- Einführung grundlegender Sets zum Arbeiten mit den KTBL Daten
+*  --- Introduction of elementary sets for the model 
 *
 set allItems /
 landAv,
@@ -31,7 +31,7 @@ otherCostsSprayer,
 varCostsSprayer, 
 fixCostsSprayer,
 modelVali,
-*elements for sensitivity analysis
+*items for sensitivity analysis
 '%SSTValue'
 '%pestiSav'
 '%timeReq'

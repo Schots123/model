@@ -38,7 +38,7 @@ set sprayerScenHalfFieldDays(technology,scenario,pestType) pesticides applied si
     "spot27m"."FH+Bonus+BA"."dualSpraying" YES 
 /;
 
-*the following three parameters are used to confine the possible solutions to the investigated scenarios 
+*the following three parameters are used to restrict the possible solutions to the investigated scenarios 
 parameters 
     p_technology_scenario(technology,scenario)
     p_scenario_scenSprayer(scenario,scenSprayer)
@@ -66,7 +66,6 @@ p_technoRemValue(scenSprayer)
     = p_technoValue(scenSprayer) * 0.2;
 
 
-*fixec costs per working hour for tractor used to pull the sprayer according to maKost assuming full capacity exploitation(24.07.2024)
 parameter p_tractorDeprec(scenSprayer) /
 "spot6m" 3.56
 "spot27m" 6.4
@@ -103,7 +102,6 @@ parameter p_tractorOtherCosts(scenSprayer) /
 
 parameter p_technoPestEff(KTBL_crops,technology,scenario,pestType) pesticide savings due to technology utilization for each type;
 
-*pesticide efficiency block for SST
 p_technoPestEff(KTBL_crops,technology,scenario,"soilHerb") $ (not(sameas(technology,"baseline"))) = 0;
 
 p_technoPestEff(KTBL_crops,technology,scenario,"foliarHerb") 
@@ -140,30 +138,12 @@ p_technoPestEff(KTBL_crops,technology,scenario,addSavings)
 
 p_technoPestEff(KTBL_crops,technology,scenario,"dessic") $ (not(sameas(technology,"baseline"))) = 0;
 
-
 parameter p_technoLifetime(scenSprayer);
 p_technoLifetime(scenSprayer) = 10;
 
 
-*parameter p_technoAreaCapac(scenSprayer);
 *
-**standard KTBL procedure
-*p_technoAreaCapac("BA_45kW") = 4800;
-*p_technoAreaCapac("BA_67kW") = 6000;
-*p_technoAreaCapac("BA_83kW") = 7200;
-*p_technoAreaCapac("BA_102kW") = 9600;
-*p_technoAreaCapac("BA_120kW") = 9600;
-*p_technoAreaCapac("BA_200kW") = 9600;
-*p_technoAreaCapac("BA_230kW") = 14400;
-**sprayer for mechanization level of 45 kW has boom width of 12m (makost 17.05.2024)
-*p_technoAreaCapac("spot6m") = p_technoAreaCapac("BA_45kW")/2;
-**KTBL value for 27m sprayer (makost 17.05.2024)
-*p_technoAreaCapac("spot27m") = 10800;
-
-
-
-*
-*  --- parameters for time requirements, other costs and variable costs 
+*  --- parameters for time requirements, fuel consumption, and repair costs of the spraying operation
 *
 parameters
     p_technoTimeReq(KTBL_size,KTBL_distance,scenario,scenSprayer,pestType)
@@ -174,12 +154,10 @@ parameters
 *
 * --- Parameters for BA technology 
 *
-*p_technoTimeReq(KTBL_size,KTBL_mechanisation,KTBL_distance) = p_ktbl_workingStepsBroadcast(KTBL_size,"45",KTBL_distance,"time") * 2;
-*sprayer is reportedly able to spray between 2.5 and 4 ha in an hour
 
 * --- data source: KTBL-Feldarbeitsrechner: 24.06.2024
 
-*45 kW tractor used, 300 l/ha
+*45 kW tractor, 300 l/ha, 12m boom, 600 l capacity
 p_technoTimeReq("1","1",scenario,"BA_45kW",pestType) = 0.43;
 p_technoFuelCons("1","1",scenario,"BA_45kW",pestType) = 1.27;
 p_technoMaintenance("1","1",scenario,"BA_45kW",pestType) = 4.31;
@@ -335,7 +313,7 @@ p_technoFuelCons("80","15",scenario,"BA_45kW",pestType) = 2.66;
 p_technoMaintenance("80","15",scenario,"BA_45kW",pestType) = 5.83;
 
 
-*45 kW, 300 l/ha
+*45 kW, 300 l/ha, 15m boom, 1000 l capacity
 p_technoTimeReq("1","1",scenario,"BA_67kW",pestType) = 0.37;
 p_technoFuelCons("1","1",scenario,"BA_67kW",pestType) = 1.13;
 p_technoMaintenance("1","1",scenario,"BA_67kW",pestType) = 4.07;
@@ -491,7 +469,7 @@ p_technoFuelCons("80","15",scenario,"BA_67kW",pestType) = 1.87;
 p_technoMaintenance("80","15",scenario,"BA_67kW",pestType) = 4.69;
 
 
-*18m, 1,500 l, 67 kW, 300 l/ha
+*18m boom, 1,500 l capacity, 67 kW, 300 l/ha
 p_technoTimeReq("1","1",scenario,"BA_83kW",pestType) = 0.31;
 p_technoFuelCons("1","1",scenario,"BA_83kW",pestType) = 1.33;
 p_technoMaintenance("1","1",scenario,"BA_83kW",pestType) = 4.49;
@@ -647,7 +625,7 @@ p_technoFuelCons("80","15",scenario,"BA_83kW",pestType) = 1.9;
 p_technoMaintenance("80","15",scenario,"BA_83kW",pestType) = 4.8;
 
 
-*24 m, 1,500 l, 67 kW, 300 l/ha
+*24m boom, 1,500 l capacity, 67 kW, 300 l/ha
 p_technoTimeReq("1","1",scenario,"BA_102kW",pestType) = 0.27;
 p_technoFuelCons("1","1",scenario,"BA_102kW",pestType) = 1.13;
 p_technoMaintenance("1","1",scenario,"BA_102kW",pestType) = 4.22;
@@ -803,7 +781,7 @@ p_technoFuelCons("80","15",scenario,"BA_102kW",pestType) = 1.82;
 p_technoMaintenance("80","15",scenario,"BA_102kW",pestType) = 4.66;
 
 
-*angehängt, 24 m, 3,000 l, 67 kW
+*24 m boom, 3,000 l capacity, 67 kW, attached sprayer
 p_technoTimeReq("1","1",scenario,"BA_120kW",pestType) = 0.27;
 p_technoFuelCons("1","1",scenario,"BA_120kW",pestType) = 1.49;
 p_technoMaintenance("1","1",scenario,"BA_120kW",pestType) = 4.24;
@@ -959,7 +937,7 @@ p_technoFuelCons("80","15",scenario,"BA_120kW",pestType) = 1.56;
 p_technoMaintenance("80","15",scenario,"BA_120kW",pestType) = 3.87;
 
 
-* angehängt, 27 m, 4,000 l, 83 kW, 300 l/ha
+*27m boom, 4,000 l capacity, 83 kW, 300 l/ha, attached sprayer
 p_technoTimeReq("1","1",scenario,"BA_200kW",pestType) = 0.27;
 p_technoFuelCons("1","1",scenario,"BA_200kW",pestType) = 1.73;
 p_technoMaintenance("1","1",scenario,"BA_200kW",pestType) = 4.46;
@@ -1115,7 +1093,7 @@ p_technoFuelCons("80","15",scenario,"BA_200kW",pestType) = 1.53;
 p_technoMaintenance("80","15",scenario,"BA_200kW",pestType) = 3.8;
 
 
-*angehängt, 36 m, 4,000 l, 83 kW 300 l/ha
+*attached sprayer, 36m boom, 4,000 l capacity, 83 kW, 300 l/ha
 p_technoTimeReq("1","1",scenario,"BA_230kW",pestType) = 0.23;
 p_technoFuelCons("1","1",scenario,"BA_230kW",pestType) = 1.46;
 p_technoMaintenance("1","1",scenario,"BA_230kW",pestType) = 4.24;
@@ -1275,7 +1253,7 @@ p_technoMaintenance("80","15",scenario,"BA_230kW",pestType) = 3.69;
 *  --- Parameters for SST
 *
 *12 m, 600 l, 45 kW, 100 l/ha (with pesticide savings) & 300 l/ha (for applications without savings)
-*data drawn from sprayer with 12m boom width, 45 kW and 100 l/ha (ab Hof) 24.06.2024
+*data drawn from sprayer with 12m boom width, 45 kW and 100 l/ha (ex farm) 24.06.2024
 
 *
 * -- spot6m scenario FH
@@ -1597,6 +1575,9 @@ p_technoFuelCons("80","15","FH+BA","spot6m",notFH) = 2.66;
 p_technoMaintenance("80","15","FH+BA","spot6m",notFH) = 5.83;
 
 
+*
+* -- if SST_6m is used only for BAs on specific plots
+*
 p_technoTimeReq(KTBL_size,KTBL_distance,"BA","spot6m",pestType) = p_technoTimeReq(KTBL_size,KTBL_distance,"FH+BA","spot6m","soilHerb");
 p_technoFuelCons(KTBL_size,KTBL_distance,"BA","spot6m",pestType) = p_technoFuelCons(KTBL_size,KTBL_distance,"FH+BA","spot6m","soilHerb");
 p_technoMaintenance(KTBL_size,KTBL_distance,"BA","spot6m",pestType) = p_technoMaintenance(KTBL_size,KTBL_distance,"FH+BA","spot6m","soilHerb");
@@ -1624,8 +1605,8 @@ p_technoMaintenance(KTBL_size,KTBL_distance,"FH+Bonus+BA","spot6m",notFHBonus) =
 
 
 *
-* --- Parameters for correction of data for spot6m which is drawn from a sprayer with 12m
-* it is assumed, that the factor by which the parameters are higher for the spot6m sprayer is the same like the factor by which the data is higher for a 12m sprayer compared to a 24m sprayer with same tank volume
+* --- Parameters for farm size factor to approximate data for SST_6m
+*
 parameters
    p_spot6mCorTimeReq(KTBL_size,KTBL_distance,scenario,pestType)
    p_spot6mCorFuelCons(KTBL_size,KTBL_distance,scenario,pestType)
@@ -1949,6 +1930,9 @@ p_spot6mCorFuelCons("80","15","FH+BA",notFH) = 2.69;
 p_spot6mCorMaintenance("80","15","FH+BA",notFH) = 5.60;
 
 
+*
+* -- if SST6m is used for BAs only on specific plots
+*
 p_spot6mCorTimeReq(KTBL_size,KTBL_distance,"BA",pestType) = p_spot6mCorTimeReq(KTBL_size,KTBL_distance,"FH+BA","soilHerb");
 p_spot6mCorFuelCons(KTBL_size,KTBL_distance,"BA",pestType) = p_spot6mCorFuelCons(KTBL_size,KTBL_distance,"FH+BA","soilHerb");
 p_spot6mCorMaintenance(KTBL_size,KTBL_distance,"BA",pestType) = p_spot6mCorMaintenance(KTBL_size,KTBL_distance,"FH+BA","soilHerb");
@@ -1974,9 +1958,6 @@ p_spot6mCorMaintenance(KTBL_size,KTBL_distance,"FH+Bonus+BA",notFHBonus) = p_spo
 
 
 
-
-
-
 p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) = 
     p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) 
     * (p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) / p_spot6mCorMaintenance(KTBL_size,KTBL_distance,scenario,pestType))
@@ -1998,7 +1979,8 @@ p_technoFuelCons(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) =
     * (p_technoFuelCons(KTBL_size,KTBL_distance,scenario,"spot6m",pestType) / p_spot6mCorFuelCons(KTBL_size,KTBL_distance,scenario,pestType))
 ;
 
-*assumption: 27m, 3.000 l; 83 kW (KTBL Feldarbeitsrechner) -> 25.07.2024, 100 l/ha
+
+*assumption: 27m, 3.000 l; 83 kW, 100 l/ha
 *
 * -- spot 27m scenario FH: FH: 100 l/ha, notFH: 300 l/ha
 *
@@ -2363,33 +2345,18 @@ p_technoMaintenance(KTBL_size,KTBL_distance,"FH+Bonus+BA","spot27m",notFHBonus) 
 
 
 
-*reason for the formula is, that the data for other costs is drawn from KTBL makost (17.05.2024)
-*and it is assumed here that costs for maintenance are twice as high as for BA technology
 p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType) = 
     p_technoMaintenance(KTBL_size,KTBL_distance,scenario,"spot27m",pestType) * 2
 ;
 
-option 
-   p_technoMaintenance:2:4:1
-   p_technoTimeReq:2:4:1
-   p_technoFuelCons:2:4:1
-;
 
 
-parameter p_datePestOpTechnoLWK(LWK_crops,LWK_yield,technology,scenario,scenSprayer,pestType,halfMonth) /
-$ontext 
-zusätzliche genutzte Quellen: 
-- Getreide Zeitpunkte Anwendungen:
-    1. https://www.yara.de/pflanzenernaehrung/weizen/agronomische-grundsaetze/#:~:text=Wichtigstes%20Ziel%20beim%20Getreideanbau%20ist,gesunden%20gr%C3%BCnen%20Blattmasse%20angestrebt%20werden.
-    2. https://www.isip.de/isip/servlet/resource/blob/158864/b2eab6854d120472a63ebddcf021f565/18-02-getreide-data.pdf
-- Winterraps Zeitpunkte Anwendungen:
-    1. https://www.yara.de/pflanzenernaehrung/raps/agronomische-grundsaetze/
-    2. https://www.nap-pflanzenschutz.de/fileadmin/SITE_MASTER/content/IPS/Integrierter_Pflanzenschutz/Leitlinien_IPS/201111_RL_UFOP_1738_Leitlinie_Raps_final.pdf
-- Kartoffel Zeitpunkt Anwendungen: https://www.isip.de/isip/servlet/resource/blob/307402/a7029ab2b89401c4ff3744310e3a8df5/19-06-kartoffeln-data.pdf
-- Zuckerrübe Zeitpunkt Anwendungen: https://www.isip.de/isip/servlet/resource/blob/158866/c50b95b756770dd93fe1b60570d6e57a/18-05-zuckerrueben-data.pdf
-$offtext
 *
-* -------------------- BA
+* -- Sprayer passage data
+*
+parameter p_datePestOpTechnoLWK(LWK_crops,LWK_yield,technology,scenario,scenSprayer,pestType,halfMonth) /
+*
+* -------------------- BAs
 *
 *KTBL BP 18/19
 'Winterweizen'.'< 70 dt/ha'."baseline"."Base".set.BASprayer."soilHerb"."OKT2" 0.5
@@ -2898,9 +2865,7 @@ $offtext
 
 *
 * -------------------- Scenario FH for SPOT 27m
-* If a SSPA and a BA are performed simultaneously enabled by the dual-spraying technology, the passage is counted for the 
-* BA, because the number of passages is later used to calculate the variable work execution costs of the spraying operation
-* and it makes more sense to use the time requirements, fuel consumption and repair costs of the BA performed with the SST27m
+*
 *Blattherbizid 1 & Bodenherbizid 1
 'Winterweizen'.'< 70 dt/ha'."spot27m"."FH"."spot27m"."dualSpraying"."OKT2" 1
 *Blattherbizid 2
@@ -3616,11 +3581,12 @@ $offtext
 'Grünlandnutzung (Mähweide)'.'alle Ertragsklassen'."spot27m"."BA"."spot27m"."foliarHerb"."AUG1" 0.5
 /;
 
-
-
 p_datePestOpTechnoLWK(LWK_crops,LWK_yield,"spot6m","FH+Bonus+BA","spot6m",pestType,halfMonth) 
     = p_datePestOpTechnoLWK(LWK_crops,LWK_yield,"spot6m","FH+BA","spot6m",pestType,halfMonth) 
 ;
+
+
+
 *
 * --- Number of sprayer passages converted to KTBL notation
 *

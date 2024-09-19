@@ -1,4 +1,8 @@
 
+*
+*  --- This file theoretically enables the adjustment of area-specific fertilization for the individual farms. In the course of model development, however, 
+*      it was decided not to incorporate this additional complexity. Therefore, only the original fertilization data from KTBL is included in the solution space of the model.
+*
 
 parameters 
     p_manureSupply(manAmounts,nutrients) Nutrient supply from manure 

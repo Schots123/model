@@ -561,7 +561,6 @@ PsenAn_151_time1 <- senAn_151_time1 %>%
     )
 PsenAn_151_time1 
 
-view(senAn_151_time2)
 PsenAn_151_time2 <- senAn_151_time2 %>%
     ggplot(aes(x = landAv,
                y = timeReq,

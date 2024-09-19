@@ -14,7 +14,7 @@ scalar  p_totLand total land available to farm;
 scalar  p_totArabLand total arable land farm endowment;
 scalar  p_totGreenLand total green land farm endowment;
 scalar  p_shareGreenLand share of green land relative to total land endowment of farm;
-*scalar  p_grassLandExempt defines whether farm has more than seventyfive percent green land and arable land is below thirty hectares or not, value assignment follows subsequently;
+*scalar  p_grassLandExempt;
 
 *
 *  --- include data for parameter variations
@@ -28,7 +28,7 @@ p_shareGreenLand = p_totGreenLand / p_totLand;
 *p_grassLandExempt $((p_shareGreenLand > 0.75) $(p_totArabLand < 30)) = 1;
 
 *
-*  --- linking of individual plot data with KTBL_data from file KTBL_data.gms
+*  --- connection of individual plot data with KTBL_data from file KTBL_data.gms
 *
 set curPlots_ktblSize(curPlots,KTBL_size);
 curPlots_ktblSize(curPlots,'1') $ (p_plotData(curPlots,'size') lt 1.5) = yes;
@@ -141,7 +141,7 @@ $include '5.model/labour.gms'
 $include '5.model/crop_protection.gms'
 
 *
-*  --- calculation of profit for farm
+*  --- calculation of farm profit
 *    
 e_profit..
   v_profit =E=
@@ -225,7 +225,7 @@ model SprayerAdoption /
 *
 * --- To allow BA sprayer decisions at plot-level for the SST technology runs but ensure the acquisition of the SST, 
 * an additional equation has to be established, forcing the model to acquire at least one sprayer of the respective SST
-* while allowing the acquisition of a BA sprayer
+* while allowing the acquisition of a BA sprayer as well
 equation 
   e_SST6m
   e_SST27m;

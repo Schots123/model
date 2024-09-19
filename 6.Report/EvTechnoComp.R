@@ -202,10 +202,6 @@ technoComp_farm162 <- technoComp_farm162 %>%
         sep="") %>%
     unite(SST, spot6m, spot27m, sep ="")
 
-#change scale of farm profit 
-technoComp_farm162 <- technoComp_farm162 %>%
-    mutate(avgAnnFarmProf = avgAnnFarmProf / 1000)
-
 
 #############
 #Farm 151.142
@@ -349,11 +345,6 @@ technoComp_farm151 <- technoComp_farm151 %>%
         sep="") %>%
     unite(SST, spot6m, spot27m, sep ="")
 
-#change scale of farm profit 
-technoComp_farm151 <- technoComp_farm151 %>%
-    mutate(avgAnnFarmProf = avgAnnFarmProf / 1000)
-
-
 ###################
 #DATA VISUALIZATION
 ###################
@@ -362,8 +353,8 @@ technoComp_farm151 <- technoComp_farm151 %>%
 #Plots for average annual net profit per ha
 ###########################################
 #Create column for net profit per ha
-technoComp_farm162$farmProfHa <- technoComp_farm162$avgAnnFarmProf / technoComp_farm162$landAv * 1000
-technoComp_farm151$farmProfHa <- technoComp_farm151$avgAnnFarmProf / technoComp_farm151$landAv * 1000
+technoComp_farm162$farmProfHa <- technoComp_farm162$avgAnnFarmProf / technoComp_farm162$landAv
+technoComp_farm151$farmProfHa <- technoComp_farm151$avgAnnFarmProf / technoComp_farm151$landAv
 
 PteComp162Ha <- technoComp_farm162 %>%
 #aes tells R which variables are mapped against which visual characteristics on the canvas 
@@ -413,7 +404,6 @@ PteComp162Ha <- technoComp_farm162 %>%
         axis.ticks.length = unit(0.2, "cm")
     )
 PteComp162Ha
-ggsave("teCompHa162.png")
 
 
 PteComp151Ha <- technoComp_farm151 %>%
@@ -456,12 +446,10 @@ PteComp151Ha <- technoComp_farm151 %>%
         axis.ticks.length = unit(0.2, "cm")
     )
 PteComp151Ha
-ggsave("teCompHa151.png")
 
 
 
 ##################2 plots grid with average annual net profit per ha 
-library(patchwork)
 
 PteCompPlotHa <- (PteComp162Ha + plot_spacer() + PteComp151Ha) +
     plot_layout(ncol = 3, nrow = 1) +
